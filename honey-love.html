@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popup 1</title>
+    <link rel="stylesheet" href="popup_styles.css">
+    <script src="pupup_script.js"></script>
+</head>
+<body>
+   
+    <header>
+        <div class="box1">
+        <center>
+            <h2>Honeylove</h2>
+        </center>
+        </div>
+        <div class="box2">
+            <table class="table_head">
+        <tr>
+            <td>Approver:</td>
+            <td>Ahesha</td>
+        </tr>
+        <tr>
+            <td>Mailto: </td>
+            <td>COE Procurement</td>
+        </tr>
+        <tr>
+            <td>CC: </td>
+            <td style="cursor: pointer;">
+                <span class="copy-icon" id="copy-icon">&#x1F4CB; Copy Emails</span> 
+                <span style="display:none" class="email">
+                    
+                </span>              
+            </td>  
+        </tr>
+    </table>
+        </div>
+    </header>
+
+    <table class="main-table">
+        <thead>
+            <tr>
+                <th width="25%">Order/Sample Types</th>
+                <th width="50%">Materials to be order</th>
+                <th width="25%">Waited Materials</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Bulk</td>
+                <td>All Materials</td>
+                <td class="dash-cell">-</td>
+            </tr>
+            <tr>
+                <td>PE Sample</td>
+                <td>All Materials</td>
+                <td class="dash-cell">-</td>
+            </tr>
+            <tr>
+                <td>PP Sample</td>
+                <td>All Materials</td>
+                <td class="dash-cell">-</td>
+            </tr>
+            <tr>
+                <td>Top Sample</td>
+                <td>All Materials</td>
+                <td class="dash-cell">-</td>
+            </tr>
+            <tr>
+                <td>TRIM CARD</td>
+                <td>All Materials</td>
+                <td class="dash-cell">-</td>
+            </tr>
+            <tr>
+                <td>First Bulk Submission</td>
+                <td>All Materials</td>
+                <td class="dash-cell">-</td>
+            </tr>
+            <tr>
+                <td>Photo Sample</td>
+                <td>All Materials</td>
+                <td class="dash-cell">-</td>
+            </tr>
+            <tr>
+                <td>BV and Internal Wash Samples</td>
+                <td>Fabric & All Sewing Trims</td>
+                <td>All Packing Trims</td>
+            </tr>
+            <tr>
+                <td>Testing Sample - RM</td>
+                <td>Fabric & All Sewing Trims</td>
+                <td>All Packing Trims</td>
+            </tr>
+            <tr>
+                <td>Wash Sample</td>
+                <td>Fabric & All Sewing Trims</td>
+                <td>All Packing Trims</td>
+            </tr>
+            <tr>
+                <td>Training Cut</td>
+                <td>Fabric & All Sewing Trims</td>
+                <td>All Packing Trims</td>
+            </tr>
+            <tr>
+                <td rowspan="4">REP-RM</td>
+                <td>BRA STRAP ELASTIC</td>
+                <td rowspan="4">All Other materials</td>
+            </tr>
+            <tr>
+                <td>POLYBAG (PPLB003548)</td>
+            </tr>
+            <tr>
+                <td>BRA CUP</td>
+            </tr>
+            <tr>
+                <td>CARD BOARD</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br>
+
+    <button onclick="handleButtonClick()">Previous MRL Direction</button>
+
+    
+    
+    <table id="previous_mrl">
+        <caption style="color: red;">Update as of 5 Feb 2024</caption>
+        <thead>
+            <tr>
+                <th width="25%">Order/Sample Types</th>
+                <th width="50%">Materials to be order</th>
+                <th width="25%">Waited Materials</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Bulk</td>
+                <td>All Materials same as Bulk</td>
+                <td class="dash-cell">-</td>
+            </tr>
+            <tr>
+                <td>BV and Internal Wash Samples</td>
+                <td>All Materials same as Bulk</td>
+                <td>All Packing Trims</td>
+            </tr>
+            <tr>
+                <td>First Bulk Submission</td>
+                <td>Fabric & All Sewing Trims</td>
+                <td class="dash-cell">-</td>
+            </tr>
+            <tr>
+                <td>PE Sample</td>
+                <td>All Materials same as Bulk</td>
+                <td class="dash-cell">-</td>
+            </tr>
+            <tr>
+                <td>PP Sample</td>
+                <td>All Materials same as Bulk</td>
+                <td class="dash-cell">-</td>
+            </tr>
+            <tr>
+                <td>Wash Sample</td>
+                <td>All Materials same as Bulk</td>
+                <td class="dash-cell">-</td>
+            </tr>
+            <tr>
+                <td rowspan="1">REP-RM</td>
+                <td colspan="">
+                    <table class="nested-table" style="width: 100%">
+                        <tr>
+                            <th>SPST00019</th>
+                            <th>TPBS00017</th>
+                            <th>SPTH00002</th>
+                            <th>SPBF00005</th>
+                            <th>SPBF00006</th>
+                        </tr>
+                        <tr>
+                            <td>BRA STRAP ELASTIC</td>
+                            <td>BRA CUP</td>
+                            <td>BRA STRAP ELASTIC</td>
+                            <td>BRA STRAP ELASTIC</td>
+                            <td>BRA STRAP ELASTIC</td>
+                        </tr>
+                        <tr>
+                            <td>HANG TAG</td>
+                            <td>HANG TAG</td>
+                            <td>HANG TAG</td>
+                            <td>HANG TAG</td>
+                            <td class="italic">HANG TAG</td>
+                        </tr>
+                        <tr>
+                            <td>STICKER</td>
+                            <td>STICKER</td>
+                            <td>POLYBAG</td>
+                            <td>STICKER</td>
+                            <td class="italic">STICKER</td>
+                        </tr>
+                        <tr>
+                            <td>POLYBAG</td>
+                            <td>POLYBAG</td>
+                            <td></td>
+                            <td>POLYBAG</td>
+                            <td class="italic">POLYBAG</td>
+                        </tr>
+                        <tr>
+                            <td>All General Items</td>
+                            <td>All General Items</td>
+                            <td>All General Items</td>
+                            <td>All General Items</td>
+                            <td>All General Items</td>
+                        </tr>
+                    </table>
+                </td>
+                <td>All Materials exept mentioned items</td>
+            </tr>
+            <tr>
+                <td>Testing Sample - RM</td>
+                <td>All Materials same as Bulk</td>
+                <td class="dash-cell">-</td>
+            </tr>
+            <tr>
+                <td>Top Sample</td>
+                <td>All Materials same as Bulk</td>
+                <td class="dash-cell">-</td>
+            </tr>
+            <tr>
+                <td>Training Cut</td>
+                <td>Fabric & All Sewing Trims</td>
+                <td>All Packing Trims</td>
+            </tr>
+            <tr>
+                <td>TRIM CARD</td>
+                <td>All Materials same as Bulk</td>
+                <td class="dash-cell">-</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <table id="previous_mrl">
+        <caption style="color: red;">Update as of 24 Dec 2024</caption>
+        <thead>
+            <tr>
+                <th width="25%">Sample Type</th>
+                <th width="50%">Materials to be Order</th>
+                <th width="25%">Waited Materials</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>BV and Internal Wash Samples</td>
+                <td>All Materials same as Bulk</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>PE Sample</td>
+                <td>All Materials same as Bulk</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>PP Sample</td>
+                <td>All Materials same as Bulk</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>Testing Sample - RM</td>
+                <td>All Materials same as Bulk</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>Top Sample</td>
+                <td>All Materials same as Bulk</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>TRIM CARD</td>
+                <td>All Materials same as Bulk</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>First Bulk Submission</td>
+                <td>Fabric & All Sewing Trims</td>
+                <td>All Packing Trims</td>
+            </tr>
+            <tr>
+                <td>Training Cut</td>
+                <td>Fabric & All Sewing Trims</td>
+                <td>All Packing Trims</td>
+            </tr>
+            <tr>
+                <td>REP-RM</td>
+                <td>Cookies (cup)<br>
+                    Straps<br>
+                    Hangtag<br>
+                    Universal Hygienic<br>
+                    Liner w/ French<br>
+                    translations<br>
+                    Polybag<br>
+                    Polybag<br>
+                    Folding card<br>
+                    Clear rubber band<br>
+                    Small clear bag for strap<br>
+                    Tissue paper<br>
+                    SKU sticker<br>
+                    Silica Gel<br>
+                    Bra Cup Tissue- 2 per each
+                </td>
+                <td>All Materials exept mentioned items</td>
+            </tr>           
+        </tbody>
+    </table>
+    
+    <footer>
+        Last updated - 3 Mar 2024
+    </footer>
+
+</body>
+</html>

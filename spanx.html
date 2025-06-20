@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popup 1</title>
+    <link rel="stylesheet" href="popup_styles.css">
+    <script src="pupup_script.js"></script>
+</head>
+<body>
+   
+    <header>
+        <div class="box1">
+        <center>
+            <h2>Spanx Inc</h2>
+        </center>
+        </div>
+        <div class="box2">
+            <table class="table_head">
+        <tr>
+            <td>Approver:</td>
+            <td>Devindie</td>
+        </tr>
+        <tr>
+            <td>Bulk YY Required</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Mailto: </td>
+            <td>COE Procurement</td>
+        </tr>
+        <tr>
+            <td>CC: </td>
+            <td style="cursor: pointer;">
+                <span class="copy-icon" id="copy-icon">&#x1F4CB; Copy Emails</span> 
+                <span style="display:none" class="email">
+                    
+                </span>              
+            </td>  
+        </tr>
+    </table>
+        </div>
+    </header>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Sample Type</th>
+                <th>Materials to be Order</th>
+                <th>Waited Materials</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>Bulk </td>
+                <td>ALL</td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td>PPZ Sample </td>
+                <td>ALL</td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td>PP Sample </td>
+                <td>ALL</td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td>PE Sample </td>
+                <td>ALL</td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td> TESTING SAMPLE</td>
+                <td>ALL</td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td>Top Sample</td>
+                <td>ALL</td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td>BV and Internal Wash Samples</td>
+                <td>All fabric and sewing trims </td>
+                <td>Packing item</td>
+            </tr>
+
+            <tr>
+                <td>Wash Sample</td>
+                <td>All fabric and sewing trims </td>
+                <td>Packing item</td>
+            </tr>
+
+            <tr>
+                <td>STRIPCUT/FOLDER OPS TEST</td>
+                <td>fabric+adhesive*half width=68.6  + Sewing trims</td>
+                <td>Packing item</td>
+            </tr>
+
+            <tr>
+                <td>EXTERNAL BONDING/LC TRIAL</td>
+                <td>Only Fabric Under Section</td>
+                <td>Sewing and packing item</td>
+            </tr>            
+            
+            <tr>
+                <td>PRINT TEST</td>
+                <td>Only Fabric under Section</td>
+                <td>Sewing and packing item</td>
+            </tr>
+
+
+            <tr>
+                <td>ELONGATION TEST</td>
+                <td>Only Fabric under Section</td>
+                <td>Sewing and packing item</td>
+            </tr>
+
+            <tr>
+                <td>EXTERNAL PRINTING TRIAL</td>
+                <td>Only Fabric under Section</td>
+                <td>Sewing and packing item</td>
+            </tr>
+
+            <tr>
+                <td>MOLDING 1ST BULK VALIDATION</td>
+                <td>Only Fabric under Section</td>
+                <td>Sewing and packing item</td>
+            </tr>   
+        </tbody>
+    </table>
+    <footer>
+        Last updated - 30 April 2025
+    </footer>
+    <br>
+    <button onclick="handleButtonClick()" style="align-items: center;">Previous MRL Direction</button>
+    <table id="previous_mrl">
+
+        <thead>
+            <tr>
+                <th>Sample Type</th>
+                <th>Materials to be Order</th>
+                <th>Waited Materials</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>Bulk </td>
+                <td>ALL</td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td>PPZ Sample </td>
+                <td>ALL</td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td>PP Sample </td>
+                <td>ALL</td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td>PE Sample </td>
+                <td>ALL</td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td> TESTING SAMPLE</td>
+                <td>ALL</td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td>Top Sample</td>
+                <td>ALL</td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td>BV and Internal Wash Samples</td>
+                <td>All fabric and sewing trims </td>
+                <td>Packing item</td>
+            </tr>
+
+            <tr>
+                <td>Wash Sample</td>
+                <td>All fabric and sewing trims </td>
+                <td>Packing item</td>
+            </tr>
+
+            <tr>
+                <td>STRIPCUT/FOLDER OPS TEST</td>
+                <td>fabric+adhesive*half width=68.6  + Sewing trims</td>
+                <td>Packing item</td>
+            </tr>
+
+            <tr>
+                <td>EXTERNAL BONDING/LC TRIAL</td>
+                <td>fabric+adhesive</td>
+                <td>Sewing and packing item</td>
+            </tr>            
+            
+            <tr>
+                <td>PRINT TEST</td>
+                <td>Only Fabric under Subcategory</td>
+                <td>adhesive/Sewing and packing item</td>
+            </tr>
+
+
+            <tr>
+                <td>ELONGATION TEST</td>
+                <td>Only Fabric under Subcategory</td>
+                <td>adhesive/Sewing and packing item</td>
+            </tr>
+
+            <tr>
+                <td>EXTERNAL PRINTING TRIAL</td>
+                <td>Only Fabric under Subcategory</td>
+                <td>adhesive/Sewing and packing item</td>
+            </tr>
+
+            <tr>
+                <td>MOLDING 1ST BULK VALIDATION</td>
+                <td>Only Fabric under Subcategory</td>
+                <td>adhesive/Sewing and packing item</td>
+            </tr>   
+        </tbody>
+    </table>
+
+    <footer>
+        Last updated - 8 Jan 2024
+    </footer>
+</body>
+</html>
