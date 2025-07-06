@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Date Validator & Corrector</title>
+    <link rel="icon" href="free-30-instagram-stories-icons46_122593.ico" type="image/ico">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #eafaef 0%, #c3c9e2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--dark);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #555;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .upload-area {
+            border: 3px dashed #cbd5e0;
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            background: #f8fafc;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area.dragover {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            font-size: 1.1rem;
+            color: #4a5568;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(67, 97, 238, 0.4);
+        }
+
+        .btn:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-success {
+            background: #38b2ac;
+            box-shadow: 0 4px 6px rgba(56, 178, 172, 0.3);
+        }
+
+        .btn-success:hover {
+            background: #319795;
+            box-shadow: 0 6px 8px rgba(56, 178, 172, 0.4);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            box-shadow: 0 4px 6px rgba(247, 37, 133, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: #d1146d;
+            box-shadow: 0 6px 8px rgba(247, 37, 133, 0.4);
+        }
+
+        .file-list {
+            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .file-list h3 {
+            background: #edf2f7;
+            padding: 12px 15px;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+
+        .file-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-item:last-child {
+            border-bottom: none;
+        }
+
+        .file-icon {
+            color: var(--primary);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: #edf2f7;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+
+        .file-result {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .file-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .success-message {
+            background: #f0fdf4;
+            color: #166534;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .error-list {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .error-item {
+            padding: 15px;
+            background: #fef2f2;
+            border-left: 4px solid var(--danger);
+            margin-bottom: 10px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .error-row {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .error-details {
+            color: #7f1d1d;
+            margin-bottom: 5px;
+        }
+
+        .correction-details {
+            color: #166534;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        .loading {
+            padding: 30px;
+            text-align: center;
+            font-size: 1.1rem;
+            color: #4a5568;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+
+        .date-columns {
+            margin-top: 15px;
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .date-columns h4 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .date-column-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .date-column-item {
+            padding: 8px;
+            background: #e2e8f0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>DOC Split Files Date Validator & Corrector</h1>
+            <p>Upload DOC Split Excel files to validate date relationships and automatically correct any inconsistencies while
+                preserving date formatting.</p>
+        </header>
+
+        <div class="main-content">
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-file-upload"></i> Upload DOC Split Files</h2>
+
+                <div id="uploadArea" class="upload-area">
+                    <div class="upload-icon">📤</div>
+                    <p class="upload-text">Drag & drop your Excel files here or click to browse</p>
+                    <p class="text-muted">Supports .xlsx and .xls formats</p>
+                    <input type="file" id="fileInput" accept=".xlsx,.xls" multiple class="hidden">
+                </div>
+
+                <div id="fileList" class="file-list hidden"></div>
+
+                <div class="action-buttons">
+                    <button id="validateBtn" class="btn hidden">Validate Files</button>
+                    <button id="correctBtn" class="btn btn-success hidden">Correct Dates</button>
+                    <button id="downloadBtn" class="btn btn-danger hidden">Download Corrected Files</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-clipboard-list"></i> Validation Results</h2>
+                <div id="results" class="hidden"></div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Excel Date Validator Tool | Preserves date formatting in corrected files</p>
+        </footer>
+    </div>
+
+    <script>
+        // Main data structures
+        let uploadedFiles = [];
+        let processedFiles = [];
+        let correctedFiles = [];
+
+        // DOM elements
+        const fileInput = document.getElementById('fileInput');
+        const uploadArea = document.getElementById('uploadArea');
+        const fileList = document.getElementById('fileList');
+        const validateBtn = document.getElementById('validateBtn');
+        const correctBtn = document.getElementById('correctBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const results = document.getElementById('results');
+
+        // Initialize
+        function init() {
+            validateBtn.classList.add('hidden');
+            correctBtn.classList.add('hidden');
+            downloadBtn.classList.add('hidden');
+            results.classList.add('hidden');
+        }
+
+        // Drag and drop functionality
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        // Handle uploaded files
+        function handleFiles(files) {
+            uploadedFiles = Array.from(files).filter(file =>
+                file.name.endsWith('.xlsx') || file.name.endsWith('.xls')
+            );
+
+            if (uploadedFiles.length === 0) {
+                alert('Please select Excel files (.xlsx or .xls)');
+                return;
+            }
+
+            displayFileList();
+            validateBtn.classList.remove('hidden');
+            correctBtn.classList.add('hidden');
+            downloadBtn.classList.add('hidden');
+            results.classList.add('hidden');
+            correctedFiles = [];
+        }
+
+        // Display file list
+        function displayFileList() {
+            fileList.innerHTML = `
+                <h3>📋 Selected Files (${uploadedFiles.length})</h3>
+                ${uploadedFiles.map(file => `
+                    <div class="file-item">
+                        📄 ${file.name} (${(file.size / 1024).toFixed(1)} KB)
+                    </div>
+                `).join('')}
+            `;
+            fileList.classList.remove('hidden');
+        }
+
+        // Event listeners
+        validateBtn.addEventListener('click', validateFiles);
+        correctBtn.addEventListener('click', correctDates);
+        downloadBtn.addEventListener('click', downloadCorrectedFiles);
+
+        // Validate files
+        async function validateFiles() {
+            results.innerHTML = '<div class="loading"><div class="spinner"></div>Validating files...</div>';
+            results.classList.remove('hidden');
+
+            const validationResults = [];
+            processedFiles = [];
+
+            for (let i = 0; i < uploadedFiles.length; i++) {
+                const file = uploadedFiles[i];
+                try {
+                    const result = await validateFile(file);
+                    validationResults.push(result);
+                    processedFiles.push(result);
+                } catch (error) {
+                    console.error('Error processing file:', file.name, error);
+                    validationResults.push({
+                        fileName: file.name,
+                        errors: [`Error reading file: ${error.message}`],
+                        totalRows: 0,
+                        corrected: false
+                    });
+                }
+            }
+
+            displayResults(validationResults);
+
+            // Show correct button if there are errors
+            const hasErrors = validationResults.some(r => r.errors && r.errors.length > 0);
+            if (hasErrors) {
+                correctBtn.classList.remove('hidden');
+            } else {
+                correctBtn.classList.add('hidden');
+            }
+
+            downloadBtn.classList.add('hidden');
+        }
+
+        // Validate a single file
+        function validateFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    try {
+                        const data = new Uint8Array(e.target.result);
+                        const workbook = XLSX.read(data, { type: 'array', cellStyles: true });
+
+                        // Get the first worksheet
+                        const firstSheetName = workbook.SheetNames[0];
+                        if (!firstSheetName) {
+                            throw new Error('No worksheets found in file');
+                        }
+
+                        const worksheet = workbook.Sheets[firstSheetName];
+
+                        // Convert to JSON while preserving cell references
+                        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+                        if (!jsonData || jsonData.length <= 1) { // 1 because header row
+                            resolve({
+                                fileName: file.name,
+                                errors: [],
+                                totalRows: 0,
+                                corrected: false,
+                                workbook: workbook,
+                                jsonData: jsonData,
+                                worksheet: worksheet
+                            });
+                            return;
+                        }
+
+                        const errors = [];
+
+                        // Process each row (skip header row)
+                        for (let i = 1; i < jsonData.length; i++) {
+                            const row = jsonData[i];
+                            if (!row || !Array.isArray(row)) {
+                                console.warn(`Skipping invalid row at index ${i}`);
+                                continue;
+                            }
+
+                            // Convert array row to object with column letters (A, B, C...)
+                            const rowObj = {};
+                            const header = jsonData[0];
+                            header.forEach((col, idx) => {
+                                if (col) rowObj[col] = row[idx];
+                            });
+
+                            const rowErrors = validateRow(rowObj, i + 1);
+                            if (rowErrors && rowErrors.length > 0) {
+                                errors.push(...rowErrors.map(err => ({
+                                    ...err,
+                                    rowData: row, // Store the original row data
+                                    rowIndex: i // Store the row index
+                                })));
+                            }
+                        }
+
+                        resolve({
+                            fileName: file.name,
+                            errors: errors,
+                            totalRows: jsonData.length - 1, // exclude header
+                            corrected: false,
+                            workbook: workbook,
+                            jsonData: jsonData,
+                            worksheet: worksheet
+                        });
+                    } catch (error) {
+                        console.error('Error parsing file:', error);
+                        reject(error);
+                    }
+                };
+
+                reader.onerror = function () {
+                    reject(new Error('Failed to read file'));
+                };
+
+                reader.readAsArrayBuffer(file);
+            });
+        }
+
+        // Validate a single row
+        function validateRow(row, rowNumber) {
+            if (!row || typeof row !== 'object') {
+                console.warn(`Invalid row data at row ${rowNumber}`);
+                return [];
+            }
+
+            if (typeof rowNumber !== 'number' || rowNumber < 1) {
+                console.warn(`Invalid row number: ${rowNumber}`);
+                return [];
+            }
+
+            const errors = [];
+
+            try {
+                // Extract dates from row
+                const dates = extractDates(row);
+                const dateColumns = findDateColumns(row);
+
+                // Skip validation if no date columns found
+                if (!dates.orderInitiationDate && !dates.buyerOrderDate && !dates.pcdDate &&
+                    !dates.ocDeliveryDate && !dates.gacDate && !dates.buyerDeliveryDate) {
+                    return errors;
+                }
+
+                // Validation 1: Order Initiation Date = Buyer Order Date
+                if (dates.orderInitiationDate && dates.buyerOrderDate) {
+                    if (!datesEqual(dates.orderInitiationDate, dates.buyerOrderDate)) {
+                        errors.push({
+                            row: rowNumber,
+                            message: `Order Initiation Date (${formatExcelDate(dates.orderInitiationDate)}) must equal Buyer Order Date (${formatExcelDate(dates.buyerOrderDate)})`,
+                            type: 'order-initiation-buyer-order-mismatch',
+                            dates: dates,
+                            columns: dateColumns
+                        });
+                    }
+                }
+
+                // Validation 2: Order Initiation Date <= PCD Date
+                if (dates.orderInitiationDate && dates.pcdDate) {
+                    if (!dateIsLessOrEqual(dates.orderInitiationDate, dates.pcdDate)) {
+                        errors.push({
+                            row: rowNumber,
+                            message: `Order Initiation Date (${formatExcelDate(dates.orderInitiationDate)}) must be <= PCD Date (${formatExcelDate(dates.pcdDate)})`,
+                            type: 'order-initiation-after-pcd',
+                            dates: dates,
+                            columns: dateColumns
+                        });
+                    }
+                }
+
+                // Validation 3: Buyer Order Date <= PCD Date
+                if (dates.buyerOrderDate && dates.pcdDate) {
+                    if (!dateIsLessOrEqual(dates.buyerOrderDate, dates.pcdDate)) {
+                        errors.push({
+                            row: rowNumber,
+                            message: `Buyer Order Date (${formatExcelDate(dates.buyerOrderDate)}) must be <= PCD Date (${formatExcelDate(dates.pcdDate)})`,
+                            type: 'buyer-order-after-pcd',
+                            dates: dates,
+                            columns: dateColumns
+                        });
+                    }
+                }
+
+                // Validation 4: PCD Date <= OC Delivery Date
+                if (dates.pcdDate && dates.ocDeliveryDate) {
+                    if (!dateIsLessOrEqual(dates.pcdDate, dates.ocDeliveryDate)) {
+                        errors.push({
+                            row: rowNumber,
+                            message: `PCD Date (${formatExcelDate(dates.pcdDate)}) must be <= OC Delivery Date (${formatExcelDate(dates.ocDeliveryDate)})`,
+                            type: 'pcd-after-oc-delivery',
+                            dates: dates,
+                            columns: dateColumns
+                        });
+                    }
+                }
+
+                // Validation 5: OC Delivery Date <= GAC Date
+                if (dates.ocDeliveryDate && dates.gacDate) {
+                    if (!dateIsLessOrEqual(dates.ocDeliveryDate, dates.gacDate)) {
+                        errors.push({
+                            row: rowNumber,
+                            message: `OC Delivery Date (${formatExcelDate(dates.ocDeliveryDate)}) must be <= GAC Date (${formatExcelDate(dates.gacDate)})`,
+                            type: 'oc-delivery-after-gac',
+                            dates: dates,
+                            columns: dateColumns
+                        });
+                    }
+                }
+
+                // Validation 6: GAC Date <= Buyer Delivery Date
+                if (dates.gacDate && dates.buyerDeliveryDate) {
+                    if (!dateIsLessOrEqual(dates.gacDate, dates.buyerDeliveryDate)) {
+                        errors.push({
+                            row: rowNumber,
+                            message: `GAC Date (${formatExcelDate(dates.gacDate)}) must be <= Buyer Delivery Date (${formatExcelDate(dates.buyerDeliveryDate)})`,
+                            type: 'gac-after-buyer-delivery',
+                            dates: dates,
+                            columns: dateColumns
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error(`Error validating row ${rowNumber}:`, error);
+                errors.push({
+                    row: rowNumber,
+                    message: `Error validating row: ${error.message}`
+                });
+            }
+
+            return errors;
+        }
+
+        // Find date columns in a row
+        function findDateColumns(row) {
+            const columns = {};
+
+            // Map column names to their possible variations
+            const columnMap = {
+                orderInitiationDate: ['Order Initiation Date', 'OrderInitiationDate', 'Initial PCD Date'],
+                buyerOrderDate: ['Buyer Order Date', 'BuyerOrderDate', 'Original GAC Date'],
+                pcdDate: ['PCD Date', 'PCDDate'],
+                ocDeliveryDate: ['OC Delivery Date', 'OCDeliveryDate', 'DeliveryOCID'],
+                gacDate: ['GAC Date', 'GACDate'],
+                buyerDeliveryDate: ['Buyer Delivery Date', 'BuyerDeliveryDate', 'FirstBuyerDeliveryDate']
+            };
+
+            // Find actual column names in the row
+            Object.keys(columnMap).forEach(key => {
+                const possibleNames = columnMap[key];
+                for (const name of possibleNames) {
+                    if (row.hasOwnProperty(name)) {
+                        columns[key] = name;
+                        break;
+                    }
+                }
+
+                // If not found by exact match, try case-insensitive
+                if (!columns[key]) {
+                    const rowKeys = Object.keys(row);
+                    for (const name of possibleNames) {
+                        const foundKey = rowKeys.find(k =>
+                            k && typeof k === 'string' &&
+                            k.toLowerCase().trim() === name.toLowerCase().trim()
+                        );
+                        if (foundKey) {
+                            columns[key] = foundKey;
+                            break;
+                        }
+                    }
+                }
+            });
+
+            return columns;
+        }
+
+        // Extract dates from a row
+        function extractDates(row) {
+            const dates = {};
+
+            if (!row || typeof row !== 'object') {
+                return dates;
+            }
+
+            // Function to find column value by exact name or close match
+            function findColumnValue(possibleNames) {
+                if (!Array.isArray(possibleNames)) {
+                    return null;
+                }
+
+                // First try exact matches
+                for (const name of possibleNames) {
+                    if (row.hasOwnProperty(name) && row[name] !== undefined && row[name] !== null && row[name] !== '') {
+                        return parseDate(row[name]);
+                    }
+                }
+
+                // Then try case-insensitive matches
+                const rowKeys = Object.keys(row);
+                for (const name of possibleNames) {
+                    const foundKey = rowKeys.find(key =>
+                        key && typeof key === 'string' &&
+                        key.toLowerCase().trim() === name.toLowerCase().trim()
+                    );
+                    if (foundKey && row[foundKey] !== undefined && row[foundKey] !== null && row[foundKey] !== '') {
+                        return parseDate(row[foundKey]);
+                    }
+                }
+
+                return null;
+            }
+
+            // Map to your exact column names from the Excel files
+            dates.orderInitiationDate = findColumnValue([
+                'Order Initiation Date',
+                'OrderInitiationDate',
+                'Initial PCD Date'
+            ]);
+
+            dates.buyerOrderDate = findColumnValue([
+                'Buyer Order Date',
+                'BuyerOrderDate',
+                'Original GAC Date'
+            ]);
+
+            dates.pcdDate = findColumnValue([
+                'PCD Date',
+                'PCDDate'
+            ]);
+
+            dates.ocDeliveryDate = findColumnValue([
+                'OC Delivery Date',
+                'OCDeliveryDate',
+                'DeliveryOCID'
+            ]);
+
+            dates.gacDate = findColumnValue([
+                'GAC Date',
+                'GACDate'
+            ]);
+
+            dates.buyerDeliveryDate = findColumnValue([
+                'Buyer Delivery Date',
+                'BuyerDeliveryDate',
+                'FirstBuyerDeliveryDate'
+            ]);
+
+            return dates;
+        }
+
+        // Parse a date value
+        function parseDate(dateValue) {
+            if (!dateValue) return null;
+
+            try {
+                // Handle Excel date numbers (preserve exactly)
+                if (typeof dateValue === 'number') {
+                    return dateValue; // Return the Excel date number as-is
+                }
+
+                // Handle string dates in m/d/yyyy format
+                if (typeof dateValue === 'string') {
+                    const trimmed = dateValue.trim();
+                    if (trimmed === '') return null;
+
+                    // Parse m/d/yyyy format
+                    const parts = trimmed.split('/');
+                    if (parts.length === 3) {
+                        const month = parseInt(parts[0], 10);
+                        const day = parseInt(parts[1], 10);
+                        const year = parseInt(parts[2], 10);
+
+                        if (!isNaN(month) && !isNaN(day) && !isNaN(year)) {
+                            const parsed = new Date(year, month - 1, day);
+                            if (!isNaN(parsed.getTime())) {
+                                // Convert to Excel date number
+                                const excelEpoch = new Date(1900, 0, 1);
+                                const diff = parsed - excelEpoch;
+                                return (diff / (24 * 60 * 60 * 1000)) + 1;
+                            }
+                        }
+                    }
+                }
+
+                // Handle Date objects
+                if (dateValue instanceof Date && !isNaN(dateValue.getTime())) {
+                    const excelEpoch = new Date(1900, 0, 1);
+                    const diff = dateValue - excelEpoch;
+                    return (diff / (24 * 60 * 60 * 1000)) + 1;
+                }
+            } catch (error) {
+                console.warn('Error parsing date:', dateValue, error);
+            }
+
+            return null;
+        }
+
+        // Format an Excel date
+        function formatExcelDate(excelDate) {
+            if (!excelDate) return 'N/A';
+            try {
+                const date = new Date((excelDate - 1) * 24 * 60 * 60 * 1000 + new Date(1900, 0, 1).getTime());
+                return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+            } catch (error) {
+                console.warn('Error formatting Excel date:', excelDate, error);
+                return 'Invalid Date';
+            }
+        }
+
+        // Check if two dates are equal
+        function datesEqual(date1, date2) {
+            if (!date1 || !date2) return false;
+
+            try {
+                // Compare as Excel date numbers directly
+                return date1 === date2;
+            } catch (error) {
+                console.warn('Error comparing dates:', date1, date2, error);
+                return false;
+            }
+        }
+
+        // Check if date1 is <= date2
+        function dateIsLessOrEqual(date1, date2) {
+            if (!date1 || !date2) return true;
+
+            try {
+                // Compare as Excel date numbers directly
+                return date1 <= date2;
+            } catch (error) {
+                console.warn('Error comparing dates:', date1, date2, error);
+                return true;
+            }
+        }
+
+        // Display validation results
+        function displayResults(validationResults) {
+            if (!validationResults || validationResults.length === 0) {
+                results.innerHTML = '<div class="loading">No results to display</div>';
+                return;
+            }
+
+            const totalFiles = validationResults.length;
+            const filesWithErrors = validationResults.filter(r => r.errors && r.errors.length > 0).length;
+            const filesWithoutErrors = totalFiles - filesWithErrors;
+            const totalErrors = validationResults.reduce((sum, r) => sum + (r.errors ? r.errors.length : 0), 0);
+
+            const statsHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${totalFiles}</div>
+                    <div class="stat-label">Total Files</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${filesWithoutErrors}</div>
+                    <div class="stat-label">Files Without Errors</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${filesWithErrors}</div>
+                    <div class="stat-label">Files With Errors</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${totalErrors}</div>
+                    <div class="stat-label">Total Errors</div>
+                </div>
+            `;
+
+            const resultsHTML = validationResults.map(result => {
+                const hasErrors = result.errors && result.errors.length > 0;
+                const errorCount = result.errors ? result.errors.length : 0;
+                const totalRows = result.totalRows || 0;
+                const isCorrected = result.corrected || false;
+
+                // Date columns info
+                let dateColumnsHTML = '';
+                if (result.errors && result.errors.length > 0 && result.errors[0].columns) {
+                    const columns = result.errors[0].columns;
+                    dateColumnsHTML = `
+                        <div class="date-columns">
+                            <h4>Date Columns Used:</h4>
+                            <div class="date-column-list">
+                                ${Object.entries(columns).map(([key, colName]) => `
+                                    <div class="date-column-item">
+                                        <strong>${key}:</strong> ${colName}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="file-result ${hasErrors ? 'has-errors' : ''}">
+                        <div class="file-name">
+                            <span class="file-icon">${hasErrors ? (isCorrected ? '✅' : '❌') : '✅'}</span>
+                            ${result.fileName || 'Unknown File'}
+                            ${isCorrected ? '<span style="margin-left:10px;color:#27ae60;">(Corrected)</span>' : ''}
+                        </div>
+                        
+                        ${!hasErrors ?
+                        `<div class="success-message">
+                                🎉 No validation errors found! (${totalRows} rows checked)
+                            </div>` :
+                        `<div>
+                                <strong>Found ${errorCount} validation error(s) in ${totalRows} rows:</strong>
+                                <ul class="error-list">
+                                    ${result.errors.map(error => `
+                                        <li class="error-item">
+                                            <div class="error-row">Row ${error.row || 'Unknown'}:</div>
+                                            <div class="error-details">${error.message || 'Unknown error'}</div>
+                                            ${error.correction ? `<div class="correction-details">${error.correction}</div>` : ''}
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                                ${dateColumnsHTML}
+                            </div>`
+                    }
+                    </div>
+                `;
+            }).join('');
+
+            results.innerHTML = `
+                <div class="stats">${statsHTML}</div>
+                <div id="validationResults">${resultsHTML}</div>
+            `;
+        }
+
+        // Correct dates in files
+        async function correctDates() {
+            results.innerHTML = '<div class="loading"><div class="spinner"></div>Correcting date errors...</div>';
+
+            correctedFiles = [];
+
+            for (let i = 0; i < processedFiles.length; i++) {
+                const fileData = processedFiles[i];
+
+                if (!fileData.errors || fileData.errors.length === 0) {
+                    // No errors to correct
+                    correctedFiles.push({
+                        ...fileData,
+                        corrected: false,
+                        newFileName: fileData.fileName.replace('.xlsx', '-No Date corrections Done.xlsx')
+                            .replace('.xls', '-No Date corrections Done.xls')
+                    });
+                    continue;
+                }
+
+                try {
+                    const correctedData = await correctFileDates(fileData);
+                    correctedFiles.push(correctedData);
+                } catch (error) {
+                    console.error('Error correcting file:', fileData.fileName, error);
+                    correctedFiles.push({
+                        ...fileData,
+                        corrected: false,
+                        error: error.message,
+                        newFileName: fileData.fileName.replace('.xlsx', '-No Date corrections Done.xlsx')
+                            .replace('.xls', '-No Date corrections Done.xls')
+                    });
+                }
+            }
+
+            // Show the corrected results
+            displayResults(correctedFiles);
+
+            // Show download button
+            downloadBtn.classList.remove('hidden');
+        }
+
+        // Correct dates in a single file
+        function correctFileDates(fileData) {
+            return new Promise((resolve) => {
+                try {
+                    const workbook = fileData.workbook;
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+
+                    let correctionsMade = false;
+                    const correctedErrors = [];
+
+                    // Process each error
+                    fileData.errors.forEach(error => {
+                        const rowIndex = error.rowIndex;
+                        if (rowIndex >= 1 && rowIndex < fileData.jsonData.length) {
+                            const row = fileData.jsonData[rowIndex];
+                            const header = fileData.jsonData[0];
+                            const dates = extractDatesFromRow(row, header);
+
+                            if (dates.gacDate) {
+                                // Calculate new dates based on GAC date (as Excel numbers)
+                                const newPcdDate = dates.gacDate - 21;
+                                const newOcDeliveryDate = dates.gacDate - 1;
+                                const newBuyerDeliveryDate = dates.gacDate + 30;
+                                const newOrderInitiationDate = dates.gacDate - 21;
+                                const newBuyerOrderDate = dates.gacDate - 21;
+
+                                // Apply corrections based on error type
+                                const corrections = {};
+                                const originalValues = {};
+
+                                if (error.type.includes('order-initiation-buyer-order-mismatch') ||
+                                    error.type.includes('order-initiation-after-pcd')) {
+                                    corrections.orderInitiationDate = newOrderInitiationDate;
+                                    corrections.buyerOrderDate = newBuyerOrderDate;
+                                    originalValues.orderInitiationDate = dates.orderInitiationDate;
+                                    originalValues.buyerOrderDate = dates.buyerOrderDate;
+                                }
+
+                                if (error.type.includes('buyer-order-after-pcd')) {
+                                    corrections.buyerOrderDate = newBuyerOrderDate;
+                                    originalValues.buyerOrderDate = dates.buyerOrderDate;
+                                }
+
+                                if (error.type.includes('pcd-after-oc-delivery')) {
+                                    corrections.pcdDate = newPcdDate;
+                                    originalValues.pcdDate = dates.pcdDate;
+                                }
+
+                                if (error.type.includes('oc-delivery-after-gac')) {
+                                    corrections.ocDeliveryDate = newOcDeliveryDate;
+                                    originalValues.ocDeliveryDate = dates.ocDeliveryDate;
+                                }
+
+                                if (error.type.includes('gac-after-buyer-delivery')) {
+                                    corrections.buyerDeliveryDate = newBuyerDeliveryDate;
+                                    originalValues.buyerDeliveryDate = dates.buyerDeliveryDate;
+                                }
+
+                                // Apply the corrections
+                                if (Object.keys(corrections).length > 0) {
+                                    updateRowWithDates(row, header, corrections);
+
+                                    // Update worksheet with corrected values while preserving formatting
+                                    const dateColumns = findDateColumnsFromHeader(header);
+                                    updateWorksheetDates(worksheet, rowIndex, dateColumns, corrections, originalValues);
+
+                                    correctionsMade = true;
+
+                                    // Build correction message
+                                    const correctionMsgs = [];
+                                    if (corrections.orderInitiationDate) {
+                                        correctionMsgs.push(`Order Initiation: ${formatExcelDate(originalValues.orderInitiationDate)}→${formatExcelDate(newOrderInitiationDate)}`);
+                                    }
+                                    if (corrections.buyerOrderDate) {
+                                        correctionMsgs.push(`Buyer Order: ${formatExcelDate(originalValues.buyerOrderDate)}→${formatExcelDate(newBuyerOrderDate)}`);
+                                    }
+                                    if (corrections.pcdDate) {
+                                        correctionMsgs.push(`PCD: ${formatExcelDate(originalValues.pcdDate)}→${formatExcelDate(newPcdDate)}`);
+                                    }
+                                    if (corrections.ocDeliveryDate) {
+                                        correctionMsgs.push(`OC Delivery: ${formatExcelDate(originalValues.ocDeliveryDate)}→${formatExcelDate(newOcDeliveryDate)}`);
+                                    }
+                                    if (corrections.buyerDeliveryDate) {
+                                        correctionMsgs.push(`Buyer Delivery: ${formatExcelDate(originalValues.buyerDeliveryDate)}→${formatExcelDate(newBuyerDeliveryDate)}`);
+                                    }
+
+                                    error.correction = `Corrected: ${correctionMsgs.join(', ')}`;
+                                    correctedErrors.push(error);
+                                }
+                            }
+                        }
+                    });
+
+                    if (correctionsMade) {
+                        resolve({
+                            ...fileData,
+                            corrected: true,
+                            errors: correctedErrors,
+                            newFileName: fileData.fileName.replace('.xlsx', '-Dates Corrected.xlsx')
+                                .replace('.xls', '-Dates Corrected.xls')
+                        });
+                    } else {
+                        resolve({
+                            ...fileData,
+                            corrected: false,
+                            newFileName: fileData.fileName.replace('.xlsx', '-No Date corrections Done.xlsx')
+                                .replace('.xls', '-No Date corrections Done.xls')
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error correcting file dates:', error);
+                    throw error;
+                }
+            });
+        }
+
+        // Extract dates from a row array
+        function extractDatesFromRow(row, header) {
+            const dates = {};
+
+            if (!row || !Array.isArray(row) || !header || !Array.isArray(header)) {
+                return dates;
+            }
+
+            // Function to find column index by name
+            function findColumnIndex(possibleNames) {
+                for (const name of possibleNames) {
+                    const index = header.findIndex(h => h && h.toString().trim().toLowerCase() === name.toLowerCase());
+                    if (index >= 0) return index;
+                }
+                return -1;
+            }
+
+            // Get dates from row based on header
+            const oidIndex = findColumnIndex(['Order Initiation Date', 'OrderInitiationDate', 'Initial PCD Date']);
+            if (oidIndex >= 0) dates.orderInitiationDate = parseDate(row[oidIndex]);
+
+            const bodIndex = findColumnIndex(['Buyer Order Date', 'BuyerOrderDate', 'Original GAC Date']);
+            if (bodIndex >= 0) dates.buyerOrderDate = parseDate(row[bodIndex]);
+
+            const pcdIndex = findColumnIndex(['PCD Date', 'PCDDate']);
+            if (pcdIndex >= 0) dates.pcdDate = parseDate(row[pcdIndex]);
+
+            const ocdIndex = findColumnIndex(['OC Delivery Date', 'OCDeliveryDate', 'DeliveryOCID']);
+            if (ocdIndex >= 0) dates.ocDeliveryDate = parseDate(row[ocdIndex]);
+
+            const gacIndex = findColumnIndex(['GAC Date', 'GACDate']);
+            if (gacIndex >= 0) dates.gacDate = parseDate(row[gacIndex]);
+
+            const bdIndex = findColumnIndex(['Buyer Delivery Date', 'BuyerDeliveryDate', 'FirstBuyerDeliveryDate']);
+            if (bdIndex >= 0) dates.buyerDeliveryDate = parseDate(row[bdIndex]);
+
+            return dates;
+        }
+
+        // Update row with new date values
+        function updateRowWithDates(row, header, newDates) {
+            if (!row || !Array.isArray(row) || !header || !Array.isArray(header) || !newDates) return;
+
+            // Function to find column index by name
+            function findColumnIndex(possibleNames) {
+                for (const name of possibleNames) {
+                    const index = header.findIndex(h => h && h.toString().trim().toLowerCase() === name.toLowerCase());
+                    if (index >= 0) return index;
+                }
+                return -1;
+            }
+
+            // Update each date field if we have a new value
+            if (newDates.orderInitiationDate) {
+                const index = findColumnIndex(['Order Initiation Date', 'OrderInitiationDate', 'Initial PCD Date']);
+                if (index >= 0) row[index] = newDates.orderInitiationDate;
+            }
+
+            if (newDates.buyerOrderDate) {
+                const index = findColumnIndex(['Buyer Order Date', 'BuyerOrderDate', 'Original GAC Date']);
+                if (index >= 0) row[index] = newDates.buyerOrderDate;
+            }
+
+            if (newDates.pcdDate) {
+                const index = findColumnIndex(['PCD Date', 'PCDDate']);
+                if (index >= 0) row[index] = newDates.pcdDate;
+            }
+
+            if (newDates.ocDeliveryDate) {
+                const index = findColumnIndex(['OC Delivery Date', 'OCDeliveryDate', 'DeliveryOCID']);
+                if (index >= 0) row[index] = newDates.ocDeliveryDate;
+            }
+
+            if (newDates.buyerDeliveryDate) {
+                const index = findColumnIndex(['Buyer Delivery Date', 'BuyerDeliveryDate', 'FirstBuyerDeliveryDate']);
+                if (index >= 0) row[index] = newDates.buyerDeliveryDate;
+            }
+        }
+
+        // Find date columns from header
+        function findDateColumnsFromHeader(header) {
+            const columns = {};
+
+            // Map column names to their possible variations
+            const columnMap = {
+                orderInitiationDate: ['Order Initiation Date', 'OrderInitiationDate', 'Initial PCD Date'],
+                buyerOrderDate: ['Buyer Order Date', 'BuyerOrderDate', 'Original GAC Date'],
+                pcdDate: ['PCD Date', 'PCDDate'],
+                ocDeliveryDate: ['OC Delivery Date', 'OCDeliveryDate', 'DeliveryOCID'],
+                gacDate: ['GAC Date', 'GACDate'],
+                buyerDeliveryDate: ['Buyer Delivery Date', 'BuyerDeliveryDate', 'FirstBuyerDeliveryDate']
+            };
+
+            // Find actual column names in the header
+            Object.keys(columnMap).forEach(key => {
+                const possibleNames = columnMap[key];
+                for (const name of possibleNames) {
+                    const index = header.findIndex(h =>
+                        h && h.toString().trim().toLowerCase() === name.toLowerCase().trim()
+                    );
+                    if (index >= 0) {
+                        columns[key] = index;
+                        break;
+                    }
+                }
+            });
+
+            return columns;
+        }
+
+        // Update worksheet dates while preserving formatting
+        function updateWorksheetDates(worksheet, rowIndex, dateColumns, newDates, originalDates) {
+            if (!worksheet || !dateColumns) return;
+
+            Object.entries(dateColumns).forEach(([key, colIndex]) => {
+                if (newDates[key] !== undefined) {
+                    const cellAddress = { r: rowIndex, c: colIndex };
+                    const cellRef = XLSX.utils.encode_cell(cellAddress);
+
+                    // Get the original cell to preserve formatting
+                    const originalCell = worksheet[cellRef];
+
+                    // Create a new cell with the corrected value
+                    const newCell = {
+                        v: newDates[key],
+                        t: 'n', // number type for dates
+                        z: originalCell && originalCell.z ? originalCell.z : 'm/d/yyyy'
+                    };
+
+                    // Preserve other properties if they exist
+                    if (originalCell) {
+                        if (originalCell.s) newCell.s = originalCell.s; // style
+                        if (originalCell.h) newCell.h = originalCell.h; // hyperlink
+                        if (originalCell.f) newCell.f = originalCell.f; // formula
+                    }
+
+                    worksheet[cellRef] = newCell;
+                }
+            });
+        }
+
+        // Download corrected files
+        function downloadCorrectedFiles() {
+            if (!correctedFiles || correctedFiles.length === 0) {
+                alert('No corrected files to download');
+                return;
+            }
+
+            correctedFiles.forEach(fileData => {
+                try {
+                    if (!fileData.workbook) {
+                        console.warn('No workbook data for file:', fileData.fileName);
+                        return;
+                    }
+
+                    // Convert workbook to binary Excel file
+                    const excelFile = XLSX.write(fileData.workbook, {
+                        bookType: fileData.fileName.endsWith('.xls') ? 'xls' : 'xlsx',
+                        type: 'array',
+                        cellDates: true // Preserve date formats
+                    });
+
+                    // Create blob and download
+                    const blob = new Blob([excelFile], { type: 'application/octet-stream' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = fileData.newFileName ||
+                        (fileData.corrected ?
+                            fileData.fileName.replace(/\.(xls|xlsx)$/i, '-Dates Corrected.$1') :
+                            fileData.fileName.replace(/\.(xls|xlsx)$/i, '-No Date corrections Done.$1'));
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                } catch (error) {
+                    console.error('Error downloading file:', fileData.fileName, error);
+                }
+            });
+
+            alert(`Downloaded ${correctedFiles.length} file(s)`);
+        }
+
+        // Initialize the application
+        init();
+    </script>
+</body>
+
+</html>

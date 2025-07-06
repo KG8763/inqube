@@ -452,7 +452,7 @@
                         DECATHLON
                         <div class="status-indicator"></div>
                     </a>
-                    <a href="#" class="customer-btn disabled">
+                    <a href="#" class="customer-btn" data-modal="vs-intimates">
                         CLOVER VS - INTIMATES
                         <div class="status-indicator"></div>
                     </a>
@@ -522,6 +522,10 @@
                     </a>
                     <a href="#" class="customer-btn" data-modal="seamless-urban">
                         SEAMLESS URBAN OUTFITTERS
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="seamless-company-tshirt">
+                        SEAMLESS COMPANY TSHIRT
                         <div class="status-indicator"></div>
                     </a>
                 </div>
@@ -600,6 +604,7 @@
                 const fileMap = {
                     'lululemon': 'lululemon.html',
                     'vs-active': 'vs-active.html',
+                    'vs-intimates': 'vs-intimates.html',
                     'honey-love': 'honey-love.html',
                     'spanx': 'spanx.html',
                     'wildhawk': 'wildhawk.html',
@@ -611,7 +616,8 @@
                     'aritzia': 'aritzia.html',
                     'urban': 'urban.html',
                     'cyc': 'cyc.html',
-                    'athleta': 'athleta.html'
+                    'athleta': 'athleta.html',
+                    'seamless-company-tshirt': 'seamless-company-tshirt.html'
                 };
                 
                 modalIframe.src = fileMap[modalId] || '';
