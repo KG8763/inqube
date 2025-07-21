@@ -459,7 +459,7 @@
                         LULULEMON
                         <div class="status-indicator"></div>
                     </a>
-                    <a href="#" class="customer-btn disabled">
+                    <a href="#" class="customer-btn" data-modal="decathlon">
                         DECATHLON
                         <div class="status-indicator"></div>
                     </a>
@@ -531,7 +531,7 @@
                         SEAMLESS OLD NAVY
                         <div class="status-indicator"></div>
                     </a>
-                    <a href="#" class="customer-btn" data-modal="seamless-urban">
+                    <a href="#" class="customer-btn disabled data-modal="seamless-urban">
                         SEAMLESS URBAN OUTFITTERS
                         <div class="status-indicator"></div>
                     </a>
@@ -628,7 +628,8 @@
                     'urban': 'urban.html',
                     'cyc': 'cyc.html',
                     'athleta': 'athleta.html',
-                    'seamless-company-tshirt': 'seamless-company-tshirt.html'
+                    'seamless-company-tshirt': 'seamless-company-tshirt.html',
+                    'decathlon': 'decathlon.html',
                 };
                 
                 modalIframe.src = fileMap[modalId] || '';
