@@ -428,7 +428,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="" class="nav-link">
+                        <a href="sap.html" class="nav-link">
                             <i class="fas fa-book"></i> SOP
 
                         </a>
@@ -519,11 +519,11 @@
                         SEAMLESS ARITZIA
                         <div class="status-indicator"></div>
                     </a>
-                    <a href="#" class="customer-btn disabled">
+                    <a href="#" class="customer-btn" data-modal="seamless-cyc">
                         SEAMLESS CYC DESIGN CORP
                         <div class="status-indicator"></div>
                     </a>
-                    <a href="#" class="customer-btn disabled">
+                    <a href="#" class="customer-btn" data-modal="seamless-kuhl">
                         SEAMLESS KUHL
                         <div class="status-indicator"></div>
                     </a>
@@ -539,6 +539,11 @@
                         SEAMLESS COMPANY TSHIRT
                         <div class="status-indicator"></div>
                     </a>
+                    <a href="#" class="customer-btn" data-modal="seamless-ardent">
+                        SEAMLESS ARDENT
+                        <div class="status-indicator"></div>
+                    </a>
+
                 </div>
             </div>
 
@@ -630,6 +635,9 @@
                     'athleta': 'athleta.html',
                     'seamless-company-tshirt': 'seamless-company-tshirt.html',
                     'decathlon': 'decathlon.html',
+                    'seamless-kuhl': 'seamless-kuhl.html',
+                    'seamless-cyc': 'seamless-cyc.html',
+                    'seamless-ardent': 'seamless-ardent.html'
                 };
                 
                 modalIframe.src = fileMap[modalId] || '';
