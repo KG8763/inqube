@@ -9,67 +9,450 @@
     <script src="pupup_script.js"></script>
 </head>
 
+<
 <body>
-    <table class="your-table-class">
-  <thead>
-    <tr class="your-header-row-class">
-      <th>Customer</th>
-      <th>Development</th>
-      <th>Bulk</th>
-      <th>Procurement</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr class="your-data-row-class">
-      <td>SAP - LBI</td>
-      <td>Samudi</td>
-      <td>Gihan</td>
-      <td>Rajindra</td>
-    </tr>
-    <tr class="your-data-row-class">
-      <td>SAP - VS Intimates</td>
-      <td>Gayani</td>
-      <td>Tachini / Rachal</td>
-      <td>Madusanka</td>
-    </tr>
-    <tr class="your-data-row-class">
-      <td>SAP - VS Active</td>
-      <td></td>
-      <td>Randima</td>
-      <td>Madusanka</td>
-    </tr>
-    <tr class="your-data-row-class">
-      <td>SAP - Skims</td>
-      <td>Ziana</td>
-      <td>Kalpa</td>
-      <td>Rajindra</td>
-    </tr>
-    <tr class="your-data-row-class">
-      <td>SAP - AERIE</td>
-      <td>Madawa</td>
-      <td>Lasitha</td>
-      <td>Sapumal</td>
-    </tr>
-    <tr class="your-data-row-class">
-      <td>SAP - Under Armour</td>
-      <td>Madawa</td>
-      <td>Lasitha</td>
-      <td>Sapumal</td>
-    </tr>
-    <tr class="your-data-row-class">
-      <td>SAP - Tech Style</td>
-      <td>Shanaka</td>
-      <td>Janani / Gaveshika</td>
-      <td>Sapumal</td>
-    </tr>
-  </tbody>
-</table>
+    <div class="container">
+        <main>
+            <div class="content-wrapper">                
+                <div class="button-container">
+                    <button onclick="showSection('customers')">
+                        📋 SAP-Customers
+                    </button>
+                    <button class="btn-so" onclick="showSection('so-samples')">
+                        ⚙️ Auto SO Samples Create
+                    </button>
+		                <button class="btn-tcodes" onclick="showSection('sap-t-codes')">
+                        📋 SAP-T-Codes List
+                    </button>
+                </div>
 
-<p>SAP T-Codes List</p>
+                <section id="customers-section">
+                    <h2 class="section-title">Customer Resource Allocation</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Customer</th>
+                                <th>Development</th>
+                                <th>Bulk</th>
+                                <th>Procurement</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>SAP - LBI</td>
+                                <td>Samudi</td>
+                                <td>Gihan</td>
+                                <td>Rajindra</td>
+                            </tr>
+                            <tr>
+                                <td>SAP - VS Intimates</td>
+                                <td>Gayani</td>
+                                <td>Tachini / Rachal</td>
+                                <td>Madusanka</td>
+                            </tr>
+                            <tr>
+                                <td>SAP - VS Active</td>
+                                <td></td>
+                                <td>Randima</td>
+                                <td>Madusanka</td>
+                            </tr>
+                            <tr>
+                                <td>SAP - Skims</td>
+                                <td>Ziana</td>
+                                <td>Kalpa</td>
+                                <td>Rajindra</td>
+                            </tr>
+                            <tr>
+                                <td>SAP - AERIE</td>
+                                <td>Madawa</td>
+                                <td>Lasitha</td>
+                                <td>Sapumal</td>
+                            </tr>
+                            <tr>
+                                <td>SAP - Under Armour</td>
+                                <td>Madawa</td>
+                                <td>Lasitha</td>
+                                <td>Sapumal</td>
+                            </tr>
+                            <tr>
+                                <td>SAP - Tech Style</td>
+                                <td>Shanaka</td>
+                                <td>Janani / Gaveshika</td>
+                                <td>Sapumal</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
 
-<P>This will be available soon...</P>
+                <section id="so-samples-section">
+                    <h2 class="section-title">Excel Sample Requirements Processor</h2>
+                    <p style="text-align: center;">Process your Excel sample data with proper formatting and blank lines</p>
+                    
+                    <div style="text-align: center; margin: 20px 0;">
+                        <h3>Upload Your Excel File</h3>
+                        <p>Select AOQ chart file to process the sample requirements</p>
+                        <input type="file" id="fileInput" class="file-input" accept=".xlsx, .xls">
+                        <div>
+                            <button onclick="processFile()" class="btn"><i class="fas fa-cogs"></i> Process File</button>
+                            <button onclick="resetPage()" class="btn btn-secondary"><i class="fas fa-redo"></i> Reset</button>
+                        </div>
+                    </div>
+                    
+                    <div class="instructions">
+                        <h3><i class="fas fa-info-circle"></i> How to use this tool</h3>
+                        <ul>
+                            <li>Click "Choose File" and select your Excel file with sample requirements</li>
+                            <li>Click "Process File" to extract and format the sample requirements data</li>
+                            <li>View the processed data in the table below with proper blank lines for readability</li>
+                            <li>Dates are formatted as YYYY/MM/DD and displayed in the first row of each sample set</li>
+                            <li>Use the "Download Processed Data" button to save the results as an Excel file</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="notification">
+                        <i class="fas fa-lightbulb"></i> Remember: Blank rows are added between sample groups for better readability.
+                    </div>
+                    
+                    <div class="summary">
+                        <div class="summary-card">
+                            <h3><i class="fas fa-cubes"></i> Total Samples</h3>
+                            <p id="totalSamples">0</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3><i class="fas fa-palette"></i> Unique Colors</h3>
+                            <p id="totalColors">0</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3><i class="fas fa-tags"></i> Sample Types</h3>
+                            <p id="sampleTypes">0</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3><i class="fas fa-ruler"></i> Size Variants</h3>
+                            <p id="sizeVariants">0</p>
+                        </div>
+                    </div>
+                    
+                    <h2><i class="fas fa-table"></i> Processed Sample Requirements</h2>
+                    <div style="overflow-x: auto; margin: 25px 0; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);">
+                        <table id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th>Order Reasons</th>
+                                    <th>SAP Color</th>
+                                    <th>SAP Size</th>
+                                    <th>SAP Color Size Grid</th>
+                                    <th>Quantity</th>
+                                    <th>Required Delivery Date</th>
+                                    <th>Material Available Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="7" style="text-align: center; padding: 30px;">
+                                        Upload an Excel file to process sample requirements data
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <button onclick="exportToExcel()" class="btn"><i class="fas fa-download"></i> Download Processed Data</button>
+                    </div>
+                    <p style="align-items: center;">You can download the processed data in Excel format.</p>
+                </section>
+	
+                <section id="sap-t-codes-section">
+                    <h2 class="section-title">SAP T-Codes List</h2>
+                    <p style="text-align: center;">This will be available soon...</p>
+                </section>
+            </div>
+        </main>
+    </div>
+
     <footer>
-        
+        <p>SAP Management Dashboard © 2023 | Designed for efficiency and clarity</p>
     </footer>
+
+    <script>
+        // Store processed data for export
+        let processedData = [];
+        
+        // Show/hide sections
+        function showSection(sectionId) {
+            // Hide all sections
+            document.getElementById('customers-section').style.display = 'none';
+            document.getElementById('so-samples-section').style.display = 'none';
+            document.getElementById('sap-t-codes-section').style.display = 'none';
+            
+            // Show selected section
+            if (sectionId === 'customers') {
+                document.getElementById('customers-section').style.display = 'block';
+            } else if (sectionId === 'so-samples') {
+                document.getElementById('so-samples-section').style.display = 'block';
+            } else if (sectionId === 'sap-t-codes') {
+                document.getElementById('sap-t-codes-section').style.display = 'block';
+            }
+        }
+        
+        // Initialize to show customers section
+        showSection('customers');
+
+        function processFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select an Excel file first.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                
+                // Find the "Sample Req." sheet
+                const sheetName = workbook.SheetNames.find(name => 
+                    name.toLowerCase().includes('sample req'));
+                
+                if (!sheetName) {
+                    alert('Could not find "Sample Req." sheet in the Excel file.');
+                    return;
+                }
+                
+                const worksheet = workbook.Sheets[sheetName];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                
+                // Process the data for display
+                processData(jsonData);
+            };
+            
+            reader.readAsArrayBuffer(file);
+        }
+        
+        function processData(data) {
+            // Find the header row
+            const headerRowIndex = data.findIndex(row => 
+                row.length > 0 && row[0] === 'Partner function');
+            
+            if (headerRowIndex === -1) {
+                alert('Could not find the data table in the sheet.');
+                return;
+            }
+            
+            const headers = data[headerRowIndex];
+            const dataRows = data.slice(headerRowIndex + 1);
+            
+            const tableBody = document.querySelector('#dataTable tbody');
+            tableBody.innerHTML = '';
+            
+            let totalSamples = 0;
+            const colors = new Set();
+            const sampleTypes = new Set();
+            const sizes = new Set();
+            
+            let currentGroup = null;
+            let firstInGroup = true;
+            
+            // Reset processed data
+            processedData = [];
+            
+            dataRows.forEach(row => {
+                if (row.length < 14) return; // Skip incomplete rows
+                
+                // Format order reason as 3-digit with leading zeros
+                const orderReasons = row[1] ? String(row[1]).padStart(3, '0') : '';
+                const sapColor = row[4] || '';
+                const quantityPcs = row[5] || 0;
+                const cpo = row[6] || '';
+                const requiredDate = formatDateToYYYYMMDD(row[8]);
+                const materialDate = formatDateToYYYYMMDD(row[9]);
+                
+                // Extract size quantities (columns K-N: 34B, 36C, 36D2, 38D3)
+                const sizeData = [
+                    { name: '34B', quantity: row[10] || 0 },
+                    { name: '36C', quantity: row[11] || 0 },
+                    { name: '36D2', quantity: row[12] || 0 },
+                    { name: '38D3', quantity: row[13] || 0 }
+                ];
+                
+                // Check if we're starting a new group
+                const groupKey = `${orderReasons}-${sapColor}-${cpo}`;
+                if (groupKey !== currentGroup) {
+                    // Add a blank row between groups (except before the first group)
+                    if (currentGroup !== null) {
+                        const blankRow = document.createElement('tr');
+                        blankRow.className = 'blank-row';
+                        blankRow.innerHTML = '<td colspan="7"></td>';
+                        tableBody.appendChild(blankRow);
+                        
+                        // Add blank row to processed data
+                        processedData.push({ isBlank: true });
+                    }
+                    
+                    currentGroup = groupKey;
+                    firstInGroup = true;
+                    
+                    // Add to summary counts
+                    if (sapColor) colors.add(sapColor);
+                    if (cpo) sampleTypes.add(cpo);
+                }
+                
+                // Create rows for each size that has a quantity
+                sizeData.forEach(size => {
+                    if (size.quantity > 0) {
+                        totalSamples += parseInt(size.quantity);
+                        sizes.add(size.name);
+                        
+                        const tr = document.createElement('tr');
+                        
+                        // Only show dates in the first row of each group
+                        const displayRequiredDate = firstInGroup ? requiredDate : '';
+                        const displayMaterialDate = firstInGroup ? materialDate : '';
+                        
+                        tr.innerHTML = `
+                            <td>${firstInGroup ? orderReasons : ''}</td>
+                            <td>${firstInGroup ? sapColor : ''}</td>
+                            <td>${size.name}</td>
+                            <td>${sapColor}${size.name}</td>
+                            <td>${size.quantity}</td>
+                            <td class="date-cell">${displayRequiredDate}</td>
+                            <td class="date-cell">${displayMaterialDate}</td>
+                        `;
+                        
+                        tableBody.appendChild(tr);
+                        
+                        // Store data for export
+                        processedData.push({
+                            orderReasons: firstInGroup ? orderReasons : '',
+                            sapColor: firstInGroup ? sapColor : '',
+                            sapSize: size.name,
+                            colorSizeGrid: `${sapColor}${size.name}`,
+                            quantity: size.quantity,
+                            requiredDate: displayRequiredDate,
+                            materialDate: displayMaterialDate,
+                            isBlank: false
+                        });
+                        
+                        firstInGroup = false;
+                    }
+                });
+            });
+            
+            // Update summary cards
+            document.getElementById('totalSamples').textContent = totalSamples;
+            document.getElementById('totalColors').textContent = colors.size;
+            document.getElementById('sampleTypes').textContent = sampleTypes.size;
+            document.getElementById('sizeVariants').textContent = sizes.size;
+        }
+        
+        function formatDateToYYYYMMDD(dateValue) {
+            if (!dateValue) return '';
+            
+            let date;
+            
+            // Handle Excel date format (if it's a serial number)
+            if (typeof dateValue === 'number') {
+                date = new Date((dateValue - 25569) * 86400 * 1000);
+            } else if (typeof dateValue === 'string') {
+                // Try to parse the string date
+                date = new Date(dateValue);
+                
+                // If invalid, try to extract date parts
+                if (isNaN(date.getTime())) {
+                    const dateMatch = dateValue.match(/(\d{4})-(\d{2})-(\d{2})/);
+                    if (dateMatch) {
+                        date = new Date(dateMatch[1], dateMatch[2] - 1, dateMatch[3]);
+                    } else {
+                        // Try to parse other formats like MM/DD/YYYY
+                        const parts = dateValue.split('/');
+                        if (parts.length === 3) {
+                            date = new Date(parts[2], parts[0] - 1, parts[1]);
+                        }
+                    }
+                }
+            } else {
+                return '';
+            }
+            
+            // Format as YYYY/MM/DD with leading zeros
+            if (!isNaN(date.getTime())) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}/${month}/${day}`;
+            }
+            
+            return '';
+        }
+        
+        function exportToExcel() {
+            if (processedData.length === 0) {
+                alert('No data to export. Please process a file first.');
+                return;
+            }
+            
+            // Create a new workbook
+            const wb = XLSX.utils.book_new();
+            
+            // Prepare data for export
+            const exportData = [];
+            
+            // Add headers
+            exportData.push([
+                'Order Reasons', 
+                'SAP Color', 
+                'SAP Size', 
+                'SAP Color Size Grid', 
+                'Quantity', 
+                'Required Delivery Date', 
+                'Material Available Date'
+            ]);
+            
+            // Add data rows
+            processedData.forEach(item => {
+                if (item.isBlank) {
+                    // Add empty row for blank rows
+                    exportData.push(['', '', '', '', '', '', '']);
+                } else {
+                    exportData.push([
+                        item.orderReasons,
+                        item.sapColor,
+                        item.sapSize,
+                        item.colorSizeGrid,
+                        item.quantity,
+                        item.requiredDate,
+                        item.materialDate
+                    ]);
+                }
+            });
+            
+            // Create worksheet from data
+            const ws = XLSX.utils.aoa_to_sheet(exportData);
+            
+            // Add worksheet to workbook
+            XLSX.utils.book_append_sheet(wb, ws, "Processed Samples");
+            
+            // Export the workbook
+            XLSX.writeFile(wb, "Processed_Sample_Requirements.xlsx");
+        }
+        
+        function resetPage() {
+            document.getElementById('fileInput').value = '';
+            const tableBody = document.querySelector('#dataTable tbody');
+            tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 30px;">Upload an Excel file to process sample requirements data</td></tr>';
+            
+            // Reset summary cards
+            document.getElementById('totalSamples').textContent = '0';
+            document.getElementById('totalColors').textContent = '0';
+            document.getElementById('sampleTypes').textContent = '0';
+            document.getElementById('sizeVariants').textContent = '0';
+            
+            // Reset processed data
+            processedData = [];
+        }
+    </script>
 </body>
 </html>
