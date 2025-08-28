@@ -10,7 +10,7 @@
 
     <style>
         :root {
-    --primary: #4CAF50;
+    --primary: #10b981;
     --secondary: #145f18;
     --success: #4cc9f0;
     --danger: #f72585;
@@ -730,7 +730,7 @@ footer {
                     if (!dateIsLessOrEqual(dates.orderInitiationDate, dates.pcdDate)) {
                         errors.push({
                             row: rowNumber,
-                            message: `Order Initiation Date (${formatExcelDate(dates.orderInitiationDate)}) must be <= PCD Date (${formatExcelDate(dates.pcdDate)})`,
+                            message: `Order Initiation Date (${formatExcelDate(dates.orderInitiationDate)}) must be less than or equal to PCD Date (${formatExcelDate(dates.pcdDate)})`,
                             type: 'order-initiation-after-pcd',
                             dates: dates,
                             columns: dateColumns
@@ -743,7 +743,7 @@ footer {
                     if (!dateIsLessOrEqual(dates.buyerOrderDate, dates.pcdDate)) {
                         errors.push({
                             row: rowNumber,
-                            message: `Buyer Order Date (${formatExcelDate(dates.buyerOrderDate)}) must be <= PCD Date (${formatExcelDate(dates.pcdDate)})`,
+                            message: `Buyer Order Date (${formatExcelDate(dates.buyerOrderDate)}) must be less than or equal to PCD Date (${formatExcelDate(dates.pcdDate)})`,
                             type: 'buyer-order-after-pcd',
                             dates: dates,
                             columns: dateColumns
@@ -756,7 +756,7 @@ footer {
                     if (!dateIsLessOrEqual(dates.pcdDate, dates.ocDeliveryDate)) {
                         errors.push({
                             row: rowNumber,
-                            message: `PCD Date (${formatExcelDate(dates.pcdDate)}) must be <= OC Delivery Date (${formatExcelDate(dates.ocDeliveryDate)})`,
+                            message: `PCD Date (${formatExcelDate(dates.pcdDate)}) must be less than or equal to OC Delivery Date (${formatExcelDate(dates.ocDeliveryDate)})`,
                             type: 'pcd-after-oc-delivery',
                             dates: dates,
                             columns: dateColumns
@@ -769,7 +769,7 @@ footer {
                     if (!dateIsLessOrEqual(dates.ocDeliveryDate, dates.gacDate)) {
                         errors.push({
                             row: rowNumber,
-                            message: `OC Delivery Date (${formatExcelDate(dates.ocDeliveryDate)}) must be <= GAC Date (${formatExcelDate(dates.gacDate)})`,
+                            message: `OC Delivery Date (${formatExcelDate(dates.ocDeliveryDate)}) must be less than or equal to GAC Date (${formatExcelDate(dates.gacDate)})`,
                             type: 'oc-delivery-after-gac',
                             dates: dates,
                             columns: dateColumns
@@ -782,7 +782,7 @@ footer {
                     if (!dateIsLessOrEqual(dates.gacDate, dates.buyerDeliveryDate)) {
                         errors.push({
                             row: rowNumber,
-                            message: `GAC Date (${formatExcelDate(dates.gacDate)}) must be <= Buyer Delivery Date (${formatExcelDate(dates.buyerDeliveryDate)})`,
+                            message: `GAC Date (${formatExcelDate(dates.gacDate)}) must be less than or equal to Buyer Delivery Date (${formatExcelDate(dates.buyerDeliveryDate)})`,
                             type: 'gac-after-buyer-delivery',
                             dates: dates,
                             columns: dateColumns

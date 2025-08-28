@@ -403,7 +403,6 @@
         <div class="header-content">
             <div class="logo">
                 <i class="fas fa-home"></i>
-                <span>COE Home</span>
             </div>
             <nav>
                 <ul class="nav-menu">
@@ -472,7 +471,7 @@
                         CLOVER VS - INTIMATES
                         <div class="status-indicator"></div>
                     </a>
-                    <a href="#" class="customer-btn disabled">
+                    <a href="#" class="customer-btn" data-modal="skims">
                         CLOVER SKIMS
                         <div class="status-indicator"></div>
                     </a>
@@ -642,7 +641,8 @@
                     'decathlon': 'decathlon.html',
                     'seamless-kuhl': 'seamless-kuhl.html',
                     'seamless-cyc': 'seamless-cyc.html',
-                    'seamless-ardent': 'seamless-ardent.html'
+                    'seamless-ardent': 'seamless-ardent.html',
+                    'skims': 'skims.html'
                 };
                 
                 modalIframe.src = fileMap[modalId] || '';
