@@ -1,13 +1,16 @@
 {
-  "globalCustomers": [
+  "Global Customers": [
     { "id": "lululemon", "name": "LULULEMON", "file": "lululemon.html", "status": "active" },
     { "id": "decathlon", "name": "DECATHLON", "file": "decathlon.html", "status": "active" },
-    { "id": "old-navy", "name": "OLD NAVY", "file": "", "status": "disabled" }
+    { "id": "old-navy", "name": "OLD NAVY", "file": "old-navy.html", "status": "disabled" }
   ],
-  "seamlessCustomers": [
-    { "id": "seamless-gap", "name": "SEAMLESS GAP", "file": "seamless-gap.html", "status": "active" }
+  "Seamless Customers": [
+    { "id": "seamless-gap", "name": "SEAMLESS GAP", "file": "seamless-gap.html", "status": "active" },
+    { "id": "seamless-aritzia", "name": "SEAMLESS ARITZIA", "file": "seamless-aritzia.html", "status": "disabled" }
   ],
-  "ebAccounts": [
-    { "id": "amazon", "name": "AMAZON", "file": "amazon.html", "status": "active" }
+  "EB Accounts": [
+    { "id": "amazon", "name": "AMAZON", "file": "amazon.html", "status": "active" },
+    { "id": "aritzia", "name": "ARITZIA", "file": "aritzia.html", "status": "active" },
+    { "id": "urban", "name": "URBAN OUTFITTERS", "file": "urban.html", "status": "active" }
   ]
 }
