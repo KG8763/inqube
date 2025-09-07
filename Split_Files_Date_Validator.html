@@ -439,6 +439,16 @@ footer {
 .close:hover {
     color: red;
 }
+
+ .instructions {
+            background: #c9fac4;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+            font-size: 16px;
+            line-height: 1.8;
+            border-left: 4px solid #1bc015d7;
+        }
     </style>
 </head>
 
@@ -468,6 +478,23 @@ footer {
                     <button id="correctBtn" class="btn btn-success hidden">Correct Dates</button>
                     <button id="downloadBtn" class="btn btn-danger hidden">Download Corrected Files</button>
                 </div>
+
+                
+            <div class="instructions" >
+    <h3><i class="fas fa-info-circle"></i> How to use this tool</h3>
+    <ul>
+        <li>Upload all the DOC split files.</li>
+        <li>Click <b>"Validate Files"</b> to check date consistency.</li>
+        <li>View the validation results for each split file.</li>
+        <li>Any date mismatches will be shown under each file, row by row.</li>
+        <li>Click <b>"Correct Dates"</b> to fix the mismatches.</li>
+        <li>The corrected dates will then appear under each file, row by row.</li>
+        <li>Click <b>"Download Corrected Files"</b> to save the updated files.</li>
+        <li>You can also re-upload the corrected DOC split files if needed.</li>
+    </ul>
+</div>
+
+
             </div>
 
             <div class="card">
