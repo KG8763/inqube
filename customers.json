@@ -1,0 +1,13 @@
+{
+  "globalCustomers": [
+    { "id": "lululemon", "name": "LULULEMON", "file": "lululemon.html", "status": "active" },
+    { "id": "decathlon", "name": "DECATHLON", "file": "decathlon.html", "status": "active" },
+    { "id": "old-navy", "name": "OLD NAVY", "file": "", "status": "disabled" }
+  ],
+  "seamlessCustomers": [
+    { "id": "seamless-gap", "name": "SEAMLESS GAP", "file": "seamless-gap.html", "status": "active" }
+  ],
+  "ebAccounts": [
+    { "id": "amazon", "name": "AMAZON", "file": "amazon.html", "status": "active" }
+  ]
+}
