@@ -1,20 +1,10 @@
-<!-- sop.html -->
-<div class="sop-page">
-    <h2>SOP Guidelines</h2>
-    <p>Welcome to the Standard Operating Procedures (SOP) section. Here you can access all the SOP documents and instructions.</p>
-    
-    <ul>
-        <li><a href="SOP_Fabric_Inspection.pdf" target="_blank">Fabric Inspection SOP</a></li>
-        <li><a href="SOP_Stitching_Process.pdf" target="_blank">Stitching Process SOP</a></li>
-        <li><a href="SOP_Packing_Guidelines.pdf" target="_blank">Packing Guidelines SOP</a></li>
-        <li><a href="SOP_Quality_Checklist.pdf" target="_blank">Quality Checklist SOP</a></li>
-        <li><a href="SOP_Reporting_Format.pdf" target="_blank">Reporting Format SOP</a></li>
-    </ul>
+<html>
 
-    <p>Click on any SOP link above to view or download the document. Make sure to follow the latest guidelines for all operations.</p>
-</div>
-
-<style>
+<head>
+    <title>
+        SOP
+    </title>
+    <style>
     .sop-page{
         background: rgba(255,255,255,0.9);
         padding: 2rem;
@@ -55,3 +45,38 @@
         text-decoration: underline;
     }
 </style>
+
+</head>
+
+<body>
+
+    <div id="header-placeholder"></div>
+
+<script>
+fetch('header.html')
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+    })
+    .catch(err => console.error('Failed to load header:', err));
+</script>
+<!-- sop.html -->
+<div class="sop-page">
+    <h2>SOP Guidelines</h2>
+    <p>Welcome to the Standard Operating Procedures (SOP) section. Here you can access all the SOP documents and instructions.</p>
+    
+    <ul>
+        <li><a href="SOP_Fabric_Inspection.pdf" target="_blank">Fabric Inspection SOP</a></li>
+        <li><a href="SOP_Stitching_Process.pdf" target="_blank">Stitching Process SOP</a></li>
+        <li><a href="SOP_Packing_Guidelines.pdf" target="_blank">Packing Guidelines SOP</a></li>
+        <li><a href="SOP_Quality_Checklist.pdf" target="_blank">Quality Checklist SOP</a></li>
+        <li><a href="SOP_Reporting_Format.pdf" target="_blank">Reporting Format SOP</a></li>
+    </ul>
+
+    <p>Click on any SOP link above to view or download the document. Make sure to follow the latest guidelines for all operations.</p>
+</div>
+</body>
+
+
+
+</html>

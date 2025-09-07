@@ -354,16 +354,7 @@
 </head>
 
 <body>
-    <div id="header-placeholder"></div>
 
-<script>
-fetch('header.html')
-    .then(response => response.text())
-    .then(data => {
-        document.getElementById('header-placeholder').innerHTML = data;
-    })
-    .catch(err => console.error('Failed to load header:', err));
-</script>
 
     <div class="container">
         <main>
@@ -447,10 +438,10 @@ fetch('header.html')
                         <p>Select AOQ chart file to process the sample requirements</p>
                         <input type="file" id="fileInput" class="file-input" accept=".xlsx, .xls">
                         <div>
-                            <button onclick="processFile()" class="btn"><i class="fas fa-cogs"></i> Process
+                            <button onclick="processFile()" class="btn"><i class="fas fa-cogs"></i> &nbsp;Process
                                 File</button>
                             <button onclick="resetPage()" class="btn btn-secondary"><i class="fas fa-redo"></i>
-                                Reset</button>
+                                &nbsp;Reset</button>
                         </div>
                     </div>
 
@@ -517,7 +508,7 @@ fetch('header.html')
                     </div>
 
                     <div style="text-align: center; margin: 30px 0;">
-                        <button onclick="exportToExcel()" class="btn"><i class="fas fa-download"></i> Download Processed
+                        <button onclick="exportToExcel()" class="btn"><i class="fas fa-download"></i> &nbsp; Download Processed
                             Data</button>
                     </div>
                     <div style="text-align: center; margin: 30px 0;">
@@ -640,7 +631,9 @@ fetch('header.html')
                 const requiredDate = formatDateToYYYYMMDD(row[8]);
                 const materialDate = formatDateToYYYYMMDD(row[9]);
 
-                /*
+                /* This is the previous implementation, 
+                    before switch the Dynamically extract sizes starting from column index 10
+
                 // Extract size quantities (columns K–N: 34B, 36C, 36D2, 38D3)
                 const sizeData = [
                     { name: '34B', quantity: row[10] || 0 },
