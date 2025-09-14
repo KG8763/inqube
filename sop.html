@@ -7,7 +7,6 @@
     <link rel="icon" href="free-30-instagram-stories-icons46_122593.ico" type="image/ico">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <!-- Add in <head> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -20,36 +19,12 @@
             </div>
             <nav>
                 <ul class="nav-menu">
-                    <li class="nav-item">
-                        <a href="index.html" class="nav-link">
-                            <i class="fa-solid fa-file-lines"></i> MRL-Directions
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="sap.html" class="nav-link">
-                            <i class="fas fa-chart-bar"></i> SAP
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="https://inqube.sharepoint.com/sites/COE" target="_blank" class="nav-link">
-                            <i class="fas fa-users"></i> Huddle
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link">
-                            <i class="fas fa-building"></i> Customers
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="Split_Files_Date_Validator.html" class="nav-link">
-                           <i class="fa-solid fa-explosion"></i> DCL-Split
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="sop.html" class="nav-link">
-                            <i class="fas fa-book"></i> SOP
-                        </a>
-                    </li>
+                    <li class="nav-item"><a href="index.html" class="nav-link"><i class="fa-solid fa-file-lines"></i> MRL-Directions</a></li>
+                    <li class="nav-item"><a href="sap.html" class="nav-link"><i class="fas fa-chart-bar"></i> SAP</a></li>
+                    <li class="nav-item"><a href="https://inqube.sharepoint.com/sites/COE" target="_blank" class="nav-link"><i class="fas fa-users"></i> Huddle</a></li>
+                    <li class="nav-item"><a href="" class="nav-link"><i class="fas fa-building"></i> Customers</a></li>
+                    <li class="nav-item"><a href="Split_Files_Date_Validator.html" class="nav-link"><i class="fa-solid fa-explosion"></i> DCL-Split</a></li>
+                    <li class="nav-item"><a href="sop.html" class="nav-link"><i class="fas fa-book"></i> SOP</a></li>
                 </ul>
             </nav>
         </div>
@@ -59,42 +34,38 @@
     <main class="main-content">
         <div class="dashboard-title">
             <h1>SOP Files Repository</h1>
-            <p>This will be available soon...</p>
+            <p>Click a file to view</p>
         </div>
 
         <div class="categories-grid">
             <!-- WFX ERP - BOM -->
             <div class="category-card normal-customers">
                 <div class="category-title">
-                    <div class="category-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
+                    <div class="category-icon"><i class="fas fa-users"></i></div>
                     <h2>WFX ERP - BOM</h2>
                 </div>
                 <div class="customers-grid">
                     <a href="#" class="customer-btn" 
-                    data-title="Cost Sheet Creation" 
-                    data-docx="SOP_Files/cost-sheet-creation.docx" 
-                    data-pdf="SOP_Files/cost-sheet-creation.pdf">
-                    Cost Sheet Creation
-                    <div class="status-indicator"></div>
-</a>
+                       data-title="Cost Sheet Creation" 
+                       data-docx="SOP_Files/cost-sheet-creation.docx" 
+                       data-pdf="SOP_Files/cost-sheet-creation.pdf">
+                        Cost Sheet Creation
+                        <div class="status-indicator"></div>
+                    </a>
                 </div>
             </div>
 
             <!-- WFX ERP - OC -->
             <div class="category-card seamless-customers">
                 <div class="category-title">
-                    <div class="category-icon">
-                        <i class="fas fa-layer-group"></i>
-                    </div>
+                    <div class="category-icon"><i class="fas fa-layer-group"></i></div>
                     <h2>WFX ERP - OC</h2>
                 </div>
                 <div class="customers-grid">
                     <a href="#" class="customer-btn" 
                        data-title="OC Creation" 
-                       data-docx="oc-creation.docx" 
-                       data-pdf="oc-creation.pdf">
+                       data-docx="SOP_Files/oc-creation.docx" 
+                       data-pdf="SOP_Files/oc-creation.pdf">
                         OC Creation
                         <div class="status-indicator"></div>
                     </a>
@@ -104,16 +75,14 @@
             <!-- SAP ERP -->
             <div class="category-card eb-accounts">
                 <div class="category-title">
-                    <div class="category-icon">
-                        <i class="fas fa-star"></i>
-                    </div>
+                    <div class="category-icon"><i class="fas fa-star"></i></div>
                     <h2>SAP ERP</h2>
                 </div>
                 <div class="customers-grid">
                     <a href="#" class="customer-btn" 
                        data-title="SAP - BOM Copy" 
-                       data-docx="sap-bom-copy.docx" 
-                       data-pdf="sap-bom-copy.pdf">
+                       data-docx="SOP_Files/sap-bom-copy.docx" 
+                       data-pdf="SOP_Files/sap-bom-copy.pdf">
                         SAP - BOM Copy
                         <div class="status-indicator"></div>
                     </a>
@@ -127,9 +96,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">SOP File</h3>
-                <button class="close-btn" onclick="closeModal()">
-                    <i class="fas fa-times"></i>
-                </button>
+                <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
             </div>
             <div class="modal-body">
                 <iframe class="modal-iframe" src="" frameborder="0"></iframe>
@@ -161,15 +128,17 @@
             downloadDocx.href = docxFile;
             downloadPdf.href = pdfFile;
 
-            // Try to load the PDF into iframe
+            // Try to load the PDF first
             try {
                 const res = await fetch(pdfFile);
                 if (res.ok) {
                     modalIframe.src = pdfFile;
                 } else {
+                    console.warn("PDF not found, trying DOCX:", pdfFile);
                     await convertDocxToPdf(docxFile, modalIframe);
                 }
-            } catch {
+            } catch (err) {
+                console.warn("Error loading PDF, fallback to DOCX:", err);
                 await convertDocxToPdf(docxFile, modalIframe);
             }
 
@@ -212,9 +181,8 @@
             const blob = await response.blob();
             console.log("Fetched file type:", blob.type, "size:", blob.size);
 
-            // Check if file is really a docx (zip)
-            if (blob.type !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-                throw new Error("Invalid file type fetched instead of DOCX. Got: " + blob.type);
+            if (!blob.type.includes("wordprocessingml")) {
+                throw new Error("Expected DOCX, got: " + blob.type);
             }
 
             const arrayBuffer = await blob.arrayBuffer();
@@ -228,7 +196,7 @@
                 callback: function (pdf) {
                     const blobUrl = pdf.output("bloburl");
                     iframe.src = blobUrl;
-                    downloadPdf.href = blobUrl; // update download link
+                    downloadPdf.href = blobUrl;
                 },
                 x: 40,
                 y: 40,
@@ -238,7 +206,6 @@
             console.error(err);
         }
     }
-</script>
-
+    </script>
 </body>
 </html>
