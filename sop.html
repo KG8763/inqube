@@ -142,89 +142,103 @@
     </div>
 
     <script>
-        const modal = document.getElementById('customerModal');
-        const modalTitle = document.querySelector('.modal-title');
-        const modalIframe = document.querySelector('.modal-iframe');
-        const downloadDocx = document.getElementById('downloadDocx');
-        const downloadPdf = document.getElementById('downloadPdf');
+    const modal = document.getElementById('customerModal');
+    const modalTitle = document.querySelector('.modal-title');
+    const modalIframe = document.querySelector('.modal-iframe');
+    const downloadDocx = document.getElementById('downloadDocx');
+    const downloadPdf = document.getElementById('downloadPdf');
 
-        // Handle click
-        document.querySelectorAll('.customer-btn').forEach(btn => {
-            btn.addEventListener('click', async e => {
-                e.preventDefault();
+    // Handle click
+    document.querySelectorAll('.customer-btn').forEach(btn => {
+        btn.addEventListener('click', async e => {
+            e.preventDefault();
 
-                const title = btn.dataset.title;
-                const docxFile = btn.dataset.docx;
-                const pdfFile = btn.dataset.pdf;
+            const title = btn.dataset.title;
+            const docxFile = btn.dataset.docx;
+            const pdfFile = btn.dataset.pdf;
 
-                modalTitle.textContent = title;
-                downloadDocx.href = docxFile;
-                downloadPdf.href = pdfFile;
+            modalTitle.textContent = title;
+            downloadDocx.href = docxFile;
+            downloadPdf.href = pdfFile;
 
-                // Try to load the PDF into iframe
-                try {
-                    const res = await fetch(pdfFile);
-                    if (res.ok) {
-                        modalIframe.src = pdfFile;
-                    } else {
-                        await convertDocxToPdf(docxFile, modalIframe);
-                    }
-                } catch {
+            // Try to load the PDF into iframe
+            try {
+                const res = await fetch(pdfFile);
+                if (res.ok) {
+                    modalIframe.src = pdfFile;
+                } else {
                     await convertDocxToPdf(docxFile, modalIframe);
                 }
+            } catch {
+                await convertDocxToPdf(docxFile, modalIframe);
+            }
 
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    // Close modal
+    function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+        setTimeout(() => {
+            modalIframe.src = "";
+        }, 300);
+    }
+
+    // Click outside to close
+    modal.addEventListener('click', e => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Escape to close
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    // Convert DOCX -> PDF and show in iframe
+    async function convertDocxToPdf(docxFile, iframe) {
+        try {
+            const response = await fetch(docxFile);
+            if (!response.ok) {
+                throw new Error("DOCX file not found: " + response.status);
+            }
+
+            const blob = await response.blob();
+            console.log("Fetched file type:", blob.type, "size:", blob.size);
+
+            // Check if file is really a docx (zip)
+            if (blob.type !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+                throw new Error("Invalid file type fetched instead of DOCX. Got: " + blob.type);
+            }
+
+            const arrayBuffer = await blob.arrayBuffer();
+            const result = await window.mammoth.convertToHtml({ arrayBuffer });
+            const htmlContent = result.value;
+
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF("p", "pt", "a4");
+
+            await pdf.html(htmlContent, {
+                callback: function (pdf) {
+                    const blobUrl = pdf.output("bloburl");
+                    iframe.src = blobUrl;
+                    downloadPdf.href = blobUrl; // update download link
+                },
+                x: 40,
+                y: 40,
             });
-        });
-
-        // Close modal
-        function closeModal() {
-            modal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-            setTimeout(() => {
-                modalIframe.src = "";
-            }, 300);
+        } catch (err) {
+            alert("Failed to generate PDF: " + err.message);
+            console.error(err);
         }
+    }
+</script>
 
-        // Click outside to close
-        modal.addEventListener('click', e => {
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
-
-        // Escape to close
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape' && modal.classList.contains('active')) {
-                closeModal();
-            }
-        });
-
-        // Convert DOCX -> PDF and show in iframe
-        async function convertDocxToPdf(docxFile, iframe) {
-            try {
-                const response = await fetch(docxFile);
-                const arrayBuffer = await response.arrayBuffer();
-                const result = await window.mammoth.convertToHtml({ arrayBuffer });
-                const htmlContent = result.value;
-
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF("p", "pt", "a4");
-
-                await pdf.html(htmlContent, {
-                    callback: function (pdf) {
-                        const blobUrl = pdf.output("bloburl");
-                        iframe.src = blobUrl;
-                        downloadPdf.href = blobUrl; // update download link
-                    },
-                    x: 40,
-                    y: 40,
-                });
-            } catch (err) {
-                alert("Failed to generate PDF: " + err.message);
-            }
-        }
-    </script>
 </body>
 </html>
