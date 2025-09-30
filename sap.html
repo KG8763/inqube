@@ -4,12 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAP Resources </title>
+    <title>SAP Resources</title>
     <link rel="icon" href="free-30-instagram-stories-icons46_122593.ico" type="image/ico">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
@@ -30,6 +28,59 @@
             font-size: 14px;
             min-height: 100vh;
             line-height: 1.6;
+        }
+
+        /* Header Styling */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #059669;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #334155;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #059669;
+        }
+
+        .nav-link i {
+            margin-right: 8px;
         }
 
         /* Container for content */
@@ -112,6 +163,30 @@
             box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
         }
 
+        .btn-so {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+
+        .btn-so:hover {
+            background: linear-gradient(135deg, #1d4ed8, #1e40af);
+        }
+
+        .btn-tcodes {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+
+        .btn-tcodes:hover {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+        }
+
+        .btn-fob-generator {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .btn-fob-generator:hover {
+            background: linear-gradient(135deg, #d97706, #b45309);
+        }
+
         /* Main Table Styling */
         table {
             width: 100%;
@@ -187,10 +262,11 @@
             text-align: center;
         }
 
-        /* Auto SO Samples Section */
+        /* Sections */
+        #customers-section,
         #so-samples-section,
-        #sap-t-codes-section {
-            display: none;
+        #sap-t-codes-section,
+        #color-size-level-fob-generator-section {
             margin-top: 30px;
             background: white;
             border-radius: 20px;
@@ -214,24 +290,6 @@
             outline: none;
             border-color: #10b981;
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
-        }
-
-        .btn-so {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            min-width: 250px;
-        }
-
-        .btn-so:hover {
-            background: linear-gradient(135deg, #1d4ed8, #1e40af);
-        }
-
-        .btn-tcodes {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-            min-width: 250px;
-        }
-
-        .btn-tcodes:hover {
-            background: linear-gradient(135deg, #7c3aed, #6d28d9);
         }
 
         .instructions {
@@ -325,8 +383,40 @@
             margin-right: 10px;
         }
 
+        /* Loading Spinner */
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #10b981;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
             .content-wrapper {
                 padding: 1rem;
             }
@@ -348,18 +438,26 @@
         }
 
         @media (max-width: 480px) {
-
             table th,
             table td {
                 padding: 6px 8px;
                 font-size: 0.75rem;
+            }
+
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            button {
+                width: 100%;
             }
         }
     </style>
 </head>
 
 <body>
- <!-- Header -->
+    <!-- Header -->
     <header class="header">
         <div class="header-content">
             <div class="logo">
@@ -378,7 +476,6 @@
         </div>
     </header>
 
-
     <div class="container">
         <main>
             <div class="content-wrapper">
@@ -391,6 +488,9 @@
                     </button>
                     <button class="btn-tcodes" onclick="showSection('sap-t-codes')">
                         📋 SAP-T-Codes List
+                    </button>
+                    <button class="btn-fob-generator" onclick="window.open('Color-Size-Level-SO-FOB-Generator.html', '_blank')">
+                        📊 Color-Size-Level SO FOB Chart Generator
                     </button>
                 </div>
 
@@ -454,7 +554,6 @@
 
                 <section id="so-samples-section">
                     <h2 class="section-title">Excel Sample Requirements Processor</h2>
-
 
                     <div style="text-align: center; margin: 20px 0;">
                         <h3>Upload Your Excel File</h3>
@@ -522,7 +621,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td colspan="7" style="text-align: center; padding: 30px;">
+                                    <td colspan="9" style="text-align: center; padding: 30px;">
                                         Upload an Excel file to process sample requirements data
                                     </td>
                                 </tr>
@@ -554,6 +653,7 @@
     <script>
         // Store processed data for export
         let processedData = [];
+        let uploadedFileName = "";  // global variable to store file name
 
         // Show/hide sections
         function showSection(sectionId) {
@@ -563,19 +663,11 @@
             document.getElementById('sap-t-codes-section').style.display = 'none';
 
             // Show selected section
-            if (sectionId === 'customers') {
-                document.getElementById('customers-section').style.display = 'block';
-            } else if (sectionId === 'so-samples') {
-                document.getElementById('so-samples-section').style.display = 'block';
-            } else if (sectionId === 'sap-t-codes') {
-                document.getElementById('sap-t-codes-section').style.display = 'block';
-            }
+            document.getElementById(sectionId + '-section').style.display = 'block';
         }
 
         // Initialize to show customers section
         showSection('customers');
-
-        let uploadedFileName = "";  // global variable to store file name
 
         function processFile() {
             const fileInput = document.getElementById('fileInput');
@@ -611,7 +703,6 @@
 
             reader.readAsArrayBuffer(file);
         }
-
 
         function processData(data) {
             // Find the header row
@@ -654,18 +745,6 @@
                 const requiredDate = formatDateToYYYYMMDD(row[8]);
                 const materialDate = formatDateToYYYYMMDD(row[9]);
 
-                /* This is the previous implementation, 
-                    before switch the Dynamically extract sizes starting from column index 10
-
-                // Extract size quantities (columns K–N: 34B, 36C, 36D2, 38D3)
-                const sizeData = [
-                    { name: '34B', quantity: row[10] || 0 },
-                    { name: '36C', quantity: row[11] || 0 },
-                    { name: '36D2', quantity: row[12] || 0 },
-                    { name: '38D3', quantity: row[13] || 0 }
-                ];
-        
-                */
                 // Dynamically extract sizes starting from column index 10
                 const sizeData = [];
                 for (let i = 10; i < headers.length; i++) {
@@ -675,7 +754,6 @@
                         sizeData.push({ name: sizeName, quantity });
                     }
                 }
-
 
                 // Check if we're starting a new group
                 const groupKey = `${orderReasons}-${sapColor}-${cpo}-${vpo}`;
@@ -747,7 +825,6 @@
             document.getElementById('sampleTypes').textContent = sampleTypes.size;
             document.getElementById('sizeVariants').textContent = sizes.size;
         }
-
 
         function formatDateToYYYYMMDD(dateValue) {
             if (!dateValue) return '';
@@ -843,7 +920,6 @@
             // Export the workbook
             const outputFileName = `Processed_Sample_Requirements_${uploadedFileName}.xlsx`;
             XLSX.writeFile(wb, outputFileName);
-
         }
 
         function resetPage() {
