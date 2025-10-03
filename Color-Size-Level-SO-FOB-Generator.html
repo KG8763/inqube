@@ -278,6 +278,7 @@
                         <th>Col.Cd.</th>
                         <th>Size</th>
                         <th>Size Desc.</th>
+                        <th>Condition Type</th>
                         <th>FOB Price</th>
                     </tr>
                 </thead>
@@ -514,8 +515,11 @@
                         }
                     }
                     
-                    const newRow = [salesOrder, soItem, orderReason, colorCode, size, sizeDesc, fobPrice];
+                    // Only add row if we have at least one essential field
+                    if (salesOrder || soItem || colorCode || size) {
+                    const newRow = [salesOrder, soItem, orderReason, colorCode, size, sizeDesc, "J3AP", fobPrice];
                     processedData.push(newRow);
+}
                 }
                 
                 debugText += `Matching Results:\n`;
@@ -548,6 +552,7 @@
                     <td>${row[4] || ''}</td>
                     <td>${row[5] || ''}</td>
                     <td>${row[6] || ''}</td>
+                    <td>${row[7] || ''}</td>
                 `;
                 previewTableBody.appendChild(tr);
             });
@@ -561,7 +566,7 @@
             
             try {
                 const wb = XLSX.utils.book_new();
-                const headers = ['Sales Order', 'SO Item', 'Order Reason', 'Col.Cd.', 'Size', 'Size Desc.', 'FOB Price'];
+                const headers = ['Sales Order', 'SO Item', 'Order Reason', 'Col.Cd.', 'Size', 'Size Desc.', 'Condition Type', 'FOB Price'];
                 const dataWithHeaders = [headers, ...processedData];
                 const ws = XLSX.utils.aoa_to_sheet(dataWithHeaders);
                 XLSX.utils.book_append_sheet(wb, ws, 'Updated FOB Data');
