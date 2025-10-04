@@ -4,12 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FOB Price Lookup Tool</title>
-     <link rel="icon" href="free-30-instagram-stories-icons46_122593.ico" type="image/ico">
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
     <style>
-        /* Your CSS styles here - same as before */
         * {
             margin: 0;
             padding: 0;
@@ -72,6 +69,14 @@
             margin-bottom: 1rem;
         }
 
+        .section-title {
+            text-align: center;
+            margin: 3rem 0 1.5rem 0;
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
         .two-column {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -112,6 +117,23 @@
             background-color: #27ae60;
         }
 
+        .validation-btn {
+            background-color: #f39c12;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            margin: 10px 5px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            font-weight: 600;
+        }
+
+        .validation-btn:hover {
+            background-color: #e67e22;
+        }
+
         button:disabled {
             background-color: #bdc3c7;
             cursor: not-allowed;
@@ -150,6 +172,14 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
         }
 
+        .validation-section {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -171,16 +201,11 @@
             font-weight: 600;
         }
 
-        .debug-info {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 15px 0;
-            font-family: monospace;
-            font-size: 12px;
-            max-height: 200px;
-            overflow-y: auto;
+        .section-divider {
+            border: none;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #10b981, transparent);
+            margin: 2rem 0;
         }
 
         @media (max-width: 768px) {
@@ -189,7 +214,6 @@
             }
         }
     </style>
-    
 </head>
 <body>
     <div class="header">
@@ -203,17 +227,58 @@
 
     <div class="main-content">
         <div class="dashboard-title">
-            <h1>FOB Price Lookup Tool</h1>
-            <p>Upload your FOB Grid and SO Export Excel files to automatically populate FOB prices</p>
+            <h1>SO FOB Price Lookup & Validate</h1>
+            <p>Upload your FOB Grid and SO Export Excel files to automatically populate FOB prices & validate.</p>
         </div>
+
+        <!-- SECTION 1: FOB UPDATED EXCEL -->
+        <div class="section-title">Section 1: Generate FOB Updated Excel</div>
         
         <div class="two-column">
             <div class="upload-section">
                 <h2>Step 1: Upload FOB Grid Excel</h2>
-                <p>Upload the Excel file containing the FOB grid with columns: <strong>Color, Sizes, FOB</strong></p>
-                <input type="file" id="fobGridFile" class="file-input" accept=".xlsx, .xls">
+                <p>Upload the Excel file containing the FOB grid with columns: <strong>Color, Sizes, FOB</strong>
+                <br><i>Size codes should be include instead of size names.</i> </p>
+             <!-- SAMPLE FOB GRID DATA TABLE - ADDED BACK -->
+            <div style="margin-top: 15px;">
+                <p><strong>Sample FOB Grid Data:</strong></p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Color</th>
+                            <th>Sizes</th>
+                            <th>FOB</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>C948</td>
+                            <td>L/M/S/X1/SX/SX2</td>
+                            <td>11.56</td>
+                        </tr>
+                        <tr>
+                            <td>C948</td>
+                            <td>X2/X3/X4</td>
+                            <td>16.30</td>
+                        </tr>
+                        <tr>
+                            <td>C950</td>
+                            <td>34C 34D 36D2 40H 42D3</td>
+                            <td>11.56</td>
+                        </tr>
+                        <tr>
+                            <td>C950</td>
+                            <td>X2,X3,X4</td>
+                            <td>18.33</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <input type="file" id="fobGridFile" class="file-input" accept=".xlsx, .xls">
                 <div id="fobGridInfo" class="file-info"></div>
             </div>
+
+                
             
             <div class="upload-section">
                 <h2>Step 2: Upload SO Export Excel</h2>
@@ -229,46 +294,10 @@
         </div>
         
         <div id="status" class="status"></div>
-        <div id="debugInfo" class="debug-info" style="display: none;"></div>
 
-        <div class="instructions">
-            <h3>FOB Grid Format Instructions</h3>
-            <p>Your FOB Grid Excel file should have the following format:</p>
-            <ul>
-                <li><strong>Required columns:</strong> Color, Sizes, FOB</li>
-                <li>The <strong>Sizes</strong> column can contain multiple sizes separated by spaces, slashes (/), backslashes (\), or commas</li>
-                <li>The tool will automatically split these sizes and create individual entries for each</li>
-                <li>FOB values should be numeric (e.g., 4.53, 5.05)</li>
-            </ul>
-            
-            <div style="margin-top: 15px;">
-                <p><strong>Sample FOB Grid Data:</strong></p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Color</th>
-                            <th>Sizes</th>
-                            <th>FOB</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>XA39</td>
-                            <td>L/M/S/XL/XS/XXS</td>
-                            <td>4.53</td>
-                        </tr>
-                        <tr>
-                            <td>XA39</td>
-                            <td>2X 3X 4X</td>
-                            <td>4.98</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
+        <!-- FOB UPDATED EXCEL OUTPUT -->
         <div id="previewSection" style="display: none;">
-            <h2>Preview of Updated Data</h2>
+            <h2>FOB Updated Excel - Preview</h2>
             <table id="previewTable">
                 <thead>
                     <tr>
@@ -286,9 +315,58 @@
                 </tbody>
             </table>
         </div>
+
+        <hr class="section-divider">
+
+        <!-- SECTION 2: FOB VALIDATION -->
+        <div class="section-title">Section 2: FOB Validation</div>
+
+        <div class="two-column">
+            <div class="upload-section">
+                <h2>Step 1: Upload FOB Chart</h2>
+                <p>Upload the FOB Grid Excel file (Same as Section 1)</p>
+                <input type="file" id="validationFobChartFile" class="file-input" accept=".xlsx, .xls">
+                <div id="validationFobChartInfo" class="file-info"></div>
+            </div>
+            
+            <div class="upload-section">
+                <h2>Step 2: Upload FOB Updated SO Export</h2>
+                <p>Upload the <strong>FOB updated</strong> SO Export file </p>
+                <input type="file" id="validationSoExportFile" class="file-input" accept=".xlsx, .xls">
+                <div id="validationSoExportInfo" class="file-info"></div>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <button id="validateBtn" class="validation-btn" disabled>Validate FOB Prices</button>
+            <button id="downloadValidationBtn" class="download-btn" style="display: none;">Download Validation Report</button>
+        </div>
+
+        <div id="validationStatus" class="status"></div>
+
+        <div class="validation-section" id="validationSection" style="display: none;">
+            <h2>FOB Price Validation Report</h2>
+            <table id="validationTable">
+                <thead>
+                    <tr>
+                        <th>SO Number</th>
+                        <th>SO Line Item</th>
+                        <th>Order Reason</th>
+                        <th>Color</th>
+                        <th>Size Code</th>
+                        <th>FOB Price (Chart)</th>
+                        <th>FOB Price (SAP)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="validationTableBody">
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
+        // SECTION 1: FOB UPDATED EXCEL Variables
         let fobGridData = [];
         let soExportData = [];
         let processedData = [];
@@ -298,15 +376,35 @@
         const processBtn = document.getElementById('processBtn');
         const downloadBtn = document.getElementById('downloadBtn');
         const statusDiv = document.getElementById('status');
-        const debugInfo = document.getElementById('debugInfo');
         const previewSection = document.getElementById('previewSection');
         const previewTableBody = document.getElementById('previewTableBody');
         
+        // SECTION 2: FOB VALIDATION Variables
+        let validationFobChartData = [];
+        let validationSoExportData = [];
+        let validationData = [];
+        
+        const validationFobChartFileInput = document.getElementById('validationFobChartFile');
+        const validationSoExportFileInput = document.getElementById('validationSoExportFile');
+        const validateBtn = document.getElementById('validateBtn');
+        const downloadValidationBtn = document.getElementById('downloadValidationBtn');
+        const validationStatusDiv = document.getElementById('validationStatus');
+        const validationSection = document.getElementById('validationSection');
+        const validationTableBody = document.getElementById('validationTableBody');
+        
+        // SECTION 1: FOB UPDATED EXCEL Event Listeners
         fobGridFileInput.addEventListener('change', handleFobGridFile);
         soExportFileInput.addEventListener('change', handleSoExportFile);
         processBtn.addEventListener('click', processData);
         downloadBtn.addEventListener('click', downloadExcel);
         
+        // SECTION 2: FOB VALIDATION Event Listeners
+        validationFobChartFileInput.addEventListener('change', handleValidationFobChartFile);
+        validationSoExportFileInput.addEventListener('change', handleValidationSoExportFile);
+        validateBtn.addEventListener('click', validateFOBPrices);
+        downloadValidationBtn.addEventListener('click', downloadValidationReport);
+        
+        // SECTION 1: FOB UPDATED EXCEL Functions
         function handleFobGridFile(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -357,7 +455,6 @@
         function processFobGridData(jsonData) {
             fobGridData = [];
             
-            // Find column indices
             const headers = jsonData[0];
             const colorIndex = headers.findIndex(h => 
                 h.toString().toLowerCase().includes('color')
@@ -370,21 +467,11 @@
                 h.toString().toLowerCase().includes('fob')
             );
             
-            // Debug column detection
-            let debugText = `FOB Grid Columns Detected:\n`;
-            debugText += `Headers: ${headers.join(', ')}\n`;
-            debugText += `Color Index: ${colorIndex}\n`;
-            debugText += `Sizes Index: ${sizesIndex}\n`;
-            debugText += `FOB Index: ${fobIndex}\n\n`;
-            
             if (colorIndex === -1 || sizesIndex === -1 || fobIndex === -1) {
-                debugText += `ERROR: Missing required columns!\n`;
-                showDebugInfo(debugText);
                 showStatus('Error: FOB Grid must contain Color, Sizes, and FOB columns.', 'error');
                 return;
             }
             
-            // Process each data row
             for (let i = 1; i < jsonData.length; i++) {
                 const row = jsonData[i];
                 if (row.length < Math.max(colorIndex, sizesIndex, fobIndex) + 1) continue;
@@ -395,7 +482,6 @@
                 
                 if (!color || !sizes || isNaN(fob)) continue;
                 
-                // Split sizes by various separators
                 const sizeList = sizes.split(/[ ,\/\\]+/).map(size => size.trim()).filter(size => size);
                 
                 sizeList.forEach(size => {
@@ -405,11 +491,8 @@
                         fob: fob
                     });
                 });
-                
-                debugText += `Processed: Color="${color}", Sizes="${sizes}" -> ${sizeList.join(', ')} = $${fob}\n`;
             }
             
-            showDebugInfo(debugText);
             showStatus(`FOB Grid processed: ${fobGridData.length} color-size combinations found.`, 'info');
         }
         
@@ -427,7 +510,6 @@
                 processedData = [];
                 const headers = soExportData[0];
                 
-                // Find column indices in SO Export
                 const salesOrderIndex = headers.findIndex(h => 
                     h.toString().toLowerCase().includes('sales order')
                 );
@@ -449,22 +531,6 @@
                     h.toString().toLowerCase().includes('size desc')
                 );
                 
-                // Debug SO Export columns
-                let debugText = `SO Export Columns Detected:\n`;
-                debugText += `Headers: ${headers.join(', ')}\n`;
-                debugText += `Sales Order Index: ${salesOrderIndex}\n`;
-                debugText += `SO Item Index: ${soItemIndex}\n`;
-                debugText += `Col.Cd. Index: ${colorCodeIndex}\n`;
-                debugText += `Size Index: ${sizeIndex}\n`;
-                debugText += `Size Desc Index: ${sizeDescIndex}\n\n`;
-                
-                debugText += `First few rows of SO Export data:\n`;
-                for (let i = 1; i < Math.min(5, soExportData.length); i++) {
-                    const row = soExportData[i];
-                    debugText += `Row ${i}: ${row[colorCodeIndex] || 'N/A'} | ${row[sizeIndex] || 'N/A'}\n`;
-                }
-                debugText += `\n`;
-                
                 const missingColumns = [];
                 if (salesOrderIndex === -1) missingColumns.push('Sales Order');
                 if (soItemIndex === -1) missingColumns.push('SO Item');
@@ -472,16 +538,12 @@
                 if (sizeIndex === -1) missingColumns.push('Size');
                 
                 if (missingColumns.length > 0) {
-                    debugText += `ERROR: Missing columns: ${missingColumns.join(', ')}\n`;
-                    showDebugInfo(debugText);
                     showStatus(`Error: SO Export missing required columns: ${missingColumns.join(', ')}`, 'error');
                     return;
                 }
                 
-                // Process each row
                 let matchedCount = 0;
                 let unmatchedCount = 0;
-                let matchExamples = [];
                 
                 for (let i = 1; i < soExportData.length; i++) {
                     const row = soExportData[i];
@@ -494,7 +556,8 @@
                     const size = (row[sizeIndex] || '').toString().trim();
                     const sizeDesc = sizeDescIndex !== -1 ? (row[sizeDescIndex] || '').toString().trim() : '';
                     
-                    // Find matching FOB value
+                    if (!salesOrder && !soItem && !colorCode && !size) continue;
+                    
                     let fobPrice = '';
                     const match = fobGridData.find(item => {
                         const colorMatch = item.color === colorCode;
@@ -505,28 +568,13 @@
                     if (match) {
                         fobPrice = match.fob.toFixed(2);
                         matchedCount++;
-                        if (matchExamples.length < 3) {
-                            matchExamples.push(`Matched: Color="${colorCode}", Size="${size}" -> $${fobPrice}`);
-                        }
                     } else {
                         unmatchedCount++;
-                        if (matchExamples.length < 5) {
-                            matchExamples.push(`No match: Color="${colorCode}", Size="${size}"`);
-                        }
                     }
                     
-                    // Only add row if we have at least one essential field
-                    if (salesOrder || soItem || colorCode || size) {
                     const newRow = [salesOrder, soItem, orderReason, colorCode, size, sizeDesc, "J3AP", fobPrice];
                     processedData.push(newRow);
-}
                 }
-                
-                debugText += `Matching Results:\n`;
-                debugText += `Total matches: ${matchedCount}\n`;
-                debugText += `Total no matches: ${unmatchedCount}\n\n`;
-                debugText += `Example matches:\n${matchExamples.join('\n')}`;
-                showDebugInfo(debugText);
                 
                 showPreview();
                 downloadBtn.disabled = false;
@@ -578,14 +626,332 @@
             }
         }
         
+        // SECTION 2: FOB VALIDATION Functions
+        function handleValidationFobChartFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                    processValidationFobChartData(jsonData);
+                    updateValidationButtonState();
+                    showValidationStatus('FOB Chart loaded successfully!', 'success');
+                } catch (error) {
+                    console.error('Error reading FOB Chart file:', error);
+                    showValidationStatus('Error reading FOB Chart file. Please check the format.', 'error');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+        
+        function handleValidationSoExportFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    
+                    validationSoExportData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                    updateValidationButtonState();
+                    showValidationStatus('FOB Updated SO Export loaded successfully!', 'success');
+                } catch (error) {
+                    console.error('Error reading FOB Updated SO Export file:', error);
+                    showValidationStatus('Error reading FOB Updated SO Export file. Please check the format.', 'error');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+        
+        function processValidationFobChartData(jsonData) {
+            validationFobChartData = [];
+            
+            const headers = jsonData[0];
+            const colorIndex = headers.findIndex(h => 
+                h.toString().toLowerCase().includes('color')
+            );
+            const sizesIndex = headers.findIndex(h => 
+                h.toString().toLowerCase().includes('size') && 
+                !h.toString().toLowerCase().includes('grid')
+            );
+            const fobIndex = headers.findIndex(h => 
+                h.toString().toLowerCase().includes('fob')
+            );
+            
+            if (colorIndex === -1 || sizesIndex === -1 || fobIndex === -1) {
+                showValidationStatus('Error: FOB Chart must contain Color, Sizes, and FOB columns.', 'error');
+                return;
+            }
+            
+            for (let i = 1; i < jsonData.length; i++) {
+                const row = jsonData[i];
+                if (row.length < Math.max(colorIndex, sizesIndex, fobIndex) + 1) continue;
+                
+                const color = (row[colorIndex] || '').toString().trim();
+                const sizes = (row[sizesIndex] || '').toString().trim();
+                const fob = parseFloat(row[fobIndex]);
+                
+                if (!color || !sizes || isNaN(fob)) continue;
+                
+                const sizeList = sizes.split(/[ ,\/\\]+/).map(size => size.trim()).filter(size => size);
+                
+                sizeList.forEach(size => {
+                    const concatenation = `${color}+${size}`;
+                    validationFobChartData.push({
+                        concatenation: concatenation,
+                        fob: fob
+                    });
+                });
+            }
+            
+            showValidationStatus(`FOB Chart processed: ${validationFobChartData.length} color-size combinations found.`, 'info');
+        }
+        
+        function updateValidationButtonState() {
+            validateBtn.disabled = !(validationFobChartData.length > 0 && validationSoExportData.length > 0);
+        }
+        
+        function compareDecimalValues(value1, value2) {
+            const num1 = parseFloat(value1);
+            const num2 = parseFloat(value2);
+            
+            if (isNaN(num1) || isNaN(num2)) {
+                return false;
+            }
+            
+            return Math.abs(num1 - num2) < 0.001;
+        }
+        
+        function validateFOBPrices() {
+            if (validationFobChartData.length === 0 || validationSoExportData.length === 0) {
+                showValidationStatus('Please upload both files before validating.', 'error');
+                return;
+            }
+
+            validationData = [];
+            let matchCount = 0;
+            let mismatchCount = 0;
+            let noFobCount = 0;
+            let noChartEntryCount = 0;
+
+            const headers = validationSoExportData[0];
+            const salesOrderIndex = headers.findIndex(h => 
+                h.toString().toLowerCase().includes('sales order')
+            );
+            const soItemIndex = headers.findIndex(h => 
+                h.toString().toLowerCase().includes('so item')
+            );
+            const orderReasonIndex = headers.findIndex(h => 
+                h.toString().toLowerCase().includes('order reason')
+            );
+            const colorCodeIndex = headers.findIndex(h => 
+                h.toString().toLowerCase().includes('col.cd') || 
+                h.toString().toLowerCase().includes('col.cd.')
+            );
+            const sizeIndex = headers.findIndex(h => 
+                h.toString().toLowerCase().includes('size') && 
+                !h.toString().toLowerCase().includes('desc')
+            );
+            const fobPriceIndex = headers.findIndex(h => 
+                h.toString().toLowerCase().includes('fob price')
+            );
+
+            for (let i = 1; i < validationSoExportData.length; i++) {
+                const row = validationSoExportData[i];
+                if (row.length < Math.max(salesOrderIndex, soItemIndex, colorCodeIndex, sizeIndex, fobPriceIndex) + 1) continue;
+                
+                const salesOrder = row[salesOrderIndex] || '';
+                const soItem = row[soItemIndex] || '';
+                const orderReason = orderReasonIndex !== -1 ? row[orderReasonIndex] || '' : '';
+                const colorCode = (row[colorCodeIndex] || '').toString().trim();
+                const size = (row[sizeIndex] || '').toString().trim();
+                let sapFOB = (row[fobPriceIndex] || '').toString().trim();
+                
+                if (!salesOrder || !colorCode || !size) continue;
+                
+                const soConcatenation = `${colorCode}+${size}`;
+                
+                let chartFOB = 'N/A';
+                let status = 'NO FOB';
+                
+                const chartEntry = validationFobChartData.find(item => 
+                    item.concatenation === soConcatenation
+                );
+                
+                if (chartEntry) {
+                    chartFOB = chartEntry.fob.toFixed(2);
+                }
+                
+                if (sapFOB && sapFOB !== '') {
+                    if (chartEntry) {
+                        if (compareDecimalValues(chartFOB, sapFOB)) {
+                            status = 'MATCH';
+                            matchCount++;
+                        } else {
+                            status = 'MISMATCH';
+                            mismatchCount++;
+                        }
+                    } else {
+                        status = 'NO CHART ENTRY';
+                        noChartEntryCount++;
+                    }
+                } else {
+                    sapFOB = 'NO FOB';
+                    if (chartEntry) {
+                        status = 'NO FOB (Chart Available)';
+                        noFobCount++;
+                    } else {
+                        status = 'NO FOB';
+                        noFobCount++;
+                    }
+                }
+
+                validationData.push({
+                    salesOrder,
+                    soItem,
+                    orderReason,
+                    colorCode,
+                    size,
+                    chartFOB,
+                    sapFOB: sapFOB,
+                    status
+                });
+            }
+
+            showValidationResults();
+            downloadValidationBtn.style.display = 'inline-block';
+            showValidationStatus(`Validation complete! ${matchCount} matches, ${mismatchCount} mismatches, ${noFobCount} records with no FOB, ${noChartEntryCount} with no chart entry, out of ${validationData.length} total records.`, 'info');
+        }
+
+        function showValidationResults() {
+            validationSection.style.display = 'block';
+            validationTableBody.innerHTML = '';
+
+            validationData.forEach(item => {
+                const tr = document.createElement('tr');
+                let statusColor = 'black';
+                if (item.status === 'MATCH') statusColor = 'green';
+                else if (item.status === 'MISMATCH') statusColor = 'red';
+                else if (item.status.includes('NO FOB') || item.status === 'NO CHART ENTRY') statusColor = 'orange';
+                
+                tr.innerHTML = `
+                    <td>${item.salesOrder}</td>
+                    <td>${item.soItem}</td>
+                    <td>${item.orderReason}</td>
+                    <td>${item.colorCode}</td>
+                    <td>${item.size}</td>
+                    <td>${item.chartFOB}</td>
+                    <td>${item.sapFOB}</td>
+                    <td style="color: ${statusColor}; font-weight: bold;">
+                        ${item.status}
+                    </td>
+                `;
+                validationTableBody.appendChild(tr);
+            });
+        }
+
+        function downloadValidationReport() {
+            if (validationData.length === 0) {
+                showValidationStatus('No validation data to download.', 'error');
+                return;
+            }
+
+            try {
+                const wb = XLSX.utils.book_new();
+                const headers = [
+                    'SO Number', 
+                    'SO Line Item', 
+                    'Order Reason', 
+                    'Color', 
+                    'Size Code', 
+                    'FOB Price (Chart)', 
+                    'FOB Price (SAP)', 
+                    'Status'
+                ];
+                
+                const data = validationData.map(item => [
+                    item.salesOrder,
+                    item.soItem,
+                    item.orderReason,
+                    item.colorCode,
+                    item.size,
+                    item.chartFOB,
+                    item.sapFOB,
+                    item.status
+                ]);
+                
+                const dataWithHeaders = [headers, ...data];
+                const ws = XLSX.utils.aoa_to_sheet(dataWithHeaders);
+                
+                // SIMPLE AND RELIABLE COLOR CODING APPROACH
+                if (!ws['!cols']) ws['!cols'] = [];
+                
+                // Add color coding using cell comments (works reliably across Excel versions)
+                const range = XLSX.utils.decode_range(ws['!ref']);
+                for (let R = range.s.r + 1; R <= range.e.r; ++R) {
+                    const statusCellRef = XLSX.utils.encode_cell({c: 7, r: R});
+                    if (ws[statusCellRef]) {
+                        const statusValue = ws[statusCellRef].v;
+                        
+                        // Apply background colors
+                        if (statusValue === 'MATCH') {
+                            ws[statusCellRef].s = {
+                                fill: {
+                                    patternType: "solid",
+                                    fgColor: {rgb: "C6EFCE"}
+                                },
+                                font: { bold: true }
+                            };
+                        } else if (statusValue === 'MISMATCH') {
+                            ws[statusCellRef].s = {
+                                fill: {
+                                    patternType: "solid", 
+                                    fgColor: {rgb: "FFC7CE"}
+                                },
+                                font: { bold: true }
+                            };
+                        } else if (statusValue.includes('NO FOB') || statusValue === 'NO CHART ENTRY') {
+                            ws[statusCellRef].s = {
+                                fill: {
+                                    patternType: "solid",
+                                    fgColor: {rgb: "FFEB9C"}
+                                },
+                                font: { bold: true }
+                            };
+                        }
+                    }
+                }
+                
+                XLSX.utils.book_append_sheet(wb, ws, 'FOB Validation Report');
+                XLSX.writeFile(wb, 'FOB_Validation_Report.xlsx');
+                
+                showValidationStatus('Validation report downloaded successfully with color coding!', 'success');
+            } catch (error) {
+                console.error('Error generating validation report:', error);
+                showValidationStatus('Error generating validation report.', 'error');
+            }
+        }
+        
+        // Utility Functions
         function showStatus(message, type) {
             statusDiv.textContent = message;
             statusDiv.className = 'status ' + type;
         }
         
-        function showDebugInfo(text) {
-            debugInfo.textContent = text;
-            debugInfo.style.display = 'block';
+        function showValidationStatus(message, type) {
+            validationStatusDiv.textContent = message;
+            validationStatusDiv.className = 'status ' + type;
         }
     </script>
 </body>
