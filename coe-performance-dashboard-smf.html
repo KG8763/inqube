@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COE Performance Dashboard</title>
+    <link rel="icon" href="free-30-instagram-stories-icons46_122593.ico" type="image/ico">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* =========================
+           RESET & BASE STYLES
+           ========================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            min-height: 100vh;
+            color: #333;
+            font-size: smaller;
+        }
+
+        /* =========================
+           HEADER
+           ========================= */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #059669;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* =========================
+           MAIN CONTENT
+           ========================= */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* =========================
+           UPLOAD SECTION
+           ========================= */
+        .upload-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .file-upload {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 40px 20px;
+            margin: 20px 0;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .file-upload:hover {
+            border-color: #3498db;
+            background-color: #f8f9fa;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        /* =========================
+           DASHBOARD
+           ========================= */
+        .dashboard {
+            display: none;
+            margin-top: 30px;
+        }
+
+        /* =========================
+           FILTER SECTION - BEAUTIFUL DESIGN
+           ========================= */
+        .filter-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .filter-section h4 {
+            color: #1e293b;
+            margin-bottom: 20px;
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+
+        .filter-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            display: block;
+        }
+
+        .filter-group select, .filter-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-group select:focus, .filter-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .filter-group select:hover, .filter-group input:hover {
+            border-color: #cbd5e1;
+        }
+
+        /* =========================
+           KPI CARDS
+           ========================= */
+        .kpi-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .kpi-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            border-top: 4px solid #3498db;
+            transition: transform 0.3s ease;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .kpi-card h3 {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .kpi-value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        .kpi-card.success {
+            border-top-color: #27ae60;
+        }
+
+        .kpi-card.warning {
+            border-top-color: #f39c12;
+        }
+
+        .kpi-card.danger {
+            border-top-color: #e74c3c;
+        }
+
+        /* =========================
+           CHARTS
+           ========================= */
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .chart-card h3 {
+            margin-bottom: 15px;
+            color: #1e293b;
+            font-size: 1.2rem;
+        }
+
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+
+        /* =========================
+           MAXIMIZED TREND CHART
+           ========================= */
+        .trend-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .trend-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .trend-chart-container {
+            flex: 1;
+            position: relative;
+            min-height: 500px;
+        }
+
+        /* =========================
+           SUMMARY TABLE
+           ========================= */
+        .summary-table {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        tr:hover {
+            background-color: rgba(164, 230, 158, 0.836);
+        }
+
+        td:hover {
+            background: rgba(216, 248, 35, 0.836);
+        }
+
+        /* =========================
+           BADGES & LEVELS
+           ========================= */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-level-5 {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #8b6914;
+            border: 1px solid #ffd700;
+        }
+
+        .badge-level-4 {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+        }
+
+        .badge-level-3 {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .badge-level-2 {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+        }
+
+        .badge-level-1 {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .badge-level-0 {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            color: white;
+        }
+
+        .performance-star {
+            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+            color: #8b4513;
+            font-weight: bold;
+            border: 1px solid #ffd700;
+        }
+
+        .performance-excellent {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .performance-good {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .performance-needs-improvement {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .performance-bad {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .performance-very-bad {
+            background-color: #7f8c8d;
+            color: white;
+        }
+
+        /* =========================
+           BUTTONS
+           ========================= */
+        .actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        /* =========================
+           LOADING & UTILITIES
+           ========================= */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #10b981;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .info-box {
+            background-color: #e8f4fd;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        /* =========================
+           RESPONSIVE
+           ========================= */
+        @media (max-width: 768px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+
+            .trend-section {
+                height: auto;
+                min-height: 500px;
+            }
+
+            .trend-header, .summary-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .kpi-cards {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+            
+            .filter-section {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .kpi-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .trend-section {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i>📊</i>
+                <span>COE Performance Dashboard</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Upload Section -->
+        <section class="upload-section">
+            <h2>Upload Your COE Job Tracker File</h2>
+            <p>Supported formats: .xlsx, .xls</p>
+            
+            <div class="info-box">
+                <p><strong>Lead Time Logic:</strong></p>
+                <p>• COST_SHEET_CREATION jobs: 48 hours (2 business days)</p>
+                <p>• All other jobs: 24 hours (1 business day)</p>
+                <p><strong>Business days exclude weekends and Sri Lankan holidays</strong></p>
+            </div>
+            
+            <div class="file-upload" id="dropZone">
+                <p>Drag & drop your file here or</p>
+                <button class="upload-btn" id="browseBtn">
+                    📁 Browse Files
+                </button>
+                <input type="file" id="fileInput" class="file-input" accept=".xlsx, .xls">
+            </div>
+            
+            <div class="loading" id="loadingIndicator">
+                <div class="spinner"></div>
+                <p>Processing your file and loading COE Performance Dashboard...</p>
+            </div>
+        </section>
+        
+        <!-- Dashboard -->
+        <section class="dashboard" id="dashboard">
+            <!-- Beautiful Filter Section -->
+            <div class="filter-section">
+                <h4>📊 Dashboard Filters</h4>
+                <div class="row g-4">
+                    <!-- Date Range - Full width on mobile, half on larger screens -->
+                    <div class="col-12 col-md-6">
+                        <div class="filter-group">
+                            <label for="startDate">Start Date</label>
+                            <input type="date" id="startDate" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="filter-group">
+                            <label for="endDate">End Date</label>
+                            <input type="date" id="endDate" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <!-- Trend Metric - Full width on mobile, half on larger screens -->
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="filter-group">
+                            <label for="trendMetric">Trend Metric</label>
+                            <select id="trendMetric" class="form-select">
+                                <option value="on_time_rate" selected>On-Time Rate</option>
+                                <option value="completion_volume">Completion Volume</option>
+                                <option value="lead_time">Average Lead Time</option>
+                                <option value="efficiency">Efficiency Score</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Time Aggregation - Full width on mobile, half on larger screens -->
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="filter-group">
+                            <label for="timeAggregation">Time Aggregation</label>
+                            <select id="timeAggregation" class="form-select">
+                                <option value="daily">Daily</option>
+                                <option value="weekly" selected>Weekly</option>
+                                <option value="monthly">Monthly</option>
+                                <option value="quarterly">Quarterly</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Show Top - Full width on mobile, half on larger screens -->
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="filter-group">
+                            <label for="topMerchants">Show Top</label>
+                            <select id="topMerchants" class="form-select">
+                                <option value="3">Top 3</option>
+                                <option value="5" >Top 5</option>
+                                <option value="10">Top 10</option>
+                                <option value="all" selected>All</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Chart Type - Full width on mobile, half on larger screens -->
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="filter-group">
+                            <label for="chartType">Chart Type</label>
+                            <select id="chartType" class="form-select">
+                                <option value="line" selected>Line Chart</option>
+                                <option value="bar">Bar Chart</option>
+                                <option value="scatter">Scatter</option>
+                                <option value="surface">Surface</option>
+                                <option value="radar">Radar</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- KPI Cards -->
+            <div class="kpi-cards">
+                <div class="kpi-card">
+                    <h3>Total Jobs</h3>
+                    <div class="kpi-value" id="totalJobs">0</div>
+                </div>
+                <div class="kpi-card">
+                    <h3>Completed Jobs</h3>
+                    <div class="kpi-value" id="completedJobs">0</div>
+                </div>
+                <div class="kpi-card success">
+                    <h3>On-Time Jobs</h3>
+                    <div class="kpi-value" id="onTimeJobs">0</div>
+                </div>
+                <div class="kpi-card warning">
+                    <h3>Late Jobs</h3>
+                    <div class="kpi-value" id="lateJobs">0</div>
+                </div>
+                <div class="kpi-card">
+                    <h3>On-Time Rate</h3>
+                    <div class="kpi-value" id="onTimeRate">0%</div>
+                </div>
+                <div class="kpi-card danger">
+                    <h3>Avg Lead Time</h3>
+                    <div class="kpi-value" id="avgLeadTime">0</div>
+                </div>
+            </div>
+            
+            <!-- Main Charts -->
+            <div class="charts-container">
+                <div class="chart-card">
+                    <h3>Job Status Distribution</h3>
+                    <div class="chart-container">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>Performance by Merchant</h3>
+                    <div class="chart-container">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Maximized Trend Chart Section -->
+            <div class="trend-section">
+                <div class="trend-header">
+                    <h3>Performance Trends Analysis</h3>
+                </div>
+                <div class="trend-chart-container">
+                    <canvas id="combinedTrendChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Summary Table -->
+            <div class="summary-table">
+                <div class="summary-header">
+                    <h3>Performance Summary by Merchant</h3>
+                </div>
+                <div class="table-container">
+                    <table id="summaryTable">
+                        <thead>
+                            <tr>
+                                <th>Merchant</th>
+                                <th>Completed Jobs</th>
+                                <th>On-Time</th>
+                                <th>Late</th>
+                                <th>On-Time Rate</th>
+                                <th>Average Lead Time</th>
+                                <th>KPI Level</th>
+                                <th>Performance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summaryTableBody">
+                            <!-- Data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            <div class="actions">
+                <button class="btn btn-primary" id="downloadExcel">
+                    📊 Download Excel Report
+                </button>
+                <button class="btn btn-success" id="analyzeNew">
+                    🔄 Analyze New File
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // DOM Elements
+        const fileInput = document.getElementById('fileInput');
+        const browseBtn = document.getElementById('browseBtn');
+        const dropZone = document.getElementById('dropZone');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const dashboard = document.getElementById('dashboard');
+        
+        // Filter Elements
+        const trendMetric = document.getElementById('trendMetric');
+        const timeAggregation = document.getElementById('timeAggregation');
+        const topMerchants = document.getElementById('topMerchants');
+        const chartType = document.getElementById('chartType');
+        const startDate = document.getElementById('startDate');
+        const endDate = document.getElementById('endDate');
+        
+        // KPI Elements
+        const totalJobsEl = document.getElementById('totalJobs');
+        const completedJobsEl = document.getElementById('completedJobs');
+        const onTimeJobsEl = document.getElementById('onTimeJobs');
+        const lateJobsEl = document.getElementById('lateJobs');
+        const onTimeRateEl = document.getElementById('onTimeRate');
+        const avgLeadTimeEl = document.getElementById('avgLeadTime');
+        
+        // Table and Charts
+        const summaryTableBody = document.getElementById('summaryTableBody');
+        const downloadExcelBtn = document.getElementById('downloadExcel');
+        const analyzeNewBtn = document.getElementById('analyzeNew');
+        
+        // Chart instances
+        let statusChart, performanceChart, combinedTrendChart;
+        let merchantColors = {};
+        
+        // Global data storage
+        let processedData = null;
+        let rawData = null;
+        
+        // Sri Lankan Holidays 2025 & 2026
+        let sriLankanHolidays = {
+            // --- 2025 Holidays ---
+            '2025-01-13': 'Duruthu Full Moon Poya Day',
+            '2025-01-14': 'Tamil Thai Pongal Day',
+            '2025-02-04': 'Independence Day',
+            '2025-02-12': 'Navam Full Moon Poya Day',
+            '2025-02-26': 'Mahasivarathri Day',
+            '2025-03-13': 'Medin Full Moon Poya Day',
+            '2025-03-31': 'Id-ul-Fitr (Ramazan Festival Day)',
+            '2025-04-12': 'Bak Full Moon Poya Day',
+            '2025-04-13': 'Day prior to Sinhala & Tamil New Year',
+            '2025-04-14': 'Sinhala & Tamil New Year Day',
+            '2025-04-18': 'Good Friday',
+            '2025-05-01': 'Labour Day',
+            '2025-05-12': 'Vesak Full Moon Poya Day',
+            '2025-05-13': 'Day following Vesak Full Moon Poya Day',
+            '2025-06-07': 'Id-ul-Alha (Hajj Festival Day)',
+            '2025-06-10': 'Poson Full Moon Poya Day',
+            '2025-07-10': 'Esala Full Moon Poya Day',
+            '2025-08-08': 'Nikini Full Moon Poya Day',
+            '2025-09-05': 'Milad-Un-Nabi (Holy Prophet\'s Birthday)',
+            '2025-09-07': 'Binara Full Moon Poya Day',
+            '2025-10-06': 'Vap Full Moon Poya Day',
+            '2025-10-20': 'Deepavali Festival Day',
+            '2025-11-05': 'Ill Full Moon Poya Day',
+            '2025-12-04': 'Unduvap Full Moon Poya Day',
+            '2025-12-25': 'Christmas Day',
+
+            // --- 2026 Holidays ---
+            '2026-01-01': 'New Year\'s Day',
+            '2026-01-03': 'Duruthu Full Moon Poya Day',
+            '2026-01-15': 'Tamil Thai Pongal Day',
+            '2026-02-01': 'Navam Full Moon Poya Day',
+            '2026-02-04': 'Independence Day',
+            '2026-02-15': 'Mahasivarathri Day',
+            '2026-03-03': 'Medin Full Moon Poya Day',
+            '2026-03-29': 'Good Friday',
+            '2026-03-31': 'Id-ul-Fitr (Ramazan Festival Day)',
+            '2026-04-12': 'Bak Full Moon Poya Day',
+            '2026-04-13': 'Day prior to Sinhala & Tamil New Year',
+            '2026-04-14': 'Sinhala & Tamil New Year Day',
+            '2026-05-01': 'Labour Day',
+            '2026-05-01': 'Vesak Full Moon Poya Day',
+            '2026-05-02': 'Day following Vesak Full Moon Poya Day',
+            '2026-05-27': 'Id-ul-Alha (Hajj Festival Day)',
+            '2026-06-01': 'Poson Full Moon Poya Day',
+            '2026-07-01': 'Esala Full Moon Poya Day',
+            '2026-07-27': 'Nikini Full Moon Poya Day',
+            '2026-08-27': 'Binara Full Moon Poya Day',
+            '2026-09-24': 'Milad-Un-Nabi (Holy Prophet\'s Birthday)',
+            '2026-09-25': 'Vap Full Moon Poya Day',
+            '2026-10-20': 'Deepavali Festival Day',
+            '2026-10-24': 'Ill Full Moon Poya Day',
+            '2026-11-22': 'Unduvap Full Moon Poya Day',
+            '2026-12-25': 'Christmas Day'
+        };
+
+        // Extended color palette
+        const colorPalette = [
+            '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
+            '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9',
+            '#F8C471', '#82E0AA', '#F1948A', '#85C1E9', '#D7BDE2',
+            '#F9E79F', '#A9DFBF', '#F5B7B1', '#AED6F1', '#D2B4DE',
+            '#A3E4D7', '#F9E79F', '#D7BDE2', '#85C1E9', '#F8C471',
+            '#82E0AA', '#BB8FCE', '#F7DC6F', '#4ECDC4', '#FF6B6B'
+        ];
+
+        // Event Listeners
+        browseBtn.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleFileUpload);
+        downloadExcelBtn.addEventListener('click', downloadExcelReport);
+        analyzeNewBtn.addEventListener('click', resetDashboard);
+        
+        // Filter event listeners
+        const allFilters = [
+            trendMetric, timeAggregation, topMerchants, chartType,
+            startDate, endDate
+        ];
+        
+        allFilters.forEach(filter => {
+            filter.addEventListener('change', updateDashboard);
+        });
+
+        // Drag and drop functionality
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#3498db';
+            dropZone.style.backgroundColor = '#f8f9fa';
+        });
+        
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.style.borderColor = '#ccc';
+            dropZone.style.backgroundColor = '';
+        });
+        
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#ccc';
+            dropZone.style.backgroundColor = '';
+            
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                handleFileUpload();
+            }
+        });
+
+        // File upload handler
+        function handleFileUpload() {
+            const file = fileInput.files[0];
+            if (!file) return;
+            
+            // Show loading indicator
+            loadingIndicator.style.display = 'block';
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    
+                    // Get the first worksheet
+                    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                    
+                    // Store raw data for filtering
+                    rawData = jsonData;
+                    
+                    // Process the data
+                    processData(jsonData);
+                    
+                    // Hide loading and show dashboard
+                    loadingIndicator.style.display = 'none';
+                    dashboard.style.display = 'block';
+                    
+                } catch (error) {
+                    console.error('Error processing file:', error);
+                    alert('Error processing file. Please make sure it is a valid Excel file.');
+                    loadingIndicator.style.display = 'none';
+                }
+            };
+            
+            reader.onerror = function() {
+                alert('Error reading file. Please try again.');
+                loadingIndicator.style.display = 'none';
+            };
+            
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Utility functions
+        function isWeekend(date) {
+            const day = date.getDay();
+            return day === 0 || day === 6;
+        }
+        
+        function isHoliday(date) {
+            const dateString = date.toISOString().split('T')[0];
+            return Object.keys(sriLankanHolidays).includes(dateString);
+        }
+        
+        function isBusinessDay(date) {
+            return !isWeekend(date) && !isHoliday(date);
+        }
+        
+        function getBusinessDaysCount(startDate, endDate) {
+            let count = 0;
+            const current = new Date(startDate);
+            current.setHours(0, 0, 0, 0);
+            const end = new Date(endDate);
+            end.setHours(0, 0, 0, 0);
+            
+            while (current <= end) {
+                if (isBusinessDay(current)) {
+                    count++;
+                }
+                current.setDate(current.getDate() + 1);
+            }
+            
+            return count;
+        }
+        
+        function calculateDueDate(startDate, businessDays = 1) {
+            let dueDate = new Date(startDate);
+            let daysAdded = 0;
+            
+            while (daysAdded < businessDays) {
+                dueDate.setDate(dueDate.getDate() + 1);
+                if (isBusinessDay(dueDate)) {
+                    daysAdded++;
+                }
+            }
+            
+            return dueDate;
+        }
+
+        function formatDateForDisplay(date, aggregation) {
+            const d = new Date(date);
+            switch(aggregation) {
+                case 'daily':
+                    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                case 'weekly':
+                    return `Week ${Math.ceil(d.getDate() / 7)} ${d.toLocaleDateString('en-US', { month: 'short' })}`;
+                case 'monthly':
+                    return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+                case 'quarterly':
+                    const quarter = Math.floor(d.getMonth() / 3) + 1;
+                    return `Q${quarter} ${d.getFullYear()}`;
+                case 'yearly':
+                    return d.getFullYear().toString();
+                default:
+                    return d.toLocaleDateString();
+            }
+        }
+
+        function getTimePeriod(date, aggregation) {
+            const d = new Date(date);
+            d.setHours(0, 0, 0, 0);
+            
+            switch(aggregation) {
+                case 'daily':
+                    return d.toISOString().split('T')[0];
+                case 'weekly':
+                    d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+                    const yearStart = new Date(d.getFullYear(), 0, 1);
+                    const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+                    return `${d.getFullYear()}-W${weekNo.toString().padStart(2, '0')}`;
+                case 'monthly':
+                    return `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}`;
+                case 'quarterly':
+                    const quarter = Math.floor(d.getMonth() / 3) + 1;
+                    return `${d.getFullYear()}-Q${quarter}`;
+                case 'yearly':
+                    return d.getFullYear().toString();
+                default:
+                    return d.toISOString().split('T')[0];
+            }
+        }
+
+        function isCostSheetJob(jobCategory) {
+            return jobCategory && jobCategory.toString().toUpperCase().includes('COST_SHEET_CREATION');
+        }
+
+        function getKPILevel(onTimeRate) {
+            if (onTimeRate > 97) return 5;
+            if (onTimeRate > 95) return 4;
+            if (onTimeRate > 90) return 3;
+            if (onTimeRate > 80) return 2;
+            if (onTimeRate > 70) return 1;
+            return 0;
+        }
+
+        function getPerformanceText(onTimeRate) {
+            if (onTimeRate > 97) return "Star Performer";
+            if (onTimeRate > 95) return "Excellent";
+            if (onTimeRate > 90) return "Good";
+            if (onTimeRate > 80) return "Needs Improvement";
+            if (onTimeRate > 70) return "Bad";
+            return "Very Bad";
+        }
+
+        function getPerformanceBadgeClass(onTimeRate) {
+            if (onTimeRate > 97) return "performance-star";
+            if (onTimeRate > 95) return "performance-excellent";
+            if (onTimeRate > 90) return "performance-good";
+            if (onTimeRate > 80) return "performance-needs-improvement";
+            if (onTimeRate > 70) return "performance-bad";
+            return "performance-very-bad";
+        }
+
+        function getKPILevelBadgeClass(level) {
+            return `badge-level-${level}`;
+        }
+
+        function formatLeadTime(businessDays) {
+            if (businessDays < 1) {
+                return businessDays.toFixed(1) + ' days';
+            }
+            return businessDays.toFixed(1) + ' days';
+        }
+
+        // Process the Excel data
+        function processData(data) {
+            const headers = data[0];
+            
+            // Find column indices
+            const jobIdIndex = headers.indexOf('JobID');
+            const jobStatusIndex = headers.indexOf('JobStatus');
+            const assignedToIndex = headers.indexOf('AssignedTo');
+            const jobSentTimeIndex = headers.indexOf('JobSentTime');
+            const completingDateTimeIndex = headers.indexOf('CompletingDateTime');
+            const jobCategoryIndex = headers.findIndex(h => 
+                h && h.toString().toLowerCase().includes('category')
+            );
+            const customerIndex = headers.findIndex(h => 
+                h && h.toString().toLowerCase().includes('customer')
+            );
+            
+            if (jobStatusIndex === -1 || assignedToIndex === -1 || 
+                jobSentTimeIndex === -1 || completingDateTimeIndex === -1) {
+                alert('Required columns not found in the Excel file.');
+                return;
+            }
+            
+            const rows = data.slice(1);
+            const summary = {};
+            const trendData = {};
+            
+            let totalJobs = 0;
+            let completedJobs = 0;
+            let onTimeJobs = 0;
+            let lateJobs = 0;
+            let totalLeadTime = 0;
+            
+            // Find min and max dates for date range initialization
+            let minDate = null;
+            let maxDate = null;
+            
+            rows.forEach(row => {
+                if (!row[jobIdIndex]) return;
+                
+                const jobSentTime = row[jobSentTimeIndex];
+                if (jobSentTime) {
+                    const sentDate = new Date(jobSentTime);
+                    if (!minDate || sentDate < minDate) minDate = new Date(sentDate);
+                    if (!maxDate || sentDate > maxDate) maxDate = new Date(sentDate);
+                }
+            });
+            
+            // Set initial date range based on data
+            if (minDate && maxDate) {
+                startDate.value = minDate.toISOString().split('T')[0];
+                endDate.value = maxDate.toISOString().split('T')[0];
+            }
+            
+            rows.forEach(row => {
+                if (!row[jobIdIndex]) return;
+                
+                totalJobs++;
+                const jobStatus = row[jobStatusIndex];
+                const assignedTo = row[assignedToIndex];
+                const jobSentTime = row[jobSentTimeIndex];
+                const completingDateTime = row[completingDateTimeIndex];
+                const jobCategory = jobCategoryIndex !== -1 ? row[jobCategoryIndex] : '';
+                const customer = customerIndex !== -1 ? row[customerIndex] : '';
+                
+                // Determine lead time requirement
+                const isCostSheet = isCostSheetJob(jobCategory);
+                const requiredBusinessDays = isCostSheet ? 2 : 1;
+                
+                if (jobStatus === 'COMPLETED' && assignedTo) {
+                    completedJobs++;
+                    
+                    if (!summary[assignedTo]) {
+                        summary[assignedTo] = {
+                            completed: 0,
+                            onTime: 0,
+                            totalLeadTime: 0,
+                            customer: customer
+                        };
+                    }
+                    
+                    const sentTime = new Date(jobSentTime);
+                    const completeTime = new Date(completingDateTime);
+                    const timePeriod = getTimePeriod(sentTime, 'weekly');
+                    
+                    if (!trendData[assignedTo]) {
+                        trendData[assignedTo] = {};
+                    }
+                    if (!trendData[assignedTo][timePeriod]) {
+                        trendData[assignedTo][timePeriod] = {
+                            completed: 0,
+                            onTime: 0,
+                            totalLeadTime: 0
+                        };
+                    }
+                    
+                    const businessDays = getBusinessDaysCount(sentTime, completeTime);
+                    totalLeadTime += businessDays;
+                    
+                    summary[assignedTo].completed++;
+                    summary[assignedTo].totalLeadTime += businessDays;
+                    trendData[assignedTo][timePeriod].completed++;
+                    trendData[assignedTo][timePeriod].totalLeadTime += businessDays;
+                    
+                    const dueDate = calculateDueDate(sentTime, requiredBusinessDays);
+                    
+                    if (completeTime <= dueDate) {
+                        summary[assignedTo].onTime++;
+                        trendData[assignedTo][timePeriod].onTime++;
+                        onTimeJobs++;
+                    } else {
+                        lateJobs++;
+                    }
+                }
+            });
+            
+            processedData = {
+                summary,
+                trendData,
+                totalJobs,
+                completedJobs,
+                onTimeJobs,
+                lateJobs,
+                totalLeadTime,
+                minDate,
+                maxDate
+            };
+            
+            updateDashboard();
+        }
+
+        function updateDashboard() {
+            if (!processedData) return;
+            
+            const filteredData = applyFilters(processedData);
+            updateKPICards(filteredData);
+            generateSummaryTable(filteredData.summary);
+            generateCharts(filteredData);
+            generateCombinedTrendChart(filteredData.trendData);
+        }
+
+        function applyFilters(data) {
+            // Apply date range filter to summary data
+            const startDateValue = startDate.value ? new Date(startDate.value) : null;
+            const endDateValue = endDate.value ? new Date(endDate.value) : null;
+            
+            // If no date range is set, return original data
+            if (!startDateValue || !endDateValue) {
+                return data;
+            }
+            
+            // Filter the data based on date range
+            const filteredSummary = {};
+            const filteredTrendData = {};
+            
+            let totalJobs = 0;
+            let completedJobs = 0;
+            let onTimeJobs = 0;
+            let lateJobs = 0;
+            let totalLeadTime = 0;
+            
+            // Re-process the raw data with date filters
+            const headers = rawData[0];
+            const jobIdIndex = headers.indexOf('JobID');
+            const jobStatusIndex = headers.indexOf('JobStatus');
+            const assignedToIndex = headers.indexOf('AssignedTo');
+            const jobSentTimeIndex = headers.indexOf('JobSentTime');
+            const completingDateTimeIndex = headers.indexOf('CompletingDateTime');
+            const jobCategoryIndex = headers.findIndex(h => 
+                h && h.toString().toLowerCase().includes('category')
+            );
+            
+            const rows = rawData.slice(1);
+            
+            rows.forEach(row => {
+                if (!row[jobIdIndex]) return;
+                
+                const jobSentTime = new Date(row[jobSentTimeIndex]);
+                
+                // Check if job is within date range
+                if (jobSentTime < startDateValue || jobSentTime > endDateValue) {
+                    return;
+                }
+                
+                totalJobs++;
+                const jobStatus = row[jobStatusIndex];
+                const assignedTo = row[assignedToIndex];
+                const completingDateTime = row[completingDateTimeIndex];
+                const jobCategory = jobCategoryIndex !== -1 ? row[jobCategoryIndex] : '';
+                
+                // Determine lead time requirement
+                const isCostSheet = isCostSheetJob(jobCategory);
+                const requiredBusinessDays = isCostSheet ? 2 : 1;
+                
+                if (jobStatus === 'COMPLETED' && assignedTo) {
+                    completedJobs++;
+                    
+                    if (!filteredSummary[assignedTo]) {
+                        filteredSummary[assignedTo] = {
+                            completed: 0,
+                            onTime: 0,
+                            totalLeadTime: 0
+                        };
+                    }
+                    
+                    const completeTime = new Date(completingDateTime);
+                    const timePeriod = getTimePeriod(jobSentTime, timeAggregation.value);
+                    
+                    if (!filteredTrendData[assignedTo]) {
+                        filteredTrendData[assignedTo] = {};
+                    }
+                    if (!filteredTrendData[assignedTo][timePeriod]) {
+                        filteredTrendData[assignedTo][timePeriod] = {
+                            completed: 0,
+                            onTime: 0,
+                            totalLeadTime: 0
+                        };
+                    }
+                    
+                    const businessDays = getBusinessDaysCount(jobSentTime, completeTime);
+                    totalLeadTime += businessDays;
+                    
+                    filteredSummary[assignedTo].completed++;
+                    filteredSummary[assignedTo].totalLeadTime += businessDays;
+                    filteredTrendData[assignedTo][timePeriod].completed++;
+                    filteredTrendData[assignedTo][timePeriod].totalLeadTime += businessDays;
+                    
+                    const dueDate = calculateDueDate(jobSentTime, requiredBusinessDays);
+                    
+                    if (completeTime <= dueDate) {
+                        filteredSummary[assignedTo].onTime++;
+                        filteredTrendData[assignedTo][timePeriod].onTime++;
+                        onTimeJobs++;
+                    } else {
+                        lateJobs++;
+                    }
+                }
+            });
+            
+            return {
+                summary: filteredSummary,
+                trendData: filteredTrendData,
+                totalJobs,
+                completedJobs,
+                onTimeJobs,
+                lateJobs,
+                totalLeadTime
+            };
+        }
+
+        function updateKPICards(data) {
+            totalJobsEl.textContent = data.totalJobs.toLocaleString();
+            completedJobsEl.textContent = data.completedJobs.toLocaleString();
+            onTimeJobsEl.textContent = data.onTimeJobs.toLocaleString();
+            lateJobsEl.textContent = data.lateJobs.toLocaleString();
+            
+            const onTimeRate = data.completedJobs > 0 ? (data.onTimeJobs / data.completedJobs * 100) : 0;
+            onTimeRateEl.textContent = onTimeRate.toFixed(1) + '%';
+            
+            const avgLeadTime = data.completedJobs > 0 ? (data.totalLeadTime / data.completedJobs) : 0;
+            avgLeadTimeEl.textContent = formatLeadTime(avgLeadTime);
+        }
+
+        function generateSummaryTable(summary) {
+            summaryTableBody.innerHTML = '';
+            
+            const summaryArray = Object.entries(summary).map(([merchant, data]) => {
+                const onTimeRate = data.completed > 0 ? (data.onTime / data.completed * 100) : 0;
+                const avgLeadTime = data.completed > 0 ? (data.totalLeadTime / data.completed) : 0;
+                const kpiLevel = getKPILevel(onTimeRate);
+                const performanceText = getPerformanceText(onTimeRate);
+                const performanceClass = getPerformanceBadgeClass(onTimeRate);
+                const kpiLevelClass = getKPILevelBadgeClass(kpiLevel);
+                
+                return {
+                    merchant,
+                    completed: data.completed,
+                    onTime: data.onTime,
+                    late: data.completed - data.onTime,
+                    onTimeRate,
+                    avgLeadTime,
+                    kpiLevel,
+                    performanceText,
+                    performanceClass,
+                    kpiLevelClass
+                };
+            }).sort((a, b) => b.onTimeRate - a.onTimeRate);
+            
+            summaryArray.forEach(item => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${item.merchant}</td>
+                    <td>${item.completed}</td>
+                    <td>${item.onTime}</td>
+                    <td>${item.late}</td>
+                    <td>${item.onTimeRate.toFixed(1)}%</td>
+                    <td>${formatLeadTime(item.avgLeadTime)}</td>
+                    <td><span class="badge ${item.kpiLevelClass}">Level ${item.kpiLevel}</span></td>
+                    <td><span class="badge ${item.performanceClass}">${item.performanceText}</span></td>
+                `;
+                
+                summaryTableBody.appendChild(row);
+            });
+        }
+
+        function generateCharts(data) {
+            if (statusChart) statusChart.destroy();
+            if (performanceChart) performanceChart.destroy();
+            
+            // Status Chart
+            const statusCtx = document.getElementById('statusChart').getContext('2d');
+            statusChart = new Chart(statusCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['On-Time', 'Late', 'Other Status'],
+                    datasets: [{
+                        data: [data.onTimeJobs, data.lateJobs, data.completedJobs - data.onTimeJobs - data.lateJobs],
+                        backgroundColor: ['#27ae60', '#e74c3c', '#95a5a6'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+            
+            // Performance Chart
+            const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+            const topPerformers = Object.entries(data.summary)
+                .sort((a, b) => b[1].completed - a[1].completed)
+                .slice(0, 8);
+            
+            const labels = topPerformers.map(([name]) => name);
+            const onTimeRates = topPerformers.map(([_, data]) => 
+                data.completed > 0 ? (data.onTime / data.completed * 100) : 0
+            );
+            
+            performanceChart = new Chart(performanceCtx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'On-Time Rate (%)',
+                        data: onTimeRates,
+                        backgroundColor: '#3498db',
+                        borderColor: '#2980b9',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: { display: true, text: 'On-Time Rate (%)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function generateCombinedTrendChart(trendData) {
+            if (combinedTrendChart) combinedTrendChart.destroy();
+            
+            const selectedMetric = trendMetric.value;
+            const aggregation = timeAggregation.value;
+            const topCount = topMerchants.value === 'all' ? 1000 : parseInt(topMerchants.value);
+            const chartTypeValue = chartType.value;
+            
+            // Get top merchants based on selected metric
+            const merchants = Object.keys(trendData)
+                .sort((a, b) => {
+                    const aData = trendData[a];
+                    const bData = trendData[b];
+                    const aTotal = Object.values(aData).reduce((sum, period) => sum + period.completed, 0);
+                    const bTotal = Object.values(bData).reduce((sum, period) => sum + period.completed, 0);
+                    return bTotal - aTotal;
+                })
+                .slice(0, topCount);
+            
+            const allPeriods = new Set();
+            merchants.forEach(merchant => {
+                Object.keys(trendData[merchant]).forEach(period => allPeriods.add(period));
+            });
+            
+            const sortedPeriods = Array.from(allPeriods).sort();
+            
+            // Format periods for display
+            const displayPeriods = sortedPeriods.map(period => {
+                // Convert period to date for formatting
+                let date;
+                if (period.includes('W')) {
+                    // Weekly format: 2024-W01
+                    const [year, week] = period.split('-W');
+                    date = new Date(year, 0, 1 + (week - 1) * 7);
+                } else if (period.includes('Q')) {
+                    // Quarterly format: 2024-Q1
+                    const [year, quarter] = period.split('-Q');
+                    date = new Date(year, (quarter - 1) * 3, 1);
+                } else if (period.includes('-')) {
+                    // Monthly format: 2024-01
+                    const [year, month] = period.split('-');
+                    date = new Date(year, month - 1, 1);
+                } else {
+                    // Yearly format: 2024
+                    date = new Date(period, 0, 1);
+                }
+                return formatDateForDisplay(date, aggregation);
+            });
+            
+            // Assign colors to merchants
+            merchants.forEach((merchant, index) => {
+                merchantColors[merchant] = colorPalette[index % colorPalette.length];
+            });
+            
+            const datasets = merchants.map(merchant => {
+                const periodData = sortedPeriods.map(period => {
+                    const periodInfo = trendData[merchant][period];
+                    if (!periodInfo || periodInfo.completed === 0) return null;
+                    
+                    switch(selectedMetric) {
+                        case 'on_time_rate':
+                            return (periodInfo.onTime / periodInfo.completed) * 100;
+                        case 'completion_volume':
+                            return periodInfo.completed;
+                        case 'lead_time':
+                            return periodInfo.totalLeadTime / periodInfo.completed;
+                        case 'efficiency':
+                            const onTimeRate = (periodInfo.onTime / periodInfo.completed) * 100;
+                            const avgLeadTime = periodInfo.totalLeadTime / periodInfo.completed;
+                            return onTimeRate / (avgLeadTime || 1);
+                        default:
+                            return (periodInfo.onTime / periodInfo.completed) * 100;
+                    }
+                });
+                
+                const baseConfig = {
+                    label: merchant,
+                    data: periodData,
+                    borderColor: merchantColors[merchant],
+                    backgroundColor: merchantColors[merchant] + '40',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointHoverRadius: 8,
+                    pointBackgroundColor: merchantColors[merchant],
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2
+                };
+                
+                if (chartTypeValue === 'line') {
+                    return { ...baseConfig, fill: false };
+                } else if (chartTypeValue === 'bar') {
+                    return { 
+                        ...baseConfig, 
+                        type: 'bar',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        borderSkipped: false
+                    };
+                } else if (chartTypeValue === 'scatter') {
+                    return { 
+                        ...baseConfig, 
+                        type: 'scatter',
+                        showLine: false,
+                        pointRadius: 6
+                    };
+                } else if (chartTypeValue === 'surface') {
+                    return { 
+                        ...baseConfig, 
+                        type: 'line',
+                        fill: true,
+                        backgroundColor: merchantColors[merchant] + '80'
+                    };
+                } else if (chartTypeValue === 'radar') {
+                    return { 
+                        ...baseConfig, 
+                        type: 'radar',
+                        fill: true,
+                        backgroundColor: merchantColors[merchant] + '40'
+                    };
+                }
+                
+                return baseConfig;
+            });
+            
+            const trendCtx = document.getElementById('combinedTrendChart').getContext('2d');
+            combinedTrendChart = new Chart(trendCtx, {
+                type: chartTypeValue === 'bar' ? 'bar' : 
+                      chartTypeValue === 'scatter' ? 'scatter' :
+                      chartTypeValue === 'radar' ? 'radar' : 'line',
+                data: {
+                    labels: displayPeriods,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'nearest',
+                        intersect: false
+                    },
+                    scales: chartTypeValue === 'radar' ? {} : {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: getYAxisLabel(selectedMetric),
+                                font: { weight: 'bold' }
+                            },
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Time Period',
+                                font: { weight: 'bold' }
+                            },
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20,
+                                font: { size: 11 }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255,255,255,0.95)',
+                            titleColor: '#333',
+                            bodyColor: '#333',
+                            borderColor: '#ddd',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.raw;
+                                    const suffix = getValueSuffix(selectedMetric);
+                                    return `${context.dataset.label}: ${value?.toFixed(1) || 'N/A'}${suffix}`;
+                                }
+                            }
+                        }
+                    },
+                    onHover: (event, chartElements) => {
+                        const chart = combinedTrendChart;
+                        if (chartElements.length > 0) {
+                            const datasetIndex = chartElements[0].datasetIndex;
+                            chart.data.datasets.forEach((dataset, i) => {
+                                dataset.borderWidth = i === datasetIndex ? 4 : 2;
+                                dataset.pointRadius = i === datasetIndex ? 6 : 3;
+                                const alpha = i === datasetIndex ? '80' : '20';
+                                dataset.backgroundColor = merchantColors[dataset.label] + alpha;
+                            });
+                            chart.update('none');
+                        } else {
+                            // Reset all to normal when not hovering
+                            chart.data.datasets.forEach((dataset, i) => {
+                                dataset.borderWidth = 3;
+                                dataset.pointRadius = 4;
+                                dataset.backgroundColor = merchantColors[dataset.label] + '40';
+                            });
+                            chart.update('none');
+                        }
+                    }
+                }
+            });
+        }
+
+        function getYAxisLabel(metric) {
+            switch(metric) {
+                case 'on_time_rate': return 'On-Time Rate (%)';
+                case 'completion_volume': return 'Number of Jobs';
+                case 'lead_time': return 'Average Lead Time (Days)';
+                case 'efficiency': return 'Efficiency Score';
+                default: return 'Percentage (%)';
+            }
+        }
+
+        function getValueSuffix(metric) {
+            switch(metric) {
+                case 'on_time_rate': return '%';
+                case 'completion_volume': return ' jobs';
+                case 'lead_time': return ' days';
+                case 'efficiency': return '';
+                default: return '%';
+            }
+        }
+
+        function downloadExcelReport() {
+            const wb = XLSX.utils.book_new();
+            const summaryData = [[
+                'Merchant', 'Completed Jobs', 'On-Time', 'Late', 
+                'On-Time Rate', 'Average Lead Time', 'KPI Level', 'Performance'
+            ]];
+            
+            const rows = summaryTableBody.querySelectorAll('tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length >= 8) {
+                    summaryData.push([
+                        cells[0].textContent,
+                        cells[1].textContent,
+                        cells[2].textContent,
+                        cells[3].textContent,
+                        cells[4].textContent,
+                        cells[5].textContent,
+                        cells[6].textContent.replace('Level ', ''),
+                        cells[7].textContent
+                    ]);
+                }
+            });
+            
+            const ws = XLSX.utils.aoa_to_sheet(summaryData);
+            XLSX.utils.book_append_sheet(wb, ws, 'Performance Summary');
+            XLSX.writeFile(wb, 'COE_Performance_Summary.xlsx');
+        }
+
+        function resetDashboard() {
+            fileInput.value = '';
+            dashboard.style.display = 'none';
+            
+            totalJobsEl.textContent = '0';
+            completedJobsEl.textContent = '0';
+            onTimeJobsEl.textContent = '0';
+            lateJobsEl.textContent = '0';
+            onTimeRateEl.textContent = '0%';
+            avgLeadTimeEl.textContent = '0';
+            
+            summaryTableBody.innerHTML = '';
+            
+            if (statusChart) statusChart.destroy();
+            if (performanceChart) performanceChart.destroy();
+            if (combinedTrendChart) combinedTrendChart.destroy();
+            
+            processedData = null;
+            rawData = null;
+            merchantColors = {};
+        }
+    </script>
+</body>
+</html>
