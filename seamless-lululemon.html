@@ -7,111 +7,331 @@
     <title>Seamless Lululemon</title>
     <link rel="stylesheet" href="popup_styles.css">
     <script src="pupup_script.js"></script>
+    <style>
+        /* Tables Container */
+        .tables-container {
+            display: flex;
+            gap: 2%;
+            margin-bottom: 40px;
+            margin-left: 10px;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+
+        .table-section {
+            flex: 1;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 5px;
+            padding-top: 5px;
+        }
+
+        .table-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Brand headers */
+        .brand-header {
+            background-color: NONE;
+            color: black;
+            padding: 1px;
+            margin: 1px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        /* Copy email functionality */
+        .copy-icon {
+            cursor: pointer;
+            color: #0066cc;
+            text-decoration: underline;
+        }
+
+        .copy-icon:hover {
+            color: #004499;
+        }
+
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .tables-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <header>
-        <div class="box1">
-            <center>
-                <h2>Seamless Lululemon</h2>
-            </center>
-        </div>
-        <div class="box2">
-            <table class="table_head">
-                <tr>
-                    <!-- Use rowspan to span over two rows for 'Approver:' -->
-                    <td>Approver:</td>
-                    <td>Ravindri Gunasekara</td>
-                </tr>
-                <tr>
-                    <td>Bulk YY Required</td>
-                    <td><Strong>Yarn & other trims - </Strong> Bulk YY required. <br>
-                       <Strong>Fabric - </Strong> Bulk YY not required. Will be proceed with net consumption.
-                    </td>
-                </tr>
-                <tr>
-                    <td>PE threads</td>
-                    <td>Required</td>
-                </tr>
-                <tr>
-                    <td>Mailto: </td>
-                    <td>COE Procurement <br> Seamless Purchase Officers</td>
-                </tr>
-                <tr>
-                    <td>CC: </td>
-                    <td style="cursor: pointer;">
-                        <span class="copy-icon" id="copy-icon">&#x1F4CB; Copy Emails</span>
-                        <span style="display:none" class="email">
-                            dileepad@inqube.com; 
-                            yasinthas@inqube.com; 
-                            indrajithj@inqube.com; 
-                            pathump@inqube.com; 
-                            shaminii@inqube.com;
-                            nirodhad @inqube.com;
-                            ravindrig@inqube.com;
-                            dimatha@inqube.com;
-                        </span>
-                    </td>
-                </tr>
-            </table>
+        <div class="tables-container">
+            <div class="table-section">
+                <!-- LULULEMON ACCOUNT STYLES -->
+                <h3 class="brand-header">Lulu</h3>
+                <table>
+                    <tr>
+                        <td>Approver:</td>
+                        <td>Ravindri Gunasekara</td>
+                    </tr>
+                    <tr>
+                        <td>Bulk YY Required</td>
+                        <td><strong>Yarn & other trims - </strong> Bulk YY required. <br>
+                            <strong>Fabric - </strong> Bulk YY not required. Will be proceed with net consumption.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>PE threads</td>
+                        <td>Required</td>
+                    </tr>
+                    <tr>
+                        <td>Mailto: </td>
+                        <td>COE Procurement</td>
+                    </tr>
+                    <tr>
+                        <td>CC: </td>
+                        <td style="cursor: pointer;">
+                            <span class="copy-icon" id="copy-icon-lulu">&#x1F4CB; Copy Emails</span>
+                            <span style="display:none" class="email">
+                                nirodhad@inqube.com;
+                                ravindrig@inqube.com;
+                                dimatha@inqube.com
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="table-section">
+                <!-- SEAMLESS ACCOUNT STYLES -->
+                <h3 class="brand-header">EK</h3>
+                <table>
+                    <tr>
+                        <td>Approver:</td>
+                        <td>Dileepa De Silva</td>
+                    </tr>
+                    <tr>
+                        <td>Bulk YY Required</td>
+                        <td><strong>Yarn & other trims - </strong> Bulk YY required. <br>
+                            <strong>Fabric - </strong> Bulk YY not required. Will be proceed with net consumption.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>PE threads</td>
+                        <td>Required</td>
+                    </tr>
+                    <tr>
+                        <td>Mailto: </td>
+                        <td>Seamless Purchase Officers</td>
+                    </tr>
+                    <tr>
+                        <td>CC: </td>
+                        <td style="cursor: pointer;">
+                            <span class="copy-icon" id="copy-icon-ek">&#x1F4CB; Copy Emails</span>
+                            <span style="display:none" class="email">
+                                dileepad@inqube.com;
+                                yasinthas@inqube.com;
+                                indrajithj@inqube.com;
+                                pathump@inqube.com;
+                                shaminii@inqube.com
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </header>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Sample Type</th>
-                <th>Materials to be Order</th>
-                <th>Waited Materials</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Bulk</td>
-                <td>All RMs</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Top Sample</td>
-                <td>All RMs</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>PPZ Sample</td>
-                <td>All RMs</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>PRINT TEST</td>
-                <td>All RMs</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>PP Sample</td>
-                <td>All RMs</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Wash Sample</td>
-                <td>All RMs</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Testing Sample</td>
-                <td>Yarn and sawing RMs</td>
-                <td>Packing RMs</td>
-            </tr>
-            <tr>
-                <td>Testing Sample - RM</td>
-                <td>Only Yarn</td>
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="tables-container">
+        <div class="table-section">
+            <!-- LULULEMON ACCOUNT STYLES -->
+            <h3 class="brand-header">Lulu</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sample Type</th>
+                        <th>Materials to be Order</th>
+                        <th>Waited Materials</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>SOR Sample</td>
+                        <td>All Materials same as Bulk</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>EM Sample</td>
+                        <td>All Materials same as Bulk</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>TOP Sample</td>
+                        <td>All Materials same as Bulk</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>PP Sample</td>
+                        <td>All Materials same as Bulk</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Shipment Sample</td>
+                        <td>All Materials same as Bulk</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>BV and Internal Wash Samples</td>
+                        <td>All Materials same as Bulk</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Chase</td>
+                        <td>All Materials same as Bulk</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Bulk</td>
+                        <td>All Materials same as Bulk</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Testing Sample</td>
+                        <td>All Materials same as Bulk</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Mini Bulk</td>
+                        <td>All Materials same as Bulk</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>FAST TURN</td>
+                        <td>All Materials same as Bulk</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>GB TESTING</td>
+                        <td>All Materials same as Bulk</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Pilot</td>
+                        <td>Yarn, Fabric & All Sewing Trims</td>
+                        <td>All Packing Trims</td>
+                    </tr>
+                    <tr>
+                        <td>PE Sample</td>
+                        <td>Yarn, Fabric & All Sewing Trims</td>
+                        <td>All Packing Trims</td>
+                    </tr>
+                    <tr>
+                        <td>Daily Wash</td>
+                        <td>Yarn, Fabric & All Sewing Trims</td>
+                        <td>All Packing Trims</td>
+                    </tr>
+                    <tr>
+                        <td>PPZ Sample</td>
+                        <td>Yarn, Fabric & All Sewing Trims</td>
+                        <td>All Packing Trims</td>
+                    </tr>
+                    <tr>
+                        <td>Wash Sample</td>
+                        <td>Yarn, Fabric & All Sewing Trims</td>
+                        <td>All Packing Trims</td>
+                    </tr>
+                    <tr>
+                        <td>Training Cut</td>
+                        <td>Yarn, Fabric & All Sewing Trims</td>
+                        <td>All Packing Trims</td>
+                    </tr>
+                    <tr>
+                        <td>ADD Samples</td>
+                        <td>Yarn, Fabric & All Sewing Trims</td>
+                        <td>All Packing Trims</td>
+                    </tr>
+                    <tr>
+                        <td>Size Set</td>
+                        <td>Yarn, Fabric & All Sewing Trims</td>
+                        <td>All Packing Trims</td>
+                    </tr>
+                    <tr>
+                        <td>First Bulk Submission</td>
+                        <td>Only Fabric under Subcategory</td>
+                        <td>Fabric under different subcategories & All Sewing & Packing Trims</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+        <div class="table-section">
+            <h3 class="brand-header">EK</h3>
+            <!-- SEAMLESS ACCOUNT STYLES -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sample Type</th>
+                        <th>Materials to be Order</th>
+                        <th>Waited Materials</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Bulk</td>
+                        <td>All RMs</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Top Sample</td>
+                        <td>All RMs</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>PPZ Sample</td>
+                        <td>All RMs</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>PRINT TEST</td>
+                        <td>All RMs</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>PP Sample</td>
+                        <td>All RMs</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Wash Sample</td>
+                        <td>All RMs</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Testing Sample</td>
+                        <td>Yarn and sawing RMs</td>
+                        <td>Packing RMs</td>
+                    </tr>
+                    <tr>
+                        <td>Testing Sample - RM</td>
+                        <td>Only Yarn</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <footer>
-        Last Updated: 2025 Oct 15<br>
+        Last Updated: 2025 Oct 24<br>
     </footer>
+
+
 </body>
 
 </html>
