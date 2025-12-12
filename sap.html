@@ -399,7 +399,147 @@
             animation: spin 1s linear infinite;
             margin: 0 auto 1rem;
         }
+/* Grid container for T-Code blocks */
+    .tcode-grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 25px;
+        margin: 30px 0;
+    }
 
+    /* Individual T-Code category block */
+    .tcode-category-block {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e2e8f0;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .tcode-category-block:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Category title */
+    .tcode-category-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #059669;
+        margin-bottom: 18px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+    }
+
+    .tcode-category-title::before {
+        content: "•";
+        color: #10b981;
+        margin-right: 10px;
+        font-size: 1.5rem;
+    }
+
+    /* Container for T-Code items */
+    .tcode-items-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    /* Each T-Code row */
+    .tcode-item-row {
+        display: flex;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .tcode-item-row:last-child {
+        border-bottom: none;
+    }
+
+    /* T-Code value styling - NOT BOLD */
+    .tcode-value {
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        font-size: 0.95rem;
+        color: #1e40af;
+        min-width: 130px;
+        font-weight: normal; /* Not bold */
+        padding: 4px 8px;
+        border-radius: 4px;
+        background: #f1f5f9;
+    }
+
+    /* Custom T-Code styling */
+    .custom-code {
+        color: #7c3aed;
+        background: #f3e8ff;
+    }
+
+    /* Standard T-Code styling */
+    .standard-code {
+        color: #059669;
+        background: #d1fae5;
+    }
+
+    /* Separator */
+    .tcode-separator {
+        margin: 0 12px;
+        color: #94a3b8;
+        font-weight: 300;
+        font-size: 1.2rem;
+    }
+
+    /* Description */
+    .tcode-description {
+        color: #475569;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        flex: 1;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .tcode-grid-container {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .tcode-item-row {
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .tcode-value {
+            min-width: 120px;
+        }
+        
+        .tcode-separator {
+            display: none;
+        }
+        
+        .tcode-description {
+            width: 100%;
+            margin-left: 0;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .tcode-category-block {
+            padding: 15px;
+        }
+        
+        .tcode-value {
+            font-size: 0.9rem;
+            min-width: 110px;
+        }
+        
+        .tcode-description {
+            font-size: 0.85rem;
+        }
+    }
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -457,7 +597,7 @@
 </head>
 
 <body>
-    <!-- Header -->
+      <!-- Header -->
     <header class="header">
         <div class="header-content">
             <div class="logo">
@@ -465,12 +605,58 @@
             </div>
             <nav>
                 <ul class="nav-menu">
-                    <li class="nav-item"><a href="index.html" class="nav-link"><i class="fa-solid fa-file-lines"></i> MRL-Directions</a></li>
-                    <li class="nav-item"><a href="sap.html" class="nav-link"><i class="fas fa-chart-bar"></i> SAP</a></li>
-                    <li class="nav-item"><a href="https://inqube.sharepoint.com/sites/COE" target="_blank" class="nav-link"><i class="fas fa-users"></i> Huddle</a></li>
-                    <li class="nav-item"><a href="" class="nav-link"><i class="fas fa-building"></i> Customers</a></li>
-                    <li class="nav-item"><a href="Split_Files_Date_Validator.html" class="nav-link"><i class="fa-solid fa-explosion"></i> DCL-Split</a></li>
-                    <li class="nav-item"><a href="sop.html" class="nav-link"><i class="fas fa-book"></i> SOP</a></li>
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">
+                            <i class="fa-solid fa-file-lines"></i> MRL-Directions
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="sap.html" class="nav-link">
+                            <i class="fas fa-chart-bar"></i> SAP
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle">
+                            <i class="fas fa-users"></i> Huddle
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="https://inqube.sharepoint.com/sites/COE?market=en-US" target="_blank" class="dropdown-link">
+                                    Huddle - Old
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://inqube.sharepoint.com/:x:/r/sites/COE/_layouts/15/Doc.aspx" target="_blank" class="dropdown-link">
+                                    Huddle - New
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="customers.html" class="nav-link">
+                            <i class="fas fa-building"></i> Customers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="Split_Files_Date_Validator.html" class="nav-link">
+                           <i class="fa-solid fa-explosion"></i> DCL-Split
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="sop.html" class="nav-link">
+                            <i class="fas fa-book"></i> SOP
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="coe-performance-dashboard-smf.html" class="nav-link">
+                            <i class="fa-solid fa-gauge"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="validations.html" class="nav-link active">
+                            <i class="fa-solid fa-check-double"></i> Validations
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -645,9 +831,207 @@
                 </section>
 
                 <section id="sap-t-codes-section">
-                    <h2 class="section-title">SAP T-Codes List</h2>
-                    <p style="text-align: center;">This will be available soon...</p>
-                </section>
+    <h2 class="section-title">SAP T-Codes List</h2>
+    
+    <div class="instructions">
+        <h3><i class="fas fa-info-circle"></i> About SAP T-Codes</h3>
+        <p>SAP Transaction Codes (T-Codes) are shortcuts that allow users to access specific SAP functions quickly.</p>
+    </div>
+
+    <!-- Container for all T-Code blocks -->
+    <div class="tcode-grid-container">
+        
+        <!-- RM Material Block -->
+        <div class="tcode-category-block">
+            <div class="tcode-category-title">RM Material</div>
+            <div class="tcode-items-container">
+                <div class="tcode-item-row">
+                    <span class="tcode-value">ZMMMATCRT</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">RM Creation</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value">ZMMMATSMNT</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">Color Size Assignment to RMs</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- COLOR MASTER TABLE Block -->
+        <div class="tcode-category-block">
+            <div class="tcode-category-title">COLOR MASTER TABLE</div>
+            <div class="tcode-items-container">
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZMMCLRMNT_N</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">Color card</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZMMCLRDSP_N</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">Color description</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SO Block -->
+        <div class="tcode-category-block">
+            <div class="tcode-category-title">SO (Sales Order)</div>
+            <div class="tcode-items-container">
+                <div class="tcode-item-row">
+                    <span class="tcode-value standard-code">VA01</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">Create New SO</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value standard-code">VA02</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">Edit SO</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value standard-code">VA03</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">View SO</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZPPBOMEXP</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">Color Wise YY chart</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZPPBOMALV</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">ALV Report</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZSDSOCRTOSL</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">Overshipment generate</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">zsdsdlstv</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">SO Download</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOM COPY COLOR MAPPING Block -->
+        <div class="tcode-category-block">
+            <div class="tcode-category-title">BOM COPY COLOR MAPPING</div>
+            <div class="tcode-items-container">
+                <div class="tcode-item-row">
+                    <span class="tcode-value standard-code">MM03</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">View FG details</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZPPBOMCMP</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">Compare FGs</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZMMGARCRT</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">Create FG</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZPPBOMALV</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">Download ALV report</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZMMGARSMNT</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">FG Color size maintenance</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZMMCLRASM</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">Color assign to FG</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Auto SO Block -->
+        <div class="tcode-category-block">
+            <div class="tcode-category-title">Auto SO</div>
+            <div class="tcode-items-container">
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZSDSOUPL</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">Auto SO Upload</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- MO Items Block -->
+        <div class="tcode-category-block">
+            <div class="tcode-category-title">MO Items</div>
+            <div class="tcode-items-container">
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZMMPKGRPT2</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">MO report</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZMMPKGCOLMST</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">MO item color table maintain Interface</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZMMPKGMST</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">MO Item Mapping Interface</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZMMMATSMNT</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">RM Color assignment</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZMMMATCRT</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">RM Creation</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- REPORTS Block -->
+        <div class="tcode-category-block">
+            <div class="tcode-category-title">REPORTS</div>
+            <div class="tcode-items-container">
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZPPBOMEXP</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">Color Wise YY chart</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZPPBOMALV</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">ALV Report</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZMMPKGRPT2</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">MO report</span>
+                </div>
+                <div class="tcode-item-row">
+                    <span class="tcode-value custom-code">ZMMSOMATRPT</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">SOMA</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="notification">
+        <i class="fas fa-lightbulb"></i> 
+        <strong>Tip:</strong> Standard SAP T-Codes (like VA01, VA02, VA03, MM03) are available in all SAP systems. Custom T-Codes (starting with Z or Y) are specific to this implementation.
+    </div>
+</section>
             </div>
         </main>
     </div>
