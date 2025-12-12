@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COE-Home - Validations</title>
+    <link rel="icon" href="free-30-instagram-stories-icons46_122593.ico" type="image/ico">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* CSS Overrides for validations page */
+        
+        /* Ensure regular links open in full width */
+        .customer-btn[href]:not([data-modal]) {
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Loading animation for full page loads */
+        .customer-btn.loading {
+            position: relative;
+        }
+        
+        .customer-btn.loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Override modal styles for this page */
+        .modal {
+            display: none !important;
+        }
+        
+        /* Ensure proper navigation for validation pages */
+        .nav-link[href*="validation"] {
+            color: #059669;
+            background: rgba(16, 185, 129, 0.1);
+            font-weight: 600;
+        }
+        
+        /* Full page content container */
+        .validation-container {
+            width: 100%;
+            height: 100%;
+            min-height: 100vh;
+        }
+        
+        /* Override any modal-specific styles that might interfere */
+        .customer-btn[href] {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Ensure smooth transitions for page loads */
+        .main-content {
+            transition: opacity 0.3s ease;
+        }
+        
+        .main-content.loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        /* Loading spinner for page transitions */
+        .page-loading {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+        
+        .page-loading.active {
+            display: block;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(16, 185, 129, 0.1);
+            border-top-color: #10b981;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Adjust grid for 2 columns layout */
+        .categories-grid {
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        @media (max-width: 1100px) {
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Custom colors for validation categories */
+        .wfx-validations .category-icon {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+        
+        .sap-validations .category-icon {
+            background: linear-gradient(135deg, #10b981, #047857);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-home"></i> COE-Home
+            </div>
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">
+                            <i class="fa-solid fa-file-lines"></i> MRL-Directions
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="sap.html" class="nav-link">
+                            <i class="fas fa-chart-bar"></i> SAP
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle">
+                            <i class="fas fa-users"></i> Huddle
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="https://inqube.sharepoint.com/sites/COE?market=en-US" target="_blank" class="dropdown-link">
+                                    Huddle - Old
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://inqube.sharepoint.com/:x:/r/sites/COE/_layouts/15/Doc.aspx" target="_blank" class="dropdown-link">
+                                    Huddle - New
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="customers.html" class="nav-link">
+                            <i class="fas fa-building"></i> Customers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="Split_Files_Date_Validator.html" class="nav-link">
+                           <i class="fa-solid fa-explosion"></i> DCL-Split
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="sop.html" class="nav-link">
+                            <i class="fas fa-book"></i> SOP
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="coe-performance-dashboard-smf.html" class="nav-link">
+                            <i class="fa-solid fa-gauge"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="validations.html" class="nav-link active">
+                            <i class="fa-solid fa-check-double"></i> Validations
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Loading Indicator -->
+    <div class="page-loading" id="pageLoading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <div class="dashboard-title">
+            <h1>Validation Tools</h1>
+            <p>Access all validation tools and resources in one centralized location</p>
+        </div>
+
+        <div class="categories-grid">
+            <!-- WFX Validations -->
+            <div class="category-card wfx-validations">
+                <div class="category-title">
+                    <div class="category-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h2>WFX Validations</h2>
+                </div>
+                <div class="customers-grid">
+                    <!-- Regular link - opens in full page -->
+                    <a href="PO-Wise-YY-Validation.html" class="customer-btn" id="poValidationLink">
+                        PO Wise YY Validation
+                        <div class="status-indicator"></div>
+                    </a>
+                    <!-- You can add more WFX validation links here -->
+                    <!--
+                    <a href="another-wfx-validation.html" class="customer-btn">
+                        Another WFX Validation
+                        <div class="status-indicator"></div>
+                    </a>
+                    -->
+                </div>
+            </div>
+
+            <!-- SAP Validations -->
+            <div class="category-card sap-validations">
+                <div class="category-title">
+                    <div class="category-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h2>SAP Validations</h2>
+                </div>
+                <div class="customers-grid">
+                    <!-- Regular link - opens in full page -->
+                    <a href="sap-validation.html" class="customer-btn">
+                        SAP Data Validation
+                        <div class="status-indicator"></div>
+                    </a>
+                    <!-- You can add more SAP validation links here -->
+                    <!--
+                    <a href="sap-reports-validation.html" class="customer-btn">
+                        SAP Reports Validation
+                        <div class="status-indicator"></div>
+                    </a>
+                    -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Page loading functionality
+        const pageLoading = document.getElementById('pageLoading');
+        const mainContent = document.getElementById('mainContent');
+        
+        // Handle regular links (full page loads)
+        document.querySelectorAll('.customer-btn[href]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Show loading spinner for better UX
+                pageLoading.classList.add('active');
+                mainContent.classList.add('loading');
+                
+                // Optional: Add slight delay for visual feedback
+                setTimeout(() => {
+                    pageLoading.classList.remove('active');
+                    mainContent.classList.remove('loading');
+                }, 500);
+                
+                // Allow default navigation to proceed
+                return true;
+            });
+        });
+        
+        // Add hover effects and animations
+        document.querySelectorAll('.customer-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                if (!this.classList.contains('disabled')) {
+                    this.style.transform = 'translateY(-3px) scale(1.02)';
+                }
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        });
+        
+        // Initialize tooltips for disabled buttons
+        document.querySelectorAll('.customer-btn.disabled').forEach(btn => {
+            btn.setAttribute('title', 'Coming Soon - Under Development');
+        });
+        
+        // Highlight active navigation
+        const currentPage = window.location.pathname.split('/').pop();
+        document.querySelectorAll('.nav-link').forEach(link => {
+            if (link.getAttribute('href') === currentPage || 
+                (link.getAttribute('href') === 'validations.html' && currentPage === '')) {
+                link.classList.add('active');
+            }
+        });
+        
+        // Add click animation for buttons
+        document.querySelectorAll('.customer-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (!this.classList.contains('disabled')) {
+                    // Add ripple effect
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = event.clientX - rect.left - size / 2;
+                    const y = event.clientY - rect.top - size / 2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        border-radius: 50%;
+                        background: rgba(255, 255, 255, 0.7);
+                        transform: scale(0);
+                        animation: ripple-animation 0.6s linear;
+                        width: ${size}px;
+                        height: ${size}px;
+                        top: ${y}px;
+                        left: ${x}px;
+                    `;
+                    
+                    this.appendChild(ripple);
+                    
+                    // Remove ripple after animation
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                }
+            });
+        });
+        
+        // Add CSS for ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple-animation {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
