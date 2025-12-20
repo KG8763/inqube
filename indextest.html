@@ -3,96 +3,1149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COE-Home Dynamic</title>
+    <title>COE-Home | MRL Guidelines Dashboard</title>
+    <meta name="description" content="Centralized MRL Guidelines Dashboard">
+    <meta name="keywords" content="MRL Guidelines, Dashboard, COE, Customers">
+    <meta name="author" content="COE Team">
+    
     <link rel="icon" href="free-30-instagram-stories-icons46_122593.ico" type="image/ico">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="stylestest.css">
+    
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#10b981 0%,#059669 100%);min-height:100vh;color:#333;}
-        .header{background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.2);padding:1rem 2rem;position:sticky;top:0;z-index:1000;box-shadow:0 4px 20px rgba(0,0,0,0.1);}
-        .header-content{display:flex;align-items:center;justify-content:space-between;max-width:1400px;margin:0 auto;}
-        .logo{display:flex;align-items:center;gap:1rem;font-size:1.8rem;font-weight:700;color:#059669;}
-        .logo i{font-size:2rem;background:linear-gradient(135deg,#10b981,#059669);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-        .nav-menu{display:flex;gap:2rem;list-style:none;}
-        .nav-item{position:relative;}
-        .nav-link{text-decoration:none;color:#64748b;font-weight:500;padding:0.5rem 1rem;border-radius:8px;transition:all 0.3s ease;position:relative;cursor:pointer;}
-        .nav-link:hover{color:#059669;background:rgba(16,185,129,0.1);transform:translateY(-2px);}
-        .main-content{max-width:1400px;margin:0 auto;padding:3rem 2rem;}
-        .dashboard-title{text-align:center;margin-bottom:3rem;}
-        .dashboard-title h1{font-size:3rem;font-weight:800;background:linear-gradient(135deg,#10b981,#059669);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:1rem;}
-        .dashboard-title p{font-size:1.2rem;color:rgba(255,255,255,0.8);max-width:600px;margin:0 auto;}
-        /* Responsive */
-        @media(max-width:768px){.header-content{flex-direction:column;gap:1rem;}.nav-menu{gap:1rem;}.dashboard-title h1{font-size:2rem;}.main-content{padding:2rem 1rem;}}
-        /* Loading Animation */
-        .loading{display:inline-block;width:20px;height:20px;border:3px solid rgba(255,255,255,0.3);border-radius:50%;border-top-color:#fff;animation:spin 1s ease-in-out infinite;}
-        @keyframes spin{to{transform:rotate(360deg);}}
+        /* Floating buttons auto-hide container */
+        .floating-buttons-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+            opacity: 0.3;
+            transition: opacity 0.5s ease;
+        }
+        
+        .floating-buttons-container:hover {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
+    <!-- Server Status Indicator -->
+    <div class="server-status">
+        <span class="status-dot online"></span>
+        <span class="server-online">Online</span>
+    </div>
+
+    <!-- Sync Status Message -->
+    <div class="sync-status hidden" id="syncStatus">
+        <i class="fas fa-sync-alt"></i> Syncing...
+    </div>
+
     <!-- Header -->
     <header class="header">
         <div class="header-content">
-            <div class="logo"><i class="fas fa-home"></i>COE Dashboard</div>
-            <ul class="nav-menu">
-                <li class="nav-item"><span class="nav-link" data-page="home">Home</span></li>
-                <li class="nav-item"><span class="nav-link" data-page="customers.html">Customers</span></li>
-                <li class="nav-item"><span class="nav-link" data-page="sap.html">SAP</span></li>
-                <li class="nav-item"><span class="nav-link" data-page="sop.html">SOP</span></li>
-            </ul>
+            <div class="logo">
+                <i class="fas fa-home"></i> COE-Home
+            </div>
+            <nav aria-label="Main Navigation">
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link active" aria-current="page">
+                            <i class="fa-solid fa-file-lines"></i> MRL-Directions
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="sap.html" class="nav-link">
+                            <i class="fas fa-chart-bar"></i> SAP
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle">
+                            <i class="fas fa-users"></i> Huddle
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="https://inqube.sharepoint.com/sites/COE?market=en-US" target="_blank" class="dropdown-link">
+                                    Huddle - Old
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://inqube.sharepoint.com/:x:/r/sites/COE/_layouts/15/Doc.aspx" target="_blank" class="dropdown-link">
+                                    Huddle - New
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="customers.html" class="nav-link">
+                            <i class="fas fa-building"></i> Customers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="Split_Files_Date_Validator.html" class="nav-link">
+                            <i class="fa-solid fa-explosion"></i> DCL-Split
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="sop.html" class="nav-link">
+                            <i class="fas fa-book"></i> SOP
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="coe-performance-dashboard-smf.html" class="nav-link">
+                            <i class="fa-solid fa-gauge"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="validations.html" class="nav-link">
+                            <i class="fa-solid fa-check-double"></i> Validations
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="main-content" id="main-content">
+    <main class="main-content">
         <div class="dashboard-title">
             <h1>MRL Guideline Dashboard</h1>
             <p>Access all your customers MRL guidelines and resources in one centralized location</p>
         </div>
-        <div id="page-content">
-            <!-- Dynamic content will be loaded here -->
+
+        <div class="categories-grid">
+            <!-- Global Customers -->
+            <div class="category-card normal-customers">
+                <div class="category-title">
+                    <div class="category-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h2>Global Customers</h2>
+                </div>
+                <div class="customers-grid">
+                    <a href="#" class="customer-btn" data-modal="lululemon">
+                        LULULEMON
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="decathlon">
+                        DECATHLON
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="vs-intimates">
+                        CLOVER VS - INTIMATES
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="skims">
+                        CLOVER SKIMS
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="vs-active">
+                        CLOVER VS - ACTIVE
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="honey-love">
+                        HONEYLOVE SCULPTWEAR INC
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn disabled">
+                        OLD NAVY
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="spanx">
+                        SPANX INC
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="wildhawk">
+                        WILDHAWK INC
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="tenxyou">
+                        TEN X YOU
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="athleta">
+                        ATHLETA INC
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="techstyle">
+                        TECHSTYLE (SAVAGE X)
+                        <div class="status-indicator"></div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Seamless Customers -->
+            <div class="category-card seamless-customers">
+                <div class="category-title">
+                    <div class="category-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h2>Seamless Customers</h2>
+                </div>
+                <div class="customers-grid">
+                    <a href="#" class="customer-btn" data-modal="seamless-gap">
+                        SEAMLESS GAP
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn disabled">
+                        SEAMLESS ARITZIA
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="seamless-cyc">
+                        SEAMLESS CYC DESIGN CORP
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="seamless-kuhl">
+                        SEAMLESS KUHL
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="seamless-old-navy">
+                        SEAMLESS OLD NAVY
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn disabled" data-modal="seamless-urban">
+                        SEAMLESS URBAN OUTFITTERS
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="seamless-company-tshirt">
+                        SEAMLESS COMPANY TSHIRT
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="seamless-ardent">
+                        SEAMLESS ARDENT
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="seamless-lululemon">
+                        SEAMLESS LULULEMON
+                        <div class="status-indicator"></div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- EB Accounts -->
+            <div class="category-card eb-accounts">
+                <div class="category-title">
+                    <div class="category-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h2>EB Accounts</h2>
+                </div>
+                <div class="customers-grid">
+                    <a href="#" class="customer-btn" data-modal="amazon">
+                        AMAZON
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="aritzia">
+                        ARITZIA
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="urban">
+                        URBAN OUTFITTERS
+                        <div class="status-indicator"></div>
+                    </a>
+                    <a href="#" class="customer-btn" data-modal="cyc">
+                        CYC DESIGN CORPORATION
+                        <div class="status-indicator"></div>
+                    </a>
+                </div>
+            </div>
         </div>
+
+        <!-- NOTIFICATION FORM SECTION -->
+        <section class="notification-section" id="notificationForm">
+            <div class="notification-header">
+                <div class="notification-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <h2>Notify Admin About MRL Direction Changes</h2>
+            </div>
+            
+            <p class="notification-subtitle">
+                Found changes in customer MRL directions? Use this form to notify the admin team immediately. 
+                This helps us keep all guidelines up-to-date and ensures accurate information for everyone.
+            </p>
+            
+            <form id="mrlChangeForm" class="notification-form">
+                <div class="form-group">
+                    <label class="form-label" for="customerName">
+                        Customer Name <span class="required">*</span>
+                    </label>
+                    <select class="form-control select" id="customerName" name="customerName" required>
+                        <option value="">Select a customer</option>
+                        <option value="LULULEMON">LULULEMON</option>
+                        <option value="DECATHLON">DECATHLON</option>
+                        <option value="CLOVER VS - INTIMATES">CLOVER VS - INTIMATES</option>
+                        <option value="CLOVER SKIMS">CLOVER SKIMS</option>
+                        <option value="CLOVER VS - ACTIVE">CLOVER VS - ACTIVE</option>
+                        <option value="HONEYLOVE SCULPTWEAR INC">HONEYLOVE SCULPTWEAR INC</option>
+                        <option value="SPANX INC">SPANX INC</option>
+                        <option value="WILDHAWK INC">WILDHAWK INC</option>
+                        <option value="TEN X YOU">TEN X YOU</option>
+                        <option value="ATHLETA INC">ATHLETA INC</option>
+                        <option value="TECHSTYLE (SAVAGE X)">TECHSTYLE (SAVAGE X)</option>
+                        <option value="SEAMLESS GAP">SEAMLESS GAP</option>
+                        <option value="SEAMLESS CYC DESIGN CORP">SEAMLESS CYC DESIGN CORP</option>
+                        <option value="SEAMLESS KUHL">SEAMLESS KUHL</option>
+                        <option value="SEAMLESS OLD NAVY">SEAMLESS OLD NAVY</option>
+                        <option value="SEAMLESS COMPANY TSHIRT">SEAMLESS COMPANY TSHIRT</option>
+                        <option value="SEAMLESS ARDENT">SEAMLESS ARDENT</option>
+                        <option value="SEAMLESS LULULEMON">SEAMLESS LULULEMON</option>
+                        <option value="AMAZON">AMAZON</option>
+                        <option value="ARITZIA">ARITZIA</option>
+                        <option value="URBAN OUTFITTERS">URBAN OUTFITTERS</option>
+                        <option value="CYC DESIGN CORPORATION">CYC DESIGN CORPORATION</option>
+                        <option value="other">Other (Please specify below)</option>
+                    </select>
+                    <div class="other-input-container" id="otherCustomerContainer">
+                        <input type="text" class="form-control" id="otherCustomerName" placeholder="Enter customer name">
+                        <div class="error-message" id="otherCustomerNameError">Please enter customer name</div>
+                    </div>
+                    <div class="error-message" id="customerNameError">Please select a customer</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="yourName">
+                        Your Name <span class="required">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="yourName" name="yourName" placeholder="Enter your full name" required>
+                    <div class="error-message" id="yourNameError">Please enter your name</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="yourEmail">
+                        Your Email <span class="required">*</span>
+                    </label>
+                    <input type="email" class="form-control" id="yourEmail" name="yourEmail" placeholder="Enter your email address" required>
+                    <div class="error-message" id="yourEmailError">Please enter a valid email address</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="changeType">
+                        Type of Change <span class="required">*</span>
+                    </label>
+                    <select class="form-control select" id="changeType" name="changeType" required>
+                        <option value="">Select change type</option>
+                        <option value="New MRL Guideline">New MRL Guideline</option>
+                        <option value="Updated Existing Guideline">Updated Existing Guideline</option>
+                        <option value="Error Correction">Error Correction</option>
+                        <option value="Discrepancy Found">Discrepancy Found</option>
+                        <option value="Additional Information">Additional Information</option>
+                    </select>
+                    <div class="error-message" id="changeTypeError">Please select a change type</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="priorityLevel">
+                        Priority Level <span class="required">*</span>
+                    </label>
+                    <select class="form-control select" id="priorityLevel" name="priorityLevel" required>
+                        <option value="">Select priority</option>
+                        <option value="Urgent - Critical impact">🚨 Urgent - Critical impact</option>
+                        <option value="High - Significant impact">⚠️ High - Significant impact</option>
+                        <option value="Medium - Moderate impact">🔄 Medium - Moderate impact</option>
+                        <option value="Low - Minor update">📋 Low - Minor update</option>
+                    </select>
+                    <div class="error-message" id="priorityLevelError">Please select a priority level</div>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label class="form-label" for="changeDescription">
+                        Change Description <span class="required">*</span>
+                    </label>
+                    <textarea class="form-control" id="changeDescription" name="changeDescription" 
+                              placeholder="Describe the MRL direction change in detail. Include specific sections, page numbers, old values, new values, and any supporting context..." 
+                              required></textarea>
+                    <div class="error-message" id="changeDescriptionError">Please describe the change</div>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label class="form-label" for="supportingDocs">
+                        Supporting Information
+                    </label>
+                    <input type="text" class="form-control" id="supportingDocs" name="supportingDocs" 
+                           placeholder="Links to documents, screenshots, or references (Google Drive, SharePoint, etc.)">
+                </div>
+                
+                <div class="form-footer">
+                    <button type="reset" class="btn btn-secondary">
+                        <i class="fas fa-redo"></i> Clear Form
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Submit Notification
+                    </button>
+                </div>
+            </form>
+        </section>
     </main>
 
+    <!-- Customer Modal -->
+    <div class="modal" id="customerModal" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Customer Guidelines</h3>
+                <button class="close-btn" onclick="closeModal()" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <iframe class="modal-iframe" src="" frameborder="0" title="Customer Guidelines Content"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal success-modal" id="successModal" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="success-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h3 class="success-message">Notification Submitted Successfully!</h3>
+                <p class="success-details">
+                    Your MRL direction change notification has been recorded successfully.
+                </p>
+                <p class="success-details">
+                    <strong>Reference ID:</strong> <span id="referenceId">MRL-20251204-001</span>
+                </p>
+                <div class="success-buttons">
+                    <button class="btn btn-secondary" onclick="downloadCurrentNotification()">
+                        <i class="fas fa-download"></i> Download as JSON
+                    </button>
+                    <button class="btn btn-primary" onclick="closeSuccessModal()">
+                        <i class="fas fa-check-circle"></i> Got it!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Update Popup -->
+    <div class="admin-update-popup" id="adminUpdatePopup">
+        <div class="admin-update-content">
+            <div class="admin-update-icon">
+                <i class="fas fa-bell"></i>
+            </div>
+            <h3>Admin Update Available!</h3>
+            <p id="adminUpdateMessage"></p>
+            <button class="btn btn-primary" onclick="closeAdminUpdate()">
+                <i class="fas fa-check"></i> OK
+            </button>
+        </div>
+    </div>
+
+    <!-- Floating Buttons Container -->
+    <div class="floating-buttons-container">
+        <button class="user-notifications-btn" onclick="viewUserNotifications()">
+            <i class="fas fa-bell"></i>
+            <span>Notifications</span>
+            <div class="user-notifications-badge">0</div>
+        </button>
+        <button class="admin-access-btn" onclick="goToAdminPage()">
+            <i class="fas fa-user-shield"></i>
+            <span>Admin</span>
+            <div class="notifications-badge">0</div>
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>COE MRL Dashboard © 2025 | Cloud Sync Active</p>
+    </footer>
+
     <script>
-        const mainContent = document.getElementById('page-content');
+        // ========== CONFIGURATION ==========
+        const CONFIG = {
+            JSONBIN_ID: '674c9e61ad19ca34f8c8a8fe',
+            MASTER_KEY: '$2a$10$mXhF7eFwGZ8Q5YkLpNqJ0uVdR3sT6yB7cH9iJkLmNoPqRsTuVwXyZ',
+            API_URL: 'https://api.jsonbin.io/v3/b',
+            ADMIN_USERNAME: 'admin',
+            ADMIN_PASSWORD: 'admin123',
+            SYNC_INTERVAL: 30000
+        };
 
-        function loadPage(page){
-            // Show loading animation
-            mainContent.innerHTML = '<div class="loading"></div>';
+        // ========== GLOBAL STATE ==========
+        let lastNotification = null;
+        let isOnline = true;
+        let syncInterval;
+        let currentUserEmail = '';
+        let buttonHideTimeout;
 
-            fetch(page)
-                .then(res => {
-                    if(!res.ok) throw new Error('Page not found');
-                    return res.text();
-                })
-                .then(data => {
-                    mainContent.innerHTML = data;
-                    window.scrollTo({top:0, behavior:'smooth'});
-                })
-                .catch(err => {
-                    mainContent.innerHTML = `<p style="color:white;">Failed to load page: ${page}</p>`;
-                    console.error(err);
-                });
+        // ========== INITIALIZATION ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCloudSync();
+            initializeModals();
+            initializeForm();
+            initializeDropdowns();
+            initializeFloatingButtons();
+            updateBadges();
+            
+            console.log('🚀 MRL Notification System initialized');
+        });
+
+        // ========== FLOATING BUTTONS AUTO-HIDE ==========
+        function initializeFloatingButtons() {
+            const floatingContainer = document.querySelector('.floating-buttons-container');
+            
+            if (!floatingContainer) return;
+            
+            floatingContainer.addEventListener('mouseenter', () => {
+                floatingContainer.style.opacity = '1';
+                clearTimeout(buttonHideTimeout);
+            });
+            
+            floatingContainer.addEventListener('mouseleave', () => {
+                buttonHideTimeout = setTimeout(() => {
+                    floatingContainer.style.opacity = '0.3';
+                }, 2000);
+            });
+            
+            // Initial hide after 5 seconds
+            setTimeout(() => {
+                floatingContainer.style.opacity = '0.3';
+            }, 5000);
         }
 
-        // Load home page by default
-        loadPage('home');
+        // ========== CLOUD SYNC FUNCTIONS ==========
+        async function initializeCloudSync() {
+            await checkConnection();
+            await loadFromCloud();
+            
+            syncInterval = setInterval(async () => {
+                await syncWithCloud();
+            }, CONFIG.SYNC_INTERVAL);
+            
+            checkForAdminUpdates();
+        }
 
-        // Handle navigation clicks
-        document.querySelectorAll('.nav-link').forEach(link=>{
-            link.addEventListener('click', function(){
-                const page = this.getAttribute('data-page');
-                if(page==='home'){
-                    mainContent.innerHTML = `
-                        <div class="dashboard-title">
-                            <h1>MRL Guideline Dashboard</h1>
-                            <p>Access all your customers MRL guidelines and resources in one centralized location</p>
-                        </div>
-                    `;
+        async function checkConnection() {
+            try {
+                const response = await fetch('https://api.jsonbin.io/v3', { method: 'HEAD' });
+                updateServerStatus(response.ok);
+                return response.ok;
+            } catch (error) {
+                updateServerStatus(false);
+                return false;
+            }
+        }
+
+        function updateServerStatus(online) {
+            isOnline = online;
+            const serverStatus = document.querySelector('.server-status');
+            if (serverStatus) {
+                const dot = serverStatus.querySelector('.status-dot');
+                const text = serverStatus.querySelector('span:last-child');
+                
+                if (online) {
+                    dot.className = 'status-dot online';
+                    text.className = 'server-online';
+                    text.textContent = 'Online';
                 } else {
-                    loadPage(page);
+                    dot.className = 'status-dot offline';
+                    text.className = 'server-offline';
+                    text.textContent = 'Offline (Using Local)';
+                }
+            }
+        }
+
+        function showSyncStatus(message, isError = false) {
+            const syncStatus = document.getElementById('syncStatus');
+            if (syncStatus) {
+                syncStatus.innerHTML = isError ? 
+                    `<i class="fas fa-exclamation-triangle"></i> ${message}` :
+                    `<i class="fas fa-sync-alt"></i> ${message}`;
+                syncStatus.style.background = isError ? 
+                    'rgba(239, 68, 68, 0.9)' : 'rgba(59, 130, 246, 0.9)';
+                syncStatus.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    syncStatus.classList.add('hidden');
+                }, 3000);
+            }
+        }
+
+        // ========== MODAL FUNCTIONS ==========
+        function initializeModals() {
+            // Customer button click handlers
+            document.querySelectorAll('.customer-btn[data-modal]').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    if (this.classList.contains('disabled')) return;
+                    
+                    const modalId = this.getAttribute('data-modal');
+                    const customerName = this.textContent.trim();
+                    
+                    // Show loading
+                    const originalContent = this.innerHTML;
+                    this.innerHTML = '<div class="loading"></div>';
+                    
+                    // Set modal content
+                    document.querySelector('.modal-title').textContent = customerName;
+                    
+                    const fileMap = {
+                        'lululemon': 'lululemon.html',
+                        'vs-active': 'vs-active.html',
+                        'vs-intimates': 'vs-intimates.html',
+                        'honey-love': 'honey-love.html',
+                        'spanx': 'spanx.html',
+                        'wildhawk': 'wildhawk.html',
+                        'tenxyou': 'tenexyou.html',
+                        'seamless-gap': 'seamless-gap.html',
+                        'seamless-old-navy': 'seamless-old-navy.html',
+                        'seamless-urban': 'seamless-urban.html',
+                        'amazon': 'amazon.html',
+                        'aritzia': 'aritzia.html',
+                        'urban': 'urban.html',
+                        'cyc': 'cyc.html',
+                        'athleta': 'athleta.html',
+                        'seamless-company-tshirt': 'seamless-company-tshirt.html',
+                        'decathlon': 'decathlon.html',
+                        'seamless-kuhl': 'seamless-kuhl.html',
+                        'seamless-cyc': 'seamless-cyc.html',
+                        'seamless-ardent': 'seamless-ardent.html',
+                        'skims': 'skims.html',
+                        'seamless-lululemon': 'seamless-lululemon.html',
+                        'techstyle': 'techstyle.html'
+                    };
+                    
+                    document.querySelector('.modal-iframe').src = fileMap[modalId] || '';
+                    
+                    // Show modal
+                    document.getElementById('customerModal').classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                    
+                    // Reset button text
+                    setTimeout(() => {
+                        this.innerHTML = originalContent;
+                    }, 1000);
+                });
+            });
+
+            // Close modal when clicking outside
+            document.getElementById('customerModal').addEventListener('click', function(e) {
+                if (e.target === this) closeModal();
+            });
+
+            document.getElementById('successModal').addEventListener('click', function(e) {
+                if (e.target === this) closeSuccessModal();
+            });
+
+            document.getElementById('adminUpdatePopup').addEventListener('click', function(e) {
+                if (e.target === this) closeAdminUpdate();
+            });
+
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (document.getElementById('customerModal').classList.contains('active')) closeModal();
+                    if (document.getElementById('successModal').classList.contains('active')) closeSuccessModal();
+                    if (document.getElementById('adminUpdatePopup').classList.contains('active')) closeAdminUpdate();
                 }
             });
+        }
+
+        function closeModal() {
+            document.getElementById('customerModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            setTimeout(() => {
+                document.querySelector('.modal-iframe').src = '';
+            }, 300);
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            lastNotification = null;
+        }
+
+        function closeAdminUpdate() {
+            document.getElementById('adminUpdatePopup').classList.remove('active');
+        }
+
+        // ========== FORM FUNCTIONS ==========
+        function initializeForm() {
+            const customerSelect = document.getElementById('customerName');
+            const otherContainer = document.getElementById('otherCustomerContainer');
+            
+            customerSelect.addEventListener('change', function() {
+                if (this.value === 'other') {
+                    otherContainer.classList.add('show');
+                } else {
+                    otherContainer.classList.remove('show');
+                    document.getElementById('otherCustomerName').value = '';
+                }
+            });
+
+            // Form validation
+            const requiredFields = ['customerName', 'yourName', 'yourEmail', 'changeType', 'priorityLevel', 'changeDescription'];
+            
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.addEventListener('blur', () => validateField(fieldId));
+                    field.addEventListener('input', () => {
+                        field.classList.remove('error');
+                        document.getElementById(`${fieldId}Error`).classList.remove('show');
+                    });
+                }
+            });
+
+            // Form submission
+            document.getElementById('mrlChangeForm').addEventListener('submit', handleFormSubmit);
+        }
+
+        function validateField(fieldId) {
+            const field = document.getElementById(fieldId);
+            const errorElement = document.getElementById(`${fieldId}Error`);
+            
+            if (fieldId === 'customerName' && field.value === 'other') {
+                if (!document.getElementById('otherCustomerName').value.trim()) {
+                    document.getElementById('otherCustomerName').classList.add('error');
+                    document.getElementById('otherCustomerNameError').classList.add('show');
+                    return false;
+                }
+            }
+            
+            if (!field.value.trim()) {
+                field.classList.add('error');
+                errorElement.classList.add('show');
+                return false;
+            }
+            
+            if (fieldId === 'yourEmail' && field.value.trim()) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(field.value)) {
+                    field.classList.add('error');
+                    errorElement.textContent = 'Please enter a valid email address';
+                    errorElement.classList.add('show');
+                    return false;
+                }
+            }
+            
+            field.classList.remove('error');
+            errorElement.classList.remove('show');
+            
+            if (fieldId === 'customerName' && field.value === 'other') {
+                document.getElementById('otherCustomerName').classList.remove('error');
+                document.getElementById('otherCustomerNameError').classList.remove('show');
+            }
+            
+            return true;
+        }
+
+        function validateForm() {
+            let isValid = true;
+            const requiredFields = ['customerName', 'yourName', 'yourEmail', 'changeType', 'priorityLevel', 'changeDescription'];
+            
+            requiredFields.forEach(fieldId => {
+                if (!validateField(fieldId)) {
+                    isValid = false;
+                }
+            });
+            
+            return isValid;
+        }
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                const firstError = document.querySelector('.error');
+                if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<div class="loading"></div> Processing...';
+            submitBtn.disabled = true;
+            
+            try {
+                let customerName = document.getElementById('customerName').value;
+                if (customerName === 'other') {
+                    customerName = document.getElementById('otherCustomerName').value.trim();
+                }
+                
+                const formData = {
+                    customerName: customerName,
+                    yourName: document.getElementById('yourName').value,
+                    yourEmail: document.getElementById('yourEmail').value,
+                    changeType: document.getElementById('changeType').value,
+                    priorityLevel: document.getElementById('priorityLevel').value,
+                    changeDescription: document.getElementById('changeDescription').value,
+                    supportingInfo: document.getElementById('supportingDocs').value || '',
+                    pageUrl: window.location.href,
+                    submittedAt: new Date().toISOString()
+                };
+                
+                const referenceId = generateReferenceId();
+                const savedNotification = saveNotificationLocal(formData, referenceId);
+                
+                await saveToCloud();
+                
+                lastNotification = savedNotification;
+                currentUserEmail = formData.yourEmail;
+                
+                document.getElementById('referenceId').textContent = referenceId;
+                document.getElementById('successModal').classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                e.target.reset();
+                document.getElementById('otherCustomerContainer').classList.remove('show');
+                
+                console.log('🎉 Form submitted successfully!');
+                
+            } catch (error) {
+                console.error('❌ Form submission error:', error);
+                alert('Error submitting notification. Please try again.');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        function generateReferenceId() {
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            return `MRL-${year}${month}${day}-${random}`;
+        }
+
+        // ========== LOCAL STORAGE FUNCTIONS ==========
+        function saveNotificationLocal(formData, referenceId) {
+            try {
+                const allNotifications = JSON.parse(localStorage.getItem('mrl_all_notifications') || '[]');
+                const userNotifications = JSON.parse(localStorage.getItem('mrl_user_notifications') || '[]');
+                
+                const notification = {
+                    id: referenceId,
+                    ...formData,
+                    timestamp: new Date().toISOString(),
+                    submittedDate: new Date().toLocaleString(),
+                    status: 'pending',
+                    adminNotes: '',
+                    adminResponse: '',
+                    updatedBy: '',
+                    updatedAt: '',
+                    isFixed: false,
+                    userVisible: true,
+                    source: 'local'
+                };
+                
+                allNotifications.push(notification);
+                userNotifications.push(notification);
+                
+                localStorage.setItem('mrl_all_notifications', JSON.stringify(allNotifications));
+                localStorage.setItem('mrl_user_notifications', JSON.stringify(userNotifications));
+                
+                updateBadges();
+                
+                return notification;
+            } catch (error) {
+                console.error('❌ Error saving notification locally:', error);
+                throw error;
+            }
+        }
+
+        // ========== CLOUD SYNC FUNCTIONS ==========
+        async function loadFromCloud() {
+            if (!isOnline) return;
+            
+            try {
+                showSyncStatus('Loading from cloud...');
+                
+                const response = await fetch(`${CONFIG.API_URL}/${CONFIG.JSONBIN_ID}/latest`, {
+                    headers: {
+                        'X-Master-Key': CONFIG.MASTER_KEY,
+                        'X-Bin-Meta': 'false'
+                    }
+                });
+                
+                if (!response.ok) throw new Error('Failed to fetch');
+                
+                const serverData = await response.json();
+                
+                if (serverData && serverData.notifications) {
+                    const localAll = JSON.parse(localStorage.getItem('mrl_all_notifications') || '[]');
+                    const mergedAll = mergeNotifications(localAll, serverData.notifications);
+                    
+                    localStorage.setItem('mrl_all_notifications', JSON.stringify(mergedAll));
+                    updateUserNotifications();
+                    
+                    showSyncStatus('✅ Cloud data loaded');
+                    updateBadges();
+                }
+            } catch (error) {
+                console.log('⚠️ Could not load from cloud:', error);
+                showSyncStatus('⚠️ Cloud load failed', true);
+            }
+        }
+
+        async function saveToCloud() {
+            if (!isOnline) {
+                showSyncStatus('📴 Offline - will sync later', true);
+                return false;
+            }
+            
+            try {
+                showSyncStatus('Saving to cloud...');
+                
+                const allNotifications = JSON.parse(localStorage.getItem('mrl_all_notifications') || '[]');
+                
+                const data = {
+                    notifications: allNotifications,
+                    lastUpdated: new Date().toISOString(),
+                    totalCount: allNotifications.length
+                };
+                
+                const response = await fetch(`${CONFIG.API_URL}/${CONFIG.JSONBIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': CONFIG.MASTER_KEY,
+                        'X-Bin-Meta': 'false'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (!response.ok) throw new Error('Save failed');
+                
+                showSyncStatus('✅ Saved to cloud');
+                return true;
+            } catch (error) {
+                console.error('❌ Cloud save failed:', error);
+                showSyncStatus('⚠️ Cloud save failed', true);
+                return false;
+            }
+        }
+
+        async function syncWithCloud() {
+            if (!isOnline) return;
+            
+            try {
+                await loadFromCloud();
+                await saveToCloud();
+                checkForAdminUpdates();
+            } catch (error) {
+                console.log('Sync error:', error);
+            }
+        }
+
+        function mergeNotifications(local, server) {
+            const merged = [...local];
+            const localIds = new Set(local.map(n => n.id));
+            
+            server.forEach(serverNote => {
+                if (!localIds.has(serverNote.id)) {
+                    merged.push(serverNote);
+                } else {
+                    const index = merged.findIndex(n => n.id === serverNote.id);
+                    if (index !== -1) {
+                        merged[index] = {
+                            ...merged[index],
+                            status: serverNote.status,
+                            adminNotes: serverNote.adminNotes || merged[index].adminNotes,
+                            adminResponse: serverNote.adminResponse || merged[index].adminResponse,
+                            updatedBy: serverNote.updatedBy || merged[index].updatedBy,
+                            updatedAt: serverNote.updatedAt || merged[index].updatedAt,
+                            isFixed: serverNote.isFixed !== undefined ? serverNote.isFixed : merged[index].isFixed
+                        };
+                    }
+                }
+            });
+            
+            return merged;
+        }
+
+        function updateUserNotifications() {
+            const allNotifications = JSON.parse(localStorage.getItem('mrl_all_notifications') || '[]');
+            const userEmail = currentUserEmail || localStorage.getItem('mrl_last_user_email') || '';
+            
+            if (userEmail) {
+                const userNotifications = allNotifications.filter(n => 
+                    n.yourEmail === userEmail || 
+                    n.status !== 'pending' ||
+                    n.isFixed
+                );
+                
+                localStorage.setItem('mrl_user_notifications', JSON.stringify(userNotifications));
+            }
+        }
+
+        // ========== ADMIN UPDATES ==========
+        function checkForAdminUpdates() {
+            const userNotifications = JSON.parse(localStorage.getItem('mrl_user_notifications') || '[]');
+            const lastChecked = localStorage.getItem('mrl_last_update_check') || 0;
+            const now = Date.now();
+            
+            const newUpdates = userNotifications.filter(n => {
+                if (n.updatedAt && n.updatedAt > lastChecked) {
+                    if (n.adminResponse || n.isFixed) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+            
+            if (newUpdates.length > 0) {
+                showAdminUpdate(newUpdates);
+            }
+            
+            localStorage.setItem('mrl_last_update_check', now);
+        }
+
+        function showAdminUpdate(updates) {
+            let message = '';
+            
+            updates.forEach(update => {
+                if (update.isFixed) {
+                    message += `✅ Issue ${update.id} has been fixed!\n`;
+                }
+                if (update.adminResponse) {
+                    message += `📝 Admin response for ${update.id}: ${update.adminResponse.substring(0, 100)}...\n`;
+                }
+            });
+            
+            document.getElementById('adminUpdateMessage').textContent = message;
+            document.getElementById('adminUpdatePopup').classList.add('active');
+        }
+
+        // ========== UTILITY FUNCTIONS ==========
+        function updateBadges() {
+            const allNotifications = JSON.parse(localStorage.getItem('mrl_all_notifications') || '[]');
+            const userNotifications = JSON.parse(localStorage.getItem('mrl_user_notifications') || '[]');
+            const pendingNotifications = allNotifications.filter(n => n.status === 'pending');
+            
+            // Update admin badge
+            const adminBadge = document.querySelector('.notifications-badge');
+            if (adminBadge) {
+                adminBadge.textContent = pendingNotifications.length;
+                adminBadge.style.display = pendingNotifications.length > 0 ? 'flex' : 'none';
+            }
+            
+            // Update user badge
+            const userBadge = document.querySelector('.user-notifications-badge');
+            if (userBadge) {
+                const userPending = userNotifications.filter(n => n.status === 'pending').length;
+                userBadge.textContent = userPending;
+                userBadge.style.display = userPending > 0 ? 'flex' : 'none';
+            }
+        }
+
+        function downloadCurrentNotification() {
+            if (!lastNotification) {
+                alert('No notification to download.');
+                return;
+            }
+            
+            try {
+                const dataStr = JSON.stringify(lastNotification, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const downloadUrl = URL.createObjectURL(dataBlob);
+                
+                const downloadLink = document.createElement('a');
+                downloadLink.href = downloadUrl;
+                downloadLink.download = `mrl-notification-${lastNotification.id}.json`;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                URL.revokeObjectURL(downloadUrl);
+            } catch (error) {
+                console.error('❌ Error downloading notification:', error);
+            }
+        }
+
+        function viewUserNotifications() {
+            const userNotifications = JSON.parse(localStorage.getItem('mrl_user_notifications') || '[]');
+            
+            if (userNotifications.length === 0) {
+                alert('You have no submitted notifications.');
+                return;
+            }
+            
+            let message = '📋 Your Submitted Notifications:\n\n';
+            userNotifications.forEach((notif, index) => {
+                message += `${index + 1}. ${notif.id}\n`;
+                message += `   Customer: ${notif.customerName}\n`;
+                message += `   Type: ${notif.changeType}\n`;
+                message += `   Status: ${notif.status}\n`;
+                if (notif.adminResponse) {
+                    message += `   Admin Response: ${notif.adminResponse.substring(0, 50)}...\n`;
+                }
+                if (notif.isFixed) {
+                    message += `   ✅ Issue Fixed\n`;
+                }
+                message += `   Submitted: ${notif.submittedDate}\n\n`;
+            });
+            
+            message += '\nWould you like to export all your notifications as JSON?';
+            
+            if (confirm(message)) {
+                const dataStr = JSON.stringify(userNotifications, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const downloadUrl = URL.createObjectURL(dataBlob);
+                
+                const downloadLink = document.createElement('a');
+                downloadLink.href = downloadUrl;
+                downloadLink.download = `mrl-my-notifications-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                URL.revokeObjectURL(downloadUrl);
+            }
+        }
+
+        function goToAdminPage() {
+            window.location.href = 'mrl-admin.html';
+        }
+
+        // ========== DROPDOWN FUNCTIONS ==========
+        function initializeDropdowns() {
+            // Huddle dropdown
+            const huddleDropdown = document.querySelector('.nav-item.dropdown');
+            if (huddleDropdown) {
+                huddleDropdown.addEventListener('mouseenter', () => {
+                    huddleDropdown.querySelector('.dropdown-menu').classList.add('show');
+                });
+                
+                huddleDropdown.addEventListener('mouseleave', () => {
+                    huddleDropdown.querySelector('.dropdown-menu').classList.remove('show');
+                });
+            }
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.dropdown')) {
+                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                        menu.classList.remove('show');
+                    });
+                }
+            });
+        }
+
+        // ========== EVENT LISTENERS ==========
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Tooltips for disabled buttons
+        document.querySelectorAll('.customer-btn.disabled').forEach(btn => {
+            btn.setAttribute('title', 'Coming Soon - Under Development');
         });
     </script>
 </body>
