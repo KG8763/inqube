@@ -31,7 +31,7 @@ header {
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     padding: 1rem 2rem;
-    position: sticky;
+    position:sticky;
     top: 0;
     z-index: 1000;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -527,6 +527,69 @@ table td:hover {
 
 .customer-btn.disabled .status-indicator {
     background: #ef4444;
+}
+
+/* =========================
+   DROPDOWN MENU - HUDDLE NAVBAR
+   ========================= */
+/* Dropdown Container */
+.nav-item.dropdown {
+    position: relative;
+}
+
+/* Dropdown Toggle */
+.nav-link.dropdown-toggle::after {
+    content: " ▼";
+    font-size: 0.7rem;
+}
+
+/* Dropdown Menu Hidden by Default */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border-radius: 8px;
+    min-width: 200px;
+    padding: 0.5rem 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    z-index: 2000;
+}
+
+/* Dropdown Menu Items */
+.dropdown-menu li {
+    list-style: none;
+}
+
+.dropdown-link {
+    display: block;
+    padding: 0.7rem 1rem;
+    color: #334155;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s ease;
+}
+
+.dropdown-link:hover {
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+}
+
+/* Show Dropdown on Hover */
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* =========================
+   ADDITIONAL HOVER EFFECTS - H1 TITLES IN PAGE HEADERS
+   ========================= */
+.dashboard-title h1:hover {
+    background: none;
+    -webkit-text-fill-color: #ffffff;
+    color: #ffffff;
+    transition: 0.3s ease;
+    cursor: pointer;
 }
 
 /* =========================
