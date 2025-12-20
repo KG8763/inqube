@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRL Notification Admin Dashboard</title>
+    <link rel="icon" href="free-30-instagram-stories-icons46_122593.ico" type="image/ico">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="stylestest.css">
+    
+    <style>
+        /* Admin specific inline styles */
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #6b7280;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+        }
+
+        .back-btn:hover {
+            background: #4b5563;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 5rem auto;
+            text-align: center;
+        }
+
+        .login-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            margin: 0 auto 2rem;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            color: #64748b;
+            margin-bottom: 2rem;
+        }
+
+        .admin-form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .admin-form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .admin-form-control {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .admin-form-control:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .admin-btn {
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
+        .admin-btn-primary {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+        }
+
+        .admin-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+        }
+
+        .admin-btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+            margin-top: 1rem;
+        }
+
+        .admin-btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .error-message {
+            color: #ef4444;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard-header {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .dashboard-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Cloud Sync Status for Admin */
+        .cloud-status {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1001;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .cloud-sync-btn {
+            margin-top: 1rem;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .cloud-sync-btn:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <!-- Back to Main Button -->
+    <button class="back-btn" onclick="window.location.href='index.html'">
+        <i class="fas fa-arrow-left"></i> Back to Main
+    </button>
+
+    <!-- Login Screen -->
+    <div class="admin-container">
+        <div class="login-container" id="loginScreen">
+            <div class="login-icon">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <h1 class="login-title">Admin Dashboard</h1>
+            <p class="login-subtitle">Manage MRL Notification System</p>
+            
+            <div class="admin-form-group">
+                <label class="admin-form-label" for="adminUsername">Username</label>
+                <input type="text" class="admin-form-control" id="adminUsername" placeholder="Enter admin username" value="admin">
+            </div>
+            
+            <div class="admin-form-group">
+                <label class="admin-form-label" for="adminPassword">Password</label>
+                <input type="password" class="admin-form-control" id="adminPassword" placeholder="Enter admin password" value="admin123">
+            </div>
+            
+            <button class="admin-btn admin-btn-primary" onclick="login()">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+            
+            <div class="error-message" id="loginError">Invalid username or password</div>
+            
+            <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; text-align: left;">
+                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 0.5rem;">
+                    <strong>Default Login:</strong><br>
+                    Username: <code>admin</code><br>
+                    Password: <code>admin123</code>
+                </p>
+                <p style="font-size: 0.8rem; color: #94a3b8;">
+                    All data is synced to cloud storage (JSONBin.io)
+                </p>
+            </div>
+        </div>
+
+        <!-- Dashboard Screen -->
+        <div class="dashboard" id="dashboard">
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">MRL Notification Admin Dashboard</h1>
+                <div class="export-section">
+                    <button class="btn btn-primary" onclick="exportAllNotifications()">
+                        <i class="fas fa-download"></i> Export All
+                    </button>
+                    <button class="btn btn-warning" onclick="exportPendingNotifications()">
+                        <i class="fas fa-clock"></i> Export Pending
+                    </button>
+                    <button class="btn btn-success" onclick="exportFixedNotifications()">
+                        <i class="fas fa-check-circle"></i> Export Fixed
+                    </button>
+                    <button class="btn btn-info cloud-sync-btn" onclick="forceCloudSync()">
+                        <i class="fas fa-cloud-upload-alt"></i> Force Sync
+                    </button>
+                </div>
+            </div>
+
+            <div class="dashboard-stats">
+                <div class="stat-card stat-total">
+                    <div class="stat-number" id="totalNotifications">0</div>
+                    <div class="stat-label">Total Notifications</div>
+                </div>
+                <div class="stat-card stat-pending">
+                    <div class="stat-number" id="pendingNotifications">0</div>
+                    <div class="stat-label">Pending Review</div>
+                </div>
+                <div class="stat-card stat-reviewed">
+                    <div class="stat-number" id="reviewedNotifications">0</div>
+                    <div class="stat-label">Reviewed</div>
+                </div>
+                <div class="stat-card stat-updated">
+                    <div class="stat-number" id="updatedNotifications">0</div>
+                    <div class="stat-label">Updated</div>
+                </div>
+                <div class="stat-card stat-rejected">
+                    <div class="stat-number" id="rejectedNotifications">0</div>
+                    <div class="stat-label">Rejected</div>
+                </div>
+            </div>
+
+            <div class="notifications-table-container">
+                <h2 style="margin-bottom: 1rem; color: #1e293b;">All Notifications</h2>
+                <table class="notifications-table" id="notificationsTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Submitted By</th>
+                            <th>Type</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="notificationsTableBody">
+                        <!-- Notifications will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Notification Details Modal -->
+            <div class="admin-modal" id="detailsModal">
+                <div class="admin-modal-content">
+                    <div class="admin-modal-header">
+                        <h3 class="modal-title">Notification Details</h3>
+                        <button class="close-btn" onclick="closeDetailsModal()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="admin-modal-body" id="detailsModalBody">
+                        <!-- Details will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cloud Status Indicator -->
+    <div class="cloud-status">
+        <span class="status-dot online"></span>
+        <span class="server-online">Cloud: Online</span>
+    </div>
+
+    <script>
+        // ========== CONFIGURATION ==========
+        const CONFIG = {
+            JSONBIN_ID: '674c9e61ad19ca34f8c8a8fe',
+            MASTER_KEY: '$2a$10$mXhF7eFwGZ8Q5YkLpNqJ0uVdR3sT6yB7cH9iJkLmNoPqRsTuVwXyZ',
+            API_URL: 'https://api.jsonbin.io/v3/b',
+            ADMIN_USERNAME: 'admin',
+            ADMIN_PASSWORD: 'admin123'
+        };
+
+        // ========== GLOBAL STATE ==========
+        let currentNotificationId = null;
+        let isOnline = true;
+
+        // ========== INITIALIZATION ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLogin();
+            initializeEventListeners();
+        });
+
+        function initializeEventListeners() {
+            // Login form submit on Enter
+            document.getElementById('adminPassword')?.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') login();
+            });
+
+            // Close modal when clicking outside
+            document.getElementById('detailsModal')?.addEventListener('click', function(e) {
+                if (e.target === this) closeDetailsModal();
+            });
+
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeDetailsModal();
+            });
+        }
+
+        // ========== LOGIN/LOGOUT ==========
+        function login() {
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            const errorElement = document.getElementById('loginError');
+            
+            if (username === CONFIG.ADMIN_USERNAME && password === CONFIG.ADMIN_PASSWORD) {
+                localStorage.setItem('mrl_admin_logged_in', 'true');
+                localStorage.setItem('mrl_admin_username', username);
+                
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                
+                loadNotifications();
+                updateCloudStatus(true);
+                loadFromCloud();
+                
+                console.log('✅ Admin logged in');
+            } else {
+                errorElement.style.display = 'block';
+                setTimeout(() => {
+                    errorElement.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('mrl_admin_logged_in');
+            localStorage.removeItem('mrl_admin_username');
+            window.location.href = 'mrl-admin.html';
+        }
+
+        function checkLogin() {
+            const isLoggedIn = localStorage.getItem('mrl_admin_logged_in') === 'true';
+            if (isLoggedIn) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                loadNotifications();
+                updateCloudStatus(true);
+            }
+        }
+
+        // ========== CLOUD SYNC ==========
+        async function loadFromCloud() {
+            try {
+                const response = await fetch(`${CONFIG.API_URL}/${CONFIG.JSONBIN_ID}/latest`, {
+                    headers: {
+                        'X-Master-Key': CONFIG.MASTER_KEY,
+                        'X-Bin-Meta': 'false'
+                    }
+                });
+                
+                if (!response.ok) throw new Error('Failed to fetch');
+                
+                const serverData = await response.json();
+                
+                if (serverData && serverData.notifications) {
+                    const localAll = JSON.parse(localStorage.getItem('mrl_all_notifications') || '[]');
+                    const mergedAll = mergeNotifications(localAll, serverData.notifications);
+                    
+                    localStorage.setItem('mrl_all_notifications', JSON.stringify(mergedAll));
+                    
+                    loadNotifications();
+                    updateCloudStatus(true);
+                    
+                    console.log('✅ Loaded from cloud:', serverData.notifications.length, 'notifications');
+                }
+            } catch (error) {
+                console.log('⚠️ Could not load from cloud:', error);
+                updateCloudStatus(false);
+            }
+        }
+
+        async function saveToCloud() {
+            try {
+                const allNotifications = JSON.parse(localStorage.getItem('mrl_all_notifications') || '[]');
+                
+                const data = {
+                    notifications: allNotifications,
+                    lastUpdated: new Date().toISOString(),
+                    totalCount: allNotifications.length
+                };
+
+                const response = await fetch(`${CONFIG.API_URL}/${CONFIG.JSONBIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': CONFIG.MASTER_KEY,
+                        'X-Bin-Meta': 'false'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) throw new Error('Save failed');
+
+                updateCloudStatus(true);
+                return true;
+            } catch (error) {
+                console.error('❌ Cloud save failed:', error);
+                updateCloudStatus(false);
+                return false;
+            }
+        }
+
+        function updateCloudStatus(online) {
+            isOnline = online;
+            const cloudStatus = document.querySelector('.cloud-status');
+            if (cloudStatus) {
+                const dot = cloudStatus.querySelector('.status-dot');
+                const text = cloudStatus.querySelector('span:last-child');
+                
+                if (online) {
+                    dot.className = 'status-dot online';
+                    text.className = 'server-online';
+                    text.textContent = 'Cloud: Online';
+                    cloudStatus.style.background = 'rgba(16, 185, 129, 0.1)';
+                } else {
+                    dot.className = 'status-dot offline';
+                    text.className = 'server-offline';
+                    text.textContent = 'Cloud: Offline';
+                    cloudStatus.style.background = 'rgba(239, 68, 68, 0.1)';
+                }
+            }
+        }
+
+        async function forceCloudSync() {
+            if (confirm('Force sync with cloud? This will upload local data and download any cloud changes.')) {
+                await saveToCloud();
+                await loadFromCloud();
+                alert('Cloud sync completed!');
+            }
+        }
+
+        // ========== NOTIFICATION MANAGEMENT ==========
+        function loadNotifications() {
+            const notifications = JSON.parse(localStorage.getItem('mrl_all_notifications') || '[]');
+            updateStats(notifications);
+            updateTable(notifications);
+        }
+
+        function updateStats(notifications) {
+            const total = notifications.length;
+            const pending = notifications.filter(n => n.status === 'pending').length;
+            const reviewed = notifications.filter(n => n.status === 'reviewed').length;
+            const updated = notifications.filter(n => n.status === 'updated').length;
+            const rejected = notifications.filter(n => n.status === 'rejected').length;
+            
+            document.getElementById('totalNotifications').textContent = total;
+            document.getElementById('pendingNotifications').textContent = pending;
+            document.getElementById('reviewedNotifications').textContent = reviewed;
+            document.getElementById('updatedNotifications').textContent = updated;
+            document.getElementById('rejectedNotifications').textContent = rejected;
+        }
+
+        function updateTable(notifications) {
+            const tbody = document.getElementById('notificationsTableBody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            
+            notifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            notifications.forEach(notification => {
+                const row = document.createElement('tr');
+                
+                // Status badge
+                let statusBadge = '';
+                switch(notification.status) {
+                    case 'pending':
+                        statusBadge = '<span class="status-badge status-pending">Pending</span>';
+                        break;
+                    case 'reviewed':
+                        statusBadge = '<span class="status-badge status-reviewed">Reviewed</span>';
+                        break;
+                    case 'updated':
+                        statusBadge = '<span class="status-badge status-updated">Updated</span>';
+                        break;
+                    case 'rejected':
+                        statusBadge = '<span class="status-badge status-rejected">Rejected</span>';
+                        break;
+                }
+                
+                // Fixed indicator
+                if (notification.isFixed) {
+                    statusBadge += '<span class="fixed-status"><i class="fas fa-check"></i> Fixed</span>';
+                }
+                
+                // Priority badge
+                let priorityBadge = '';
+                if (notification.priorityLevel) {
+                    if (notification.priorityLevel.includes('Urgent')) {
+                        priorityBadge = '<span class="priority-badge priority-urgent">Urgent</span>';
+                    } else if (notification.priorityLevel.includes('High')) {
+                        priorityBadge = '<span class="priority-badge priority-high">High</span>';
+                    } else if (notification.priorityLevel.includes('Medium')) {
+                        priorityBadge = '<span class="priority-badge priority-medium">Medium</span>';
+                    } else if (notification.priorityLevel.includes('Low')) {
+                        priorityBadge = '<span class="priority-badge priority-low">Low</span>';
+                    }
+                }
+                
+                // User info
+                const userInfo = `${notification.yourName}<br><small style="color: #64748b;">${notification.yourEmail}</small>`;
+                
+                row.innerHTML = `
+                    <td><strong style="font-family: monospace;">${notification.id}</strong></td>
+                    <td>${notification.customerName}</td>
+                    <td>${userInfo}</td>
+                    <td>${notification.changeType}</td>
+                    <td>${priorityBadge}</td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        ${new Date(notification.timestamp).toLocaleDateString()}<br>
+                        <small style="color: #94a3b8;">${new Date(notification.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</small>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-btn action-btn-view" onclick="viewNotification('${notification.id}')">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                            ${notification.status === 'pending' ? `
+                                <button class="action-btn action-btn-approve" onclick="updateStatus('${notification.id}', 'reviewed')">
+                                    <i class="fas fa-check"></i> Review
+                                </button>
+                            ` : ''}
+                            ${notification.status === 'reviewed' ? `
+                                <button class="action-btn action-btn-approve" onclick="updateStatus('${notification.id}', 'updated')">
+                                    <i class="fas fa-check-double"></i> Update
+                                </button>
+                            ` : ''}
+                            ${notification.status === 'updated' && !notification.isFixed ? `
+                                <button class="action-btn action-btn-success" onclick="markAsFixed('${notification.id}')" style="background: #10b981; color: white;">
+                                    <i class="fas fa-check-circle"></i> Mark Fixed
+                                </button>
+                            ` : ''}
+                            ${notification.status !== 'rejected' ? `
+                                <button class="action-btn action-btn-reject" onclick="updateStatus('${notification.id}', 'rejected')">
+                                    <i class="fas fa-times"></i> Reject
+                                </button>
+                            ` : ''}
+                            ${notification.status === 'rejected' || notification.status === 'updated' ? `
+                                <button class="action-btn action-btn-revise" onclick="reviseStatus('${notification.id}')">
+                                    <i class="fas fa-redo"></i> Revise
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+
+        function viewNotification(notificationId) {
+            currentNotificationId = notificationId;
+            const notifications = JSON.parse(localStorage.getItem('mrl_all_notifications') || '[]');
+            const notification = notifications.find(n => n.id === notificationId);
+            
+            if (!notification) return;
+            
+            const modalBody = document.getElementById('detailsModalBody');
+            if (!modalBody) return;
+            
+            // Format notes for display
+            const adminNotes = notification.adminNotes ? notification.adminNotes.replace(/\n/g, '<br>') : 'No admin notes yet.';
+            const adminResponse = notification.adminResponse ? notification.adminResponse.replace(/\n/g, '<br>') : 'No response yet.';
+            
+            modalBody.innerHTML = `
+                <div class="notification-details">
+                    <div class="details-header">
+                        <h4 class="details-title">${notification.customerName} - ${notification.id}</h4>
+                        <div>
+                            ${notification.status === 'pending' ? '<span class="status-badge status-pending">Pending</span>' : ''}
+                            ${notification.status === 'reviewed' ? '<span class="status-badge status-reviewed">Reviewed</span>' : ''}
+                            ${notification.status === 'updated' ? '<span class="status-badge status-updated">Updated</span>' : ''}
+                            ${notification.status === 'rejected' ? '<span class="status-badge status-rejected">Rejected</span>' : ''}
+                            ${notification.isFixed ? '<span class="fixed-status"><i class="fas fa-check"></i> Fixed</span>' : ''}
+                        </div>
+                    </div>
+                    
+                    <div class="details-section">
+                        <span class="details-label">Submitted By</span>
+                        <div class="details-value">
+                            <strong>Name:</strong> ${notification.yourName}<br>
+                            <strong>Email:</strong> ${notification.yourEmail}<br>
+                            <strong>Submitted:</strong> ${new Date(notification.timestamp).toLocaleString()}
+                        </div>
+                    </div>
+                    
+                    <div class="details-section">
+                        <span class="details-label">Change Details</span>
+                        <div class="details-value">
+                            <strong>Type:</strong> ${notification.changeType}<br>
+                            <strong>Priority:</strong> ${notification.priorityLevel}<br>
+                            <strong>Reference ID:</strong> ${notification.id}
+                        </div>
+                    </div>
+                    
+                    <div class="details-section">
+                        <span class="details-label">Change Description</span>
+                        <div class="details-value">${notification.changeDescription.replace(/\n/g, '<br>')}</div>
+                    </div>
+                    
+                    ${notification.supportingInfo ? `
+                    <div class="details-section">
+                        <span class="details-label">Supporting Information</span>
+                        <div class="details-value">${notification.supportingInfo.replace(/\n/g, '<br>')}</div>
+                    </div>
+                    ` : ''}
+                    
+                    <div class="admin-notes-section">
+                        <span class="details-label">Admin Notes (Internal)</span>
+                        <div class="details-value">${adminNotes}</div>
+                    </div>
+                    
+                    <div class="admin-response-section">
+                        <span class="admin-response-label">Response to User (User will see this)</span>
+                        <div class="details-value">${adminResponse}</div>
+                    </div>
+                    
+                    <div class="admin-notes-section">
+                        <span class="details-label">Add/Update Admin Notes (Internal)</span>
+                        <textarea class="admin-notes-textarea" id="adminNotesText" placeholder="Add internal notes for admin team...">${notification.adminNotes || ''}</textarea>
+                        
+                        <span class="details-label" style="margin-top: 1rem;">Response to User</span>
+                        <textarea class="admin-response-textarea" id="adminResponseText" placeholder="Add response that user will see...">${notification.adminResponse || ''}</textarea>
+                        
+                        <div class="admin-modal-buttons">
+                            <button class="btn btn-primary" onclick="saveNotes('${notification.id}')">
+                                <i class="fas fa-save"></i> Save Notes & Response
+                            </button>
+                            <button class="btn btn-secondary" onclick="closeDetailsModal()">
+                                <i class="fas fa-times"></i> Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('detailsModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDetailsModal() {
+            document.getElementById('detailsModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            currentNotificationId = null;
+        }
+
+        async function updateStatus(notificationId, newStatus) {
+            if (!confirm(`Change status to "${newStatus}"?`)) return;
+            
+            const notifications = JSON.parse(localStorage.getItem('mrl_all_notifications') || '[]');
+            const username = localStorage.getItem('mrl_admin_username') || 'Admin';
+            
+            // Update in all notifications
+            const noteIndex = notifications.findIndex(n => n.id === notificationId);
+            if (noteIndex !== -1) {
+                notifications[noteIndex].status = newStatus;
+                notifications[noteIndex].updatedBy = username;
+                notifications[noteIndex].updatedAt = new Date().toLocaleString();
+                
+                // If marking as updated, add default response
+                if (newStatus === 'updated' && !notifications[noteIndex].adminResponse) {
+                    notifications[noteIndex].adminResponse = "Thank you for your notification. The MRL guidelines have been updated accordingly.";
+                }
+                
+                // If rejecting, add default response
+                if (newStatus === 'rejected' && !notifications[noteIndex].adminResponse) {
+                    notifications[noteIndex].adminResponse = "Thank you for your notification. After review, this change does not require an update to the MRL guidelines at this time.";
+                }
+            }
+            
+            localStorage.setItem('mrl_all_notifications', JSON.stringify(notifications));
+            
+            // Update user notifications
+            updateUserNotifications(notificationId, newStatus);
+            
+            // Save to cloud
+            await saveToCloud();
+            
+            loadNotifications();
+            
+            let message = `Notification ${notificationId} marked as ${newStatus}.`;
+            if (newStatus === 'updated') message += "\n\nDon't forget to mark as 'Fixed' once the issue is resolved!";
+            alert(message);
+            
+            if (currentNotificationId === notificationId) {
+                closeDetailsModal();
+            }
+        }
+
+        async function markAsFixed(notificationId) {
+            if (!confirm("Mark this issue as completely fixed?\n\nUser will see this as 'Issue Fixed'.")) return;
+            
+            const notifications = JSON.parse(localStorage.getItem('mrl_all_notifications') || '[]');
+            const username = localStorage.getItem('mrl_admin_username') || 'Admin';
+            
+            // Update in all notifications
+            const noteIndex = notifications.findIndex(n => n.id === notificationId);
+            if (noteIndex !== -1) {
+                notifications[noteIndex].isFixed = true;
+                notifications[noteIndex].updatedBy = username;
+                notifications[noteIndex].updatedAt = new Date().toLocaleString();
+                
+                if (!notifications[noteIndex].adminResponse) {
+                    notifications[noteIndex].adminResponse = "✅ Issue has been fixed. Thank you for your notification!";
+                }
+            }
+            
+            localStorage.setItem('mrl_all_notifications', JSON.stringify(notifications));
+            
+            // Update user notifications
+            updateUserNotifications(notificationId, 'updated', true);
+            
+            // Save to cloud
+            await saveToCloud();
+            
+            loadNotifications();
+            alert(`✅ Notification ${notificationId} marked as fixed! User will see this update.`);
+            
+            if (currentNotificationId === notificationId) {
+                closeDetailsModal();
+            }
+        }
+
+        function updateUserNotifications(notificationId, newStatus, isFixed = false) {
+            const allNotifications = JSON.parse(localStorage.getItem('mrl_all_notifications') || '[]');
+            const notification = allNotifications.find(n => n.id === notificationId);
+            
+            if (notification && notification.yourEmail) {
+                // Find user's notifications
+                const userNotifications = allNotifications.filter(n => n.yourEmail === notification.yourEmail);
+                localStorage.setItem('mrl_user_notifications_' + notification.yourEmail, JSON.stringify(userNotifications));
+            }
+        }
+
+        function reviseStatus(notificationId) {
+            if (!confirm("Change status back to 'Pending' for revision?")) return;
+            
+            updateStatus(notificationId, 'pending');
+        }
+
+        async function saveNotes(notificationId) {
+            const notes = document.getElementById('adminNotesText').value;
+            const response = document.getElementById('adminResponseText').value;
+            
+            const notifications = JSON.parse(localStorage.getItem('mrl_all_notifications') || '[]');
+            const username = localStorage.getItem('mrl_admin_username') || 'Admin';
+            
+            // Update in all notifications
+            const noteIndex = notifications.findIndex(n => n.id === notificationId);
+            if (noteIndex !== -1) {
+                notifications[noteIndex].adminNotes = notes;
+                notifications[noteIndex].adminResponse = response;
+                notifications[noteIndex].updatedBy = username;
+                notifications[noteIndex].updatedAt = new Date().toLocaleString();
+            }
+            
+            localStorage.setItem('mrl_all_notifications', JSON.stringify(notifications));
+            
+            // Save to cloud
+            await saveToCloud();
+            
+            alert('✅ Notes and response saved successfully! User will see the response.');
+            closeDetailsModal();
+            loadNotifications();
+        }
+
+        // ========== EXPORT FUNCTIONS ==========
+        function exportAllNotifications() {
+            const notifications = JSON.parse(localStorage.getItem('mrl_all_notifications') || '[]');
+            exportNotifications(notifications, 'all-notifications');
+        }
+
+        function exportPendingNotifications() {
+            const notifications = JSON.parse(localStorage.getItem('mrl_all_notifications') || '[]');
+            const pending = notifications.filter(n => n.status === 'pending');
+            exportNotifications(pending, 'pending-notifications');
+        }
+
+        function exportFixedNotifications() {
+            const notifications = JSON.parse(localStorage.getItem('mrl_all_notifications') || '[]');
+            const fixed = notifications.filter(n => n.isFixed === true);
+            exportNotifications(fixed, 'fixed-notifications');
+        }
+
+        function exportNotifications(notifications, filename) {
+            if (notifications.length === 0) {
+                alert('No notifications to export.');
+                return;
+            }
+            
+            const dataStr = JSON.stringify(notifications, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const downloadUrl = URL.createObjectURL(dataBlob);
+            
+            const downloadLink = document.createElement('a');
+            downloadLink.href = downloadUrl;
+            downloadLink.download = `mrl-${filename}-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            URL.revokeObjectURL(downloadUrl);
+            
+            console.log(`✅ Exported ${notifications.length} notifications`);
+            alert(`✅ Exported ${notifications.length} notifications as JSON file.`);
+        }
+
+        // ========== UTILITY FUNCTIONS ==========
+        function mergeNotifications(local, server) {
+            const merged = [...local];
+            const localIds = new Set(local.map(n => n.id));
+            
+            server.forEach(serverNote => {
+                if (!localIds.has(serverNote.id)) {
+                    merged.push(serverNote);
+                } else {
+                    const index = merged.findIndex(n => n.id === serverNote.id);
+                    if (index !== -1) {
+                        merged[index] = { ...merged[index], ...serverNote };
+                    }
+                }
+            });
+            
+            return merged;
+        }
+
+        console.log('🚀 Admin Dashboard initialized with Cloud Sync');
+    </script>
+</body>
+</html>
