@@ -830,40 +830,57 @@
                     </div>
                 </section>
 
-                <section id="sap-t-codes-section">
+               <section id="sap-t-codes-section">
     <h2 class="section-title">SAP T-Codes List</h2>
     
+    <!-- Search Container -->
+    <div class="search-container">
+        <div class="search-box">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" 
+                   id="tcode-search" 
+                   class="search-input" 
+                   placeholder="Search T-Codes by code or description..."
+                   autocomplete="off">
+            <div class="search-results" id="search-results"></div>
+        </div>
+    </div>
 
     <!-- Container for all T-Code blocks -->
-    <div class="tcode-grid-container">
+    <div class="tcode-grid-container" id="tcode-grid">
         
         <!-- RM Material Block -->
-        <div class="tcode-category-block">
+        <div class="tcode-category-block" data-category="RM Material">
             <div class="tcode-category-title">RM Material</div>
             <div class="tcode-items-container">
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZMMMATCRT" data-desc="RM Creation">
                     <span class="tcode-value">ZMMMATCRT</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">RM Creation</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZMMMATSMNT" data-desc="Color Size Assignment to RMs">
                     <span class="tcode-value">ZMMMATSMNT</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">Color Size Assignment to RMs</span>
+                </div>
+                <div class="tcode-item-row" data-code="ZMMMATLST" data-desc="Download MM03 Data">
+                    <span class="tcode-value">ZMMMATLST</span>
+                    <span class="tcode-separator">-</span>
+                    <span class="tcode-description">Download MM03 Data</span>
                 </div>
             </div>
         </div>
 
         <!-- COLOR MASTER TABLE Block -->
-        <div class="tcode-category-block">
+        <div class="tcode-category-block" data-category="COLOR MASTER TABLE">
             <div class="tcode-category-title">COLOR MASTER TABLE</div>
             <div class="tcode-items-container">
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZMMCLRMNT_N" data-desc="Color card">
                     <span class="tcode-value custom-code">ZMMCLRMNT_N</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">Color card</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZMMCLRDSP_N" data-desc="Color description">
                     <span class="tcode-value custom-code">ZMMCLRDSP_N</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">Color description</span>
@@ -872,40 +889,40 @@
         </div>
 
         <!-- SO Block -->
-        <div class="tcode-category-block">
+        <div class="tcode-category-block" data-category="SO">
             <div class="tcode-category-title">SO (Sales Order)</div>
             <div class="tcode-items-container">
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="VA01" data-desc="Create New SO">
                     <span class="tcode-value standard-code">VA01</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">Create New SO</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="VA02" data-desc="Edit SO">
                     <span class="tcode-value standard-code">VA02</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">Edit SO</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="VA03" data-desc="View SO">
                     <span class="tcode-value standard-code">VA03</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">View SO</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZPPBOMEXP" data-desc="Color Wise YY chart">
                     <span class="tcode-value custom-code">ZPPBOMEXP</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">Color Wise YY chart</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZPPBOMALV" data-desc="ALV Report">
                     <span class="tcode-value custom-code">ZPPBOMALV</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">ALV Report</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZSDSOCRTOSL" data-desc="Overshipment generate">
                     <span class="tcode-value custom-code">ZSDSOCRTOSL</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">Overshipment generate</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZSDSDLSTV" data-desc="SO Download">
                     <span class="tcode-value custom-code">ZSDSDLSTV</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">SO Download</span>
@@ -914,35 +931,35 @@
         </div>
 
         <!-- BOM COPY COLOR MAPPING Block -->
-        <div class="tcode-category-block">
+        <div class="tcode-category-block" data-category="BOM COPY COLOR MAPPING">
             <div class="tcode-category-title">BOM COPY COLOR MAPPING</div>
             <div class="tcode-items-container">
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="MM03" data-desc="View FG details">
                     <span class="tcode-value standard-code">MM03</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">View FG details</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZPPBOMCMP" data-desc="Compare FGs">
                     <span class="tcode-value custom-code">ZPPBOMCMP</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">Compare FGs</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZMMGARCRT" data-desc="Create FG">
                     <span class="tcode-value custom-code">ZMMGARCRT</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">Create FG</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZPPBOMALV" data-desc="Download ALV report">
                     <span class="tcode-value custom-code">ZPPBOMALV</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">Download ALV report</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZMMGARSMNT" data-desc="FG Color size maintenance">
                     <span class="tcode-value custom-code">ZMMGARSMNT</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">FG Color size maintenance</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZMMCLRASM" data-desc="Color assign to FG">
                     <span class="tcode-value custom-code">ZMMCLRASM</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">Color assign to FG</span>
@@ -951,10 +968,10 @@
         </div>
 
         <!-- Auto SO Block -->
-        <div class="tcode-category-block">
+        <div class="tcode-category-block" data-category="Auto SO">
             <div class="tcode-category-title">Auto SO</div>
             <div class="tcode-items-container">
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZSDSOUPL" data-desc="Auto SO Upload">
                     <span class="tcode-value custom-code">ZSDSOUPL</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">Auto SO Upload</span>
@@ -963,30 +980,30 @@
         </div>
 
         <!-- MO Items Block -->
-        <div class="tcode-category-block">
+        <div class="tcode-category-block" data-category="MO Items">
             <div class="tcode-category-title">MO Items</div>
             <div class="tcode-items-container">
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZMMPKGRPT2" data-desc="MO report">
                     <span class="tcode-value custom-code">ZMMPKGRPT2</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">MO report</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZMMPKGCOLMST" data-desc="MO item color table maintain Interface">
                     <span class="tcode-value custom-code">ZMMPKGCOLMST</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">MO item color table maintain Interface</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZMMPKGMST" data-desc="MO Item Mapping Interface">
                     <span class="tcode-value custom-code">ZMMPKGMST</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">MO Item Mapping Interface</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZMMMATSMNT" data-desc="RM Color assignment">
                     <span class="tcode-value custom-code">ZMMMATSMNT</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">RM Color assignment</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZMMMATCRT" data-desc="RM Creation">
                     <span class="tcode-value custom-code">ZMMMATCRT</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">RM Creation</span>
@@ -995,25 +1012,25 @@
         </div>
 
         <!-- REPORTS Block -->
-        <div class="tcode-category-block">
+        <div class="tcode-category-block" data-category="REPORTS">
             <div class="tcode-category-title">REPORTS</div>
             <div class="tcode-items-container">
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZPPBOMEXP" data-desc="Color Wise YY chart">
                     <span class="tcode-value custom-code">ZPPBOMEXP</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">Color Wise YY chart</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZPPBOMALV" data-desc="ALV Report">
                     <span class="tcode-value custom-code">ZPPBOMALV</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">ALV Report</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZMMPKGRPT2" data-desc="MO report">
                     <span class="tcode-value custom-code">ZMMPKGRPT2</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">MO report</span>
                 </div>
-                <div class="tcode-item-row">
+                <div class="tcode-item-row" data-code="ZMMSOMATRPT" data-desc="SOMA">
                     <span class="tcode-value custom-code">ZMMSOMATRPT</span>
                     <span class="tcode-separator">-</span>
                     <span class="tcode-description">SOMA</span>
@@ -1023,6 +1040,418 @@
 
     </div>
 
+    <style>
+        /* Search Container */
+        .search-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 20px 14px 45px;
+            font-size: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f8fafc;
+            transition: all 0.3s ease;
+            color: #334155;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+            background: white;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        /* Search Results Dropdown */
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0 0 10px 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            display: none;
+        }
+
+        .search-result-item {
+            padding: 12px 20px;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .search-result-item:hover {
+            background-color: #f0fdf4;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-code {
+            font-family: 'Consolas', monospace;
+            font-weight: normal;
+            color: #1e40af;
+            background: #f1f5f9;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-right: 15px;
+            min-width: 120px;
+        }
+
+        .result-desc {
+            color: #475569;
+            flex: 1;
+        }
+
+        .result-category {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            background: #f8fafc;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-left: 10px;
+        }
+
+        /* Grid container for T-Code blocks */
+        .tcode-grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        /* Individual T-Code category block */
+        .tcode-category-block {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .tcode-category-block.hidden {
+            display: none;
+        }
+
+        /* Category title */
+        .tcode-category-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #059669;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+        }
+
+        .tcode-category-title::before {
+            content: "•";
+            color: #10b981;
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+
+        /* Container for T-Code items */
+        .tcode-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Each T-Code row */
+        .tcode-item-row {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px dashed #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .tcode-item-row:last-child {
+            border-bottom: none;
+        }
+
+        .tcode-item-row.hidden {
+            display: none;
+        }
+
+        .tcode-item-row.highlighted {
+            background-color: #f0fdf4;
+            border-radius: 8px;
+            padding: 8px 12px;
+            border: 2px solid #10b981;
+        }
+
+        /* T-Code value styling */
+        .tcode-value {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: #1e40af;
+            min-width: 130px;
+            font-weight: normal;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: #f1f5f9;
+        }
+
+        /* Custom T-Code styling */
+        .custom-code {
+            color: #7c3aed;
+            background: #f3e8ff;
+        }
+
+        /* Standard T-Code styling */
+        .standard-code {
+            color: #059669;
+            background: #d1fae5;
+        }
+
+        /* Separator */
+        .tcode-separator {
+            margin: 0 12px;
+            color: #94a3b8;
+            font-weight: 300;
+            font-size: 1.2rem;
+        }
+
+        /* Description */
+        .tcode-description {
+            color: #475569;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .tcode-grid-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .search-container {
+                padding: 15px;
+            }
+            
+            .search-input {
+                padding: 12px 15px 12px 45px;
+                font-size: 0.95rem;
+            }
+            
+            .search-results {
+                max-height: 250px;
+            }
+            
+            .result-code {
+                min-width: 100px;
+            }
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('tcode-search');
+            const searchResults = document.getElementById('search-results');
+            const tcodeGrid = document.getElementById('tcode-grid');
+            
+            // Collect all T-Code items
+            const tcodeItems = document.querySelectorAll('.tcode-item-row');
+            const categoryBlocks = document.querySelectorAll('.tcode-category-block');
+            
+            // Store all items data
+            const allItemsData = [];
+            tcodeItems.forEach(item => {
+                const code = item.getAttribute('data-code');
+                const desc = item.getAttribute('data-desc');
+                const category = item.closest('.tcode-category-block').getAttribute('data-category');
+                allItemsData.push({ element: item, code, desc, category });
+            });
+            
+            let searchTimeout;
+            
+            // Search functionality
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(performSearch, 300);
+            });
+            
+            searchInput.addEventListener('focus', function() {
+                if (searchInput.value.length > 0) {
+                    performSearch();
+                }
+            });
+            
+            // Close search results when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!searchInput.contains(event.target) && !searchResults.contains(event.target)) {
+                    searchResults.style.display = 'none';
+                }
+            });
+            
+            function performSearch() {
+                const searchTerm = searchInput.value.trim().toLowerCase();
+                
+                if (searchTerm.length === 0) {
+                    // Show everything
+                    resetView();
+                    searchResults.style.display = 'none';
+                    return;
+                }
+                
+                // Filter items for search results dropdown
+                const filteredItems = allItemsData.filter(item => {
+                    return item.code.toLowerCase().includes(searchTerm) || 
+                           item.desc.toLowerCase().includes(searchTerm) ||
+                           item.category.toLowerCase().includes(searchTerm);
+                });
+                
+                // Update search results dropdown
+                updateSearchResults(filteredItems, searchTerm);
+                
+                // Update grid view
+                updateGridView(filteredItems);
+            }
+            
+            function updateSearchResults(items, searchTerm) {
+                if (items.length === 0) {
+                    searchResults.innerHTML = `
+                        <div class="search-result-item" style="color: #94a3b8; justify-content: center;">
+                            No matching T-Codes found
+                        </div>
+                    `;
+                    searchResults.style.display = 'block';
+                    return;
+                }
+                
+                searchResults.innerHTML = '';
+                
+                items.forEach(item => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'search-result-item';
+                    
+                    resultItem.innerHTML = `
+                        <span class="result-code">${item.code}</span>
+                        <span class="result-desc">${item.desc}</span>
+                        <span class="result-category">${item.category}</span>
+                    `;
+                    
+                    resultItem.addEventListener('click', function() {
+                        // Highlight the clicked item
+                        clearHighlights();
+                        item.element.classList.add('highlighted');
+                        
+                        // Scroll to the item
+                        item.element.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'center' 
+                        });
+                        
+                        // Keep search term but hide results
+                        searchResults.style.display = 'none';
+                    });
+                    
+                    searchResults.appendChild(resultItem);
+                });
+                
+                searchResults.style.display = 'block';
+            }
+            
+            function updateGridView(filteredItems) {
+                // Get all filtered categories
+                const filteredCategories = new Set(filteredItems.map(item => item.category));
+                
+                // Show/hide category blocks
+                categoryBlocks.forEach(block => {
+                    const category = block.getAttribute('data-category');
+                    if (filteredCategories.has(category)) {
+                        block.classList.remove('hidden');
+                        
+                        // Show/hide items within the category
+                        const itemsInBlock = block.querySelectorAll('.tcode-item-row');
+                        itemsInBlock.forEach(item => {
+                            const itemCode = item.getAttribute('data-code');
+                            const isItemVisible = filteredItems.some(filteredItem => 
+                                filteredItem.code === itemCode && 
+                                filteredItem.category === category
+                            );
+                            
+                            if (isItemVisible) {
+                                item.classList.remove('hidden');
+                            } else {
+                                item.classList.add('hidden');
+                            }
+                        });
+                    } else {
+                        block.classList.add('hidden');
+                    }
+                });
+                
+                // Clear highlights
+                clearHighlights();
+            }
+            
+            function resetView() {
+                // Show all category blocks
+                categoryBlocks.forEach(block => {
+                    block.classList.remove('hidden');
+                });
+                
+                // Show all items
+                tcodeItems.forEach(item => {
+                    item.classList.remove('hidden');
+                });
+                
+                // Clear highlights
+                clearHighlights();
+            }
+            
+            function clearHighlights() {
+                tcodeItems.forEach(item => {
+                    item.classList.remove('highlighted');
+                });
+            }
+            
+            // Escape key to clear search
+            searchInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    searchInput.value = '';
+                    resetView();
+                    searchResults.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </section>
             </div>
         </main>
