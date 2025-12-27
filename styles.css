@@ -107,11 +107,14 @@ h2 {
 .dashboard-title h1 {
     font-size: 3rem;
     font-weight: 800;
-    background: linear-gradient(135deg, #10b981, #059669);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+
+    /* hover eke thibba white eka danne normal ekata */
+    color: #ffffff;
+    -webkit-text-fill-color: #ffffff;
+
     margin-bottom: 1rem;
+    cursor: pointer;
+    transition: 0.3s ease;
 }
 
 .dashboard-title p {
@@ -585,13 +588,14 @@ table td:hover {
    ADDITIONAL HOVER EFFECTS - H1 TITLES IN PAGE HEADERS
    ========================= */
 .dashboard-title h1:hover {
-    background: none;
-    -webkit-text-fill-color: #ffffff;
-    color: #ffffff;
-    transition: 0.3s ease;
-    cursor: pointer;
-}
+    /* normal eke thibba gradient eka danne hover ekata */
+    background: linear-gradient(135deg, #10b981, #059669);
 
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+}
 /* =========================
    RESPONSIVE
    ========================= */
