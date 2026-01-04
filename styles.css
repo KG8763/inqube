@@ -117,6 +117,13 @@ h2 {
     transition: 0.3s ease;
 }
 
+.gradient-text {
+    background: linear-gradient(135deg, #10b981, #059669);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 .dashboard-title p {
     font-size: 1.2rem;
     color: rgba(255, 255, 255, 0.8);
@@ -595,6 +602,28 @@ table td:hover {
     background-clip: text;
 
     -webkit-text-fill-color: transparent;
+}
+/* =========================
+   FOOTER
+   ========================= */
+.footer {
+    width: 100%;
+    background: #0f9d6e; /* clean SAP-like green */
+    padding: 1.2rem 1rem;
+    text-align: center;
+    margin-top: auto;
+}
+
+footer p {
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    opacity: 0.95;
+}
+.footer-separator {
+    margin: 0 8px;
+    opacity: 0.7;
 }
 /* =========================
    RESPONSIVE
