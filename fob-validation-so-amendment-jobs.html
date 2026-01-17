@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOB Price Validation Tool</title>
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <link rel="icon" href="free-30-instagram-stories-icons46_122593.ico" type="image/ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #8e44ad;
+        }
+
+        .header h1 {
+            color: #8e44ad;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .upload-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .upload-section:hover {
+            border-color: #8e44ad;
+            transform: translateY(-2px);
+        }
+
+        .upload-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #3498db;
+            border-radius: 8px;
+            background: white;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-input:hover {
+            border-color: #8e44ad;
+            background: #f8f9fa;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .control-buttons {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .btn {
+            background-color: #8e44ad;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            margin: 0 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+            min-width: 200px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn:hover {
+            background-color: #732d91;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-success {
+            background-color: #27ae60;
+        }
+
+        .btn-success:hover {
+            background-color: #219653;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: 500;
+            text-align: center;
+            display: none;
+        }
+
+        .success {
+            background-color: #d5f4e6;
+            color: #27ae60;
+            border: 1px solid #a3e4bc;
+            display: block;
+        }
+
+        .error {
+            background-color: #fadbd8;
+            color: #e74c3c;
+            border: 1px solid #f5b7b1;
+            display: block;
+        }
+
+        .info {
+            background-color: #d6eaf8;
+            color: #3498db;
+            border: 1px solid #aed6f1;
+            display: block;
+        }
+
+        .results-section {
+            margin-top: 30px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .summary-stats {
+            display: flex;
+            justify-content: space-around;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px 20px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease;
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .match { background-color: #d5f4e6; }
+        .mismatch { background-color: #fadbd8; }
+        .no-match { background-color: #fef9e7; }
+
+        .match td:first-child { border-left: 4px solid #27ae60; }
+        .mismatch td:first-child { border-left: 4px solid #e74c3c; }
+        .no-match td:first-child { border-left: 4px solid #f39c12; }
+
+        .instructions {
+            background: #fffde7;
+            border-left: 4px solid #f39c12;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #8e44ad;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .file-info {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: #e8f4fc;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .validation-icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .true-icon {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .false-icon {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                display: block;
+                width: 100%;
+                margin: 10px 0;
+            }
+            
+            .summary-stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .stat-item {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-search-dollar"></i> FOB Price Validation Tool</h1>
+            <p>Compare FOB prices between Update Chart and Export Chart files</p>
+        </div>
+
+        <div class="instructions">
+            <strong><i class="fas fa-info-circle"></i> Instructions:</strong> 
+            1. Upload FOB Update Chart (contains FOB values to check) 
+            2. Upload Export Chart (contains system FOB values and Order Reason) 
+            3. Click "Run Validation" to compare
+            <br>
+            <strong>Note:</strong> Order Reason always shows the value from Export Chart file.
+        </div>
+
+        <!-- UPLOAD SECTIONS -->
+        <div class="two-column">
+            <div class="upload-section">
+                <h3><i class="fas fa-file-upload"></i> Step 1: FOB Update Chart</h3>
+                <p>Upload the Excel file with FOB Update data</p>
+                <input type="file" id="fobUpdateFile" class="file-input" accept=".xlsx, .xls">
+                <div id="fobUpdateInfo" class="file-info"></div>
+            </div>
+            
+            <div class="upload-section">
+                <h3><i class="fas fa-file-export"></i> Step 2: Export Chart</h3>
+                <p>Upload the Excel file with Export data (contains FOB values & Order Reason)</p>
+                <input type="file" id="exportChartFile" class="file-input" accept=".xlsx, .xls">
+                <div id="exportChartInfo" class="file-info"></div>
+            </div>
+        </div>
+
+        <!-- CONTROL BUTTONS -->
+        <div class="control-buttons">
+            <div class="loading" id="loadingSpinner">
+                <div class="loading-spinner"></div>
+                <p>Processing files...</p>
+            </div>
+            
+            <button id="runValidationBtn" class="btn" disabled>
+                <i class="fas fa-play-circle"></i> Run Validation
+            </button>
+            <button id="downloadBtn" class="btn btn-success" style="display: none;">
+                <i class="fas fa-download"></i> Download Report
+            </button>
+        </div>
+
+        <!-- STATUS MESSAGES -->
+        <div id="statusMessage" class="status"></div>
+
+        <!-- SUMMARY STATISTICS -->
+        <div id="summaryStats" class="summary-stats" style="display: none;">
+            <div class="stat-item">
+                <span class="stat-value" id="matchCount" style="color: #27ae60;">0</span>
+                <span class="stat-label">Matches</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="mismatchCount" style="color: #e74c3c;">0</span>
+                <span class="stat-label">Mismatches</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="noMatchCount" style="color: #f39c12;">0</span>
+                <span class="stat-label">No FOB Found</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="totalCount" style="color: #3498db;">0</span>
+                <span class="stat-label">Total Records</span>
+            </div>
+        </div>
+
+        <!-- RESULTS TABLE -->
+        <div id="resultsSection" class="results-section">
+            <h3><i class="fas fa-table"></i> Validation Results</h3>
+            <table id="resultsTable">
+                <thead>
+                    <tr>
+                        <th>SO</th>
+                        <th>Item</th>
+                        <th>Color</th>
+                        <th>Size</th>
+                        <th>FOB In Chart</th>
+                        <th>FOB In System</th>
+                        <th>Validation</th>
+                        <th>Order Reason</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsTableBody">
+                    <!-- Results will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // =============================================
+        // VARIABLES
+        // =============================================
+        let fobUpdateData = [];
+        let exportChartData = [];
+        let validationResults = [];
+        
+        // =============================================
+        // UTILITY FUNCTIONS
+        // =============================================
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+        }
+        
+        function showLoading(show) {
+            document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
+        }
+        
+        function updateFileInfo(file, elementId, message) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<i class="fas fa-check-circle" style="color: #27ae60;"></i> ${message}: ${file.name}`;
+        }
+        
+        // =============================================
+        // IMPROVED COLUMN FINDER
+        // =============================================
+        function findColumn(headers, possibleNames) {
+            if (!headers || !Array.isArray(headers)) return -1;
+            
+            // First try exact match
+            for (let i = 0; i < headers.length; i++) {
+                const header = String(headers[i] || '').toLowerCase().trim();
+                
+                for (const name of possibleNames) {
+                    if (header === name.toLowerCase()) {
+                        return i;
+                    }
+                }
+            }
+            
+            // Then try partial match
+            for (let i = 0; i < headers.length; i++) {
+                const header = String(headers[i] || '').toLowerCase().trim();
+                
+                for (const name of possibleNames) {
+                    if (header.includes(name.toLowerCase())) {
+                        return i;
+                    }
+                }
+            }
+            
+            return -1;
+        }
+        
+        // =============================================
+        // FILE HANDLERS
+        // =============================================
+        document.getElementById('fobUpdateFile').addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            showLoading(true);
+            
+            try {
+                const data = await readExcelFile(file);
+                fobUpdateData = processFobUpdateData(data);
+                updateFileInfo(file, 'fobUpdateInfo', 'Loaded');
+                updateButtonState();
+                showStatus('FOB Update file loaded successfully!', 'success');
+            } catch (error) {
+                showStatus('Error loading FOB Update file: ' + error.message, 'error');
+            } finally {
+                showLoading(false);
+            }
+        });
+        
+        document.getElementById('exportChartFile').addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            showLoading(true);
+            
+            try {
+                const data = await readExcelFile(file);
+                exportChartData = data;
+                updateFileInfo(file, 'exportChartInfo', 'Loaded');
+                updateButtonState();
+                showStatus('Export Chart file loaded successfully!', 'success');
+            } catch (error) {
+                showStatus('Error loading Export Chart file: ' + error.message, 'error');
+            } finally {
+                showLoading(false);
+            }
+        });
+        
+        // =============================================
+        // EXCEL FILE READING
+        // =============================================
+        function readExcelFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    try {
+                        const data = new Uint8Array(e.target.result);
+                        const workbook = XLSX.read(data, { type: 'array' });
+                        const sheetName = workbook.SheetNames[0];
+                        const worksheet = workbook.Sheets[sheetName];
+                        
+                        // Convert to array of arrays (preserving all data)
+                        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' });
+                        resolve(jsonData);
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                
+                reader.onerror = function(e) {
+                    reject(new Error('Failed to read file'));
+                };
+                
+                reader.readAsArrayBuffer(file);
+            });
+        }
+        
+        // =============================================
+        // PROCESS FOB UPDATE DATA
+        // =============================================
+        function processFobUpdateData(data) {
+            if (!data || data.length < 2) {
+                throw new Error('File is empty or has no data');
+            }
+            
+            const headers = data[0];
+            const records = [];
+            
+            // Find columns in FOB Update file
+            const soCol = findColumn(headers, ['sales order', 'so', 'order no', 'order number']);
+            const itemCol = findColumn(headers, ['item', 'so item', 'product', 'item no']);
+            const colorCol = findColumn(headers, ['color', 'col.cd.', 'colour', 'color code']);
+            const sizeCol = findColumn(headers, ['size', 'sz.', 'size code']);
+            const fobCol = findColumn(headers, ['fob', 'fob price', 'price', 'unit price']);
+            
+            if (soCol === -1 || itemCol === -1 || colorCol === -1 || sizeCol === -1 || fobCol === -1) {
+                throw new Error('Missing required columns in FOB Update file');
+            }
+            
+            // Process each row
+            for (let i = 1; i < data.length; i++) {
+                const row = data[i];
+                if (!row || row.length === 0) continue;
+                
+                const so = String(row[soCol] || '').trim().replace(/^0+/, '') || '0';
+                const item = String(row[itemCol] || '').trim().replace(/^0+/, '') || '0';
+                const color = String(row[colorCol] || '').trim();
+                const size = String(row[sizeCol] || '').trim();
+                const fob = parseFloat(row[fobCol]);
+                
+                // Only add if all required fields are present
+                if (so && item && color && size && !isNaN(fob)) {
+                    const key = `${so}+${item}+${color}+${size}`;
+                    records.push({
+                        so, item, color, size, fob, key
+                    });
+                }
+            }
+            
+            if (records.length === 0) {
+                throw new Error('No valid records found in FOB Update file');
+            }
+            
+            return records;
+        }
+        
+        // =============================================
+        // MAIN VALIDATION FUNCTION - FIXED!
+        // =============================================
+        document.getElementById('runValidationBtn').addEventListener('click', async function() {
+            if (fobUpdateData.length === 0 || !exportChartData || exportChartData.length === 0) {
+                showStatus('Please upload both files first', 'error');
+                return;
+            }
+            
+            showLoading(true);
+            showStatus('Running validation...', 'info');
+            
+            try {
+                validationResults = [];
+                
+                // Process export chart data
+                const exportHeaders = exportChartData[0];
+                
+                // Find columns in Export file
+                const exportSoCol = findColumn(exportHeaders, ['sales order', 'so', 'order no']);
+                const exportItemCol = findColumn(exportHeaders, ['item', 'so item', 'product']);
+                const exportColorCol = findColumn(exportHeaders, ['color', 'col.cd.', 'colour']);
+                const exportSizeCol = findColumn(exportHeaders, ['size', 'sz.', 'size code']);
+                const exportFobCol = findColumn(exportHeaders, ['fob', 'fob price', 'price', 'amount', 'unit price']);
+                const exportReasonCol = findColumn(exportHeaders, ['order reason', 'reason', 'remarks', 'notes']);
+                
+                // If FOB column not found by name, try to find numeric column
+                let actualFobCol = exportFobCol;
+                if (actualFobCol === -1) {
+                    // Look for columns with numeric data
+                    for (let col = 0; col < exportHeaders.length; col++) {
+                        let numericCount = 0;
+                        let totalCount = 0;
+                        
+                        // Check first 20 rows
+                        for (let row = 1; row < Math.min(20, exportChartData.length); row++) {
+                            if (exportChartData[row] && exportChartData[row][col] !== undefined) {
+                                totalCount++;
+                                const value = exportChartData[row][col];
+                                const num = parseFloat(value);
+                                if (!isNaN(num) && num > 0 && num < 10000) {
+                                    numericCount++;
+                                }
+                            }
+                        }
+                        
+                        // If more than 50% of values are numbers, assume it's the FOB column
+                        if (totalCount > 0 && (numericCount / totalCount) > 0.5) {
+                            actualFobCol = col;
+                            break;
+                        }
+                    }
+                }
+                
+                if (exportSoCol === -1 || exportItemCol === -1 || exportColorCol === -1 || exportSizeCol === -1) {
+                    throw new Error('Missing required columns in Export Chart');
+                }
+                
+                // Build lookup for export data
+                const exportLookup = {};
+                
+                for (let i = 1; i < exportChartData.length; i++) {
+                    const row = exportChartData[i];
+                    if (!row || row.length === 0) continue;
+                    
+                    const so = String(row[exportSoCol] || '').trim().replace(/^0+/, '') || '0';
+                    const item = String(row[exportItemCol] || '').trim().replace(/^0+/, '') || '0';
+                    const color = String(row[exportColorCol] || '').trim();
+                    const size = String(row[exportSizeCol] || '').trim();
+                    
+                    // Get FOB value
+                    let fobValue = null;
+                    if (actualFobCol !== -1 && actualFobCol < row.length) {
+                        const cellValue = row[actualFobCol];
+                        if (cellValue !== undefined && cellValue !== null && cellValue !== '') {
+                            fobValue = parseFloat(cellValue);
+                            if (isNaN(fobValue)) {
+                                // Try to extract number from string
+                                const match = String(cellValue).match(/[\d.]+/);
+                                if (match) fobValue = parseFloat(match[0]);
+                            }
+                        }
+                    }
+                    
+                    // Get Order Reason (ALWAYS get it from Export file)
+                    let reason = 'N/A';
+                    if (exportReasonCol !== -1 && exportReasonCol < row.length) {
+                        reason = String(row[exportReasonCol] || '').trim() || 'N/A';
+                    }
+                    
+                    if (so && item && color && size) {
+                        const key = `${so}+${item}+${color}+${size}`;
+                        
+                        // Store the record with FOB and reason (ALWAYS store reason)
+                        exportLookup[key] = {
+                            fob: fobValue,
+                            reason: reason // ALWAYS store the reason from Export file
+                        };
+                    }
+                }
+                
+                // Validate each FOB update record
+                let matches = 0, mismatches = 0, noFobFound = 0;
+                
+                fobUpdateData.forEach(record => {
+                    const exportData = exportLookup[record.key];
+                    
+                    if (!exportData) {
+                        // No matching record found in export data
+                        validationResults.push({
+                            so: record.so,
+                            item: record.item,
+                            color: record.color,
+                            size: record.size,
+                            fobInChart: record.fob.toFixed(2),
+                            fobInSystem: 'N/A',
+                            validation: 'False',
+                            reason: 'Record Not Found' // Default message when no record found
+                        });
+                        noFobFound++;
+                    } else if (exportData.fob === null || isNaN(exportData.fob)) {
+                        // Record found but FOB is missing
+                        validationResults.push({
+                            so: record.so,
+                            item: record.item,
+                            color: record.color,
+                            size: record.size,
+                            fobInChart: record.fob.toFixed(2),
+                            fobInSystem: 'N/A',
+                            validation: 'False',
+                            reason: exportData.reason // Use Export file reason
+                        });
+                        noFobFound++;
+                    } else {
+                        // Compare FOB values
+                        const isMatch = Math.abs(record.fob - exportData.fob) < 0.01;
+                        
+                        validationResults.push({
+                            so: record.so,
+                            item: record.item,
+                            color: record.color,
+                            size: record.size,
+                            fobInChart: record.fob.toFixed(2),
+                            fobInSystem: exportData.fob.toFixed(2),
+                            validation: isMatch ? 'True' : 'False',
+                            reason: exportData.reason // ALWAYS use Export file reason (not 'Match')
+                        });
+                        
+                        if (isMatch) {
+                            matches++;
+                        } else {
+                            mismatches++;
+                        }
+                    }
+                });
+                
+                // Update UI with results
+                updateResults(matches, mismatches, noFobFound);
+                showStatus(`Validation complete! ${matches} matches, ${mismatches} mismatches, ${noFobFound} no FOB found`, 'success');
+                
+            } catch (error) {
+                showStatus(`Error: ${error.message}`, 'error');
+            } finally {
+                showLoading(false);
+            }
+        });
+        
+        // =============================================
+        // UI UPDATE FUNCTIONS
+        // =============================================
+        function updateButtonState() {
+            const btn = document.getElementById('runValidationBtn');
+            btn.disabled = !(fobUpdateData.length > 0 && exportChartData && exportChartData.length > 0);
+        }
+        
+        function updateResults(matches, mismatches, noFobFound) {
+            // Update statistics
+            document.getElementById('matchCount').textContent = matches;
+            document.getElementById('mismatchCount').textContent = mismatches;
+            document.getElementById('noMatchCount').textContent = noFobFound;
+            document.getElementById('totalCount').textContent = validationResults.length;
+            
+            // Show summary section
+            document.getElementById('summaryStats').style.display = 'flex';
+            
+            // Show results section
+            document.getElementById('resultsSection').style.display = 'block';
+            
+            // Show download button
+            document.getElementById('downloadBtn').style.display = 'inline-block';
+            
+            // Populate results table
+            const tableBody = document.getElementById('resultsTableBody');
+            tableBody.innerHTML = '';
+            
+            validationResults.forEach(result => {
+                const row = document.createElement('tr');
+                
+                // Set row class based on validation result
+                if (result.validation === 'True') {
+                    row.className = 'match';
+                } else if (result.validation === 'False' && result.fobInSystem !== 'N/A') {
+                    row.className = 'mismatch';
+                } else {
+                    row.className = 'no-match';
+                }
+                
+                // Create validation icon
+                const validationIcon = result.validation === 'True' ? 
+                    '<span class="validation-icon true-icon"><i class="fas fa-check"></i></span>' :
+                    '<span class="validation-icon false-icon"><i class="fas fa-times"></i></span>';
+                
+                row.innerHTML = `
+                    <td>${result.so}</td>
+                    <td>${result.item}</td>
+                    <td>${result.color}</td>
+                    <td>${result.size}</td>
+                    <td>${result.fobInChart}</td>
+                    <td>${result.fobInSystem}</td>
+                    <td>${validationIcon}<strong>${result.validation}</strong></td>
+                    <td>${result.reason}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // =============================================
+        // DOWNLOAD REPORT FUNCTION
+        // =============================================
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            if (validationResults.length === 0) {
+                showStatus('No data to download', 'error');
+                return;
+            }
+            
+            try {
+                // Create workbook
+                const wb = XLSX.utils.book_new();
+                
+                // Prepare data for main sheet
+                const headers = ['SO', 'Item', 'Color', 'Size', 'FOB In Chart', 'FOB In System', 'Validation Result', 'Order Reason'];
+                const data = validationResults.map(r => [
+                    r.so, 
+                    r.item, 
+                    r.color, 
+                    r.size, 
+                    parseFloat(r.fobInChart) || r.fobInChart,
+                    parseFloat(r.fobInSystem) || r.fobInSystem,
+                    r.validation,
+                    r.reason
+                ]);
+                
+                const wsData = [headers, ...data];
+                const ws = XLSX.utils.aoa_to_sheet(wsData);
+                
+                // Add summary sheet
+                const summaryData = [
+                    ['FOB Validation Summary Report'],
+                    ['Generated on', new Date().toLocaleString()],
+                    [''],
+                    ['Total Records', validationResults.length],
+                    ['Matches', document.getElementById('matchCount').textContent],
+                    ['Mismatches', document.getElementById('mismatchCount').textContent],
+                    ['No FOB Found', document.getElementById('noMatchCount').textContent],
+                    [''],
+                    ['Validation Results:'],
+                    ...validationResults.map(r => [r.so, r.item, r.color, r.size, r.fobInChart, r.fobInSystem, r.validation, r.reason])
+                ];
+                
+                const summaryWs = XLSX.utils.aoa_to_sheet(summaryData);
+                
+                // Add sheets to workbook
+                XLSX.utils.book_append_sheet(wb, ws, 'Validation Details');
+                XLSX.utils.book_append_sheet(wb, summaryWs, 'Summary');
+                
+                // Generate filename with timestamp
+                const timestamp = new Date().toISOString().slice(0,19).replace(/[:T]/g, '-');
+                const fileName = `FOB_Validation_Report_${timestamp}.xlsx`;
+                
+                // Download file
+                XLSX.writeFile(wb, fileName);
+                
+                showStatus('Report downloaded successfully!', 'success');
+                
+            } catch (error) {
+                showStatus('Error downloading report: ' + error.message, 'error');
+            }
+        });
+        
+        // =============================================
+        // INITIALIZATION
+        // =============================================
+        showStatus('Please upload both Excel files to begin validation.', 'info');
+    </script>
+</body>
+</html>
