@@ -6,7 +6,10 @@
     <title>COE-Home</title>
     <link rel="icon" href="free-30-instagram-stories-icons46_122593.ico" type="image/ico">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="stylestest.css">
+    
+  
+    
 </head>
 <body>
     <!-- Header -->
@@ -231,13 +234,22 @@
     </main>
 
     <!-- Modal Template -->
+        <!-- Modal Template - Maximized -->
     <div class="modal" id="customerModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Customer Guidelines</h3>
-                <button class="close-btn" onclick="closeModal()">
-                    <i class="fas fa-times"></i>
-                </button>
+                <div style="display: flex; align-items: center; gap: 0.8rem; flex: 1;">
+                    <i class="fas fa-file-alt" style="font-size: 1.2rem;"></i>
+                    <h3 class="modal-title" style="margin: 0;">Customer Guidelines</h3>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <button class="fullscreen-btn" title="Toggle Fullscreen" onclick="toggleFullscreen()">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <button class="close-btn" onclick="closeModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
             </div>
             <div class="modal-body">
                 <iframe class="modal-iframe" src="" frameborder="0"></iframe>
@@ -364,6 +376,25 @@
         document.querySelectorAll('.customer-btn.disabled').forEach(btn => {
             btn.setAttribute('title', 'Coming Soon - Under Development');
         });
+        // Fullscreen toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const fullscreenBtns = document.querySelectorAll('.fullscreen-btn');
+    
+    fullscreenBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const modalContent = this.closest('.modal-content');
+            if (!document.fullscreenElement) {
+                modalContent.requestFullscreen?.() || 
+                modalContent.webkitRequestFullscreen?.() ||
+                modalContent.msRequestFullscreen?.();
+            } else {
+                document.exitFullscreen?.() ||
+                document.webkitExitFullscreen?.() ||
+                document.msExitFullscreen?.();
+            }
+        });
+    });
+});
     </script>
     <footer>
     <div class="footer">
