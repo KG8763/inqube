@@ -62,22 +62,27 @@
             margin-bottom: 3rem;
         }
 
-        .dashboard-title h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #10b981, #059669);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1rem;
-        }
+       .dashboard-title h1 {
+    font-size: 3rem;
+    font-weight: 800;
+
+    /* hover eke thibba white eka danne normal ekata */
+    color: #ffffff;
+    -webkit-text-fill-color: #ffffff;
+
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
         
 .dashboard-title h1:hover {
-    background: none;
-    -webkit-text-fill-color: #ffffff;
-    color: #ffffff;
-    transition: 0.3s ease;
-    cursor: pointer;
+    /* normal eke thibba gradient eka danne hover ekata */
+    background: linear-gradient(135deg, #10b981, #059669);
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
 }
 
 
@@ -404,6 +409,8 @@
             <div class="upload-section">
                 <h2>Step 2: Upload MRL Docket File</h2>
                 <p>Upload the Excel file containing MRL Docket with TWO tabs:</p>
+                <input type="file" id="mrlDocketFile" class="file-input" accept=".xlsx, .xls">
+                <div id="mrlDocketInfo" class="file-info"></div>
                 <div class="file-structure">
                     <div class="tab-info">
                         <h4><i class="fas fa-table"></i> Tab 1: Material Details</h4>
@@ -427,8 +434,7 @@
                         </ul>
                     </div>
                 </div>
-                <input type="file" id="mrlDocketFile" class="file-input" accept=".xlsx, .xls">
-                <div id="mrlDocketInfo" class="file-info"></div>
+                
             </div>
         </div>
         
