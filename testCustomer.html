@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decathlon</title>
+    
+    <style>
+        /* ===== Base Table Styles ===== */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 10px 0;
+            font-family: Arial, sans-serif;
+        }
+
+        th {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px 12px;
+            text-align: left;
+            border: 1px solid #34495e;
+        }
+
+        td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        /* ===== Row Color Groups Based on Pattern ===== */
+
+        /* Group 1: "All Materials" rows - Light Blue */
+        table tbody tr.group-all-materials {
+            background-color: #e3f2fd; /* Light Blue */
+        }
+        table tbody tr.group-all-materials:hover {
+            background-color: #bbdefb;
+        }
+
+        /* Group 2: "Fabric & All Sewing Trims" rows - Light Green */
+        table tbody tr.group-sewing-trims {
+            background-color: #e8f5e9; /* Light Green */
+        }
+        table tbody tr.group-sewing-trims:hover {
+            background-color: #c8e6c9;
+        }
+
+        /* Group 3: "Fabric & heat seals" rows - Light Yellow */
+        table tbody tr.group-heat-seals {
+            background-color: #fffde7; /* Light Yellow */
+        }
+        table tbody tr.group-heat-seals:hover {
+            background-color: #fff9c4;
+        }
+
+        /* Group 4: "Fabric & All Sewing Trims except labels" rows - Light Purple */
+        table tbody tr.group-except-labels {
+            background-color: #f3e5f5; /* Light Purple */
+        }
+        table tbody tr.group-except-labels:hover {
+            background-color: #e1bee7;
+        }
+
+        /* ===== Alternating rows within same group (optional) ===== */
+        table tbody tr.group-all-materials:nth-child(even) {
+            background-color: #d6eaf8;
+        }
+        table tbody tr.group-sewing-trims:nth-child(even) {
+            background-color: #d5f5e3;
+        }
+        table tbody tr.group-heat-seals:nth-child(even) {
+            background-color: #fef9e7;
+        }
+        table tbody tr.group-except-labels:nth-child(even) {
+            background-color: #ebdef0;
+        }
+
+        /* ===== Caption Styles ===== */
+        caption {
+            caption-side: top;
+            padding: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        /* ===== Header Styles ===== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #2c3e50;
+        }
+
+        .box1 {
+            flex: 1;
+        }
+
+        .box2 {
+            flex: 1;
+            text-align: right;
+        }
+
+        .table_head {
+            border: none;
+            width: auto;
+            margin: 0;
+        }
+
+        .table_head td {
+            border: none;
+            padding: 3px 8px;
+        }
+
+        /* ===== Copy Icon Styles ===== */
+        .copy-icon {
+            background-color: #007bff;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .copy-icon:hover {
+            background-color: #0056b3;
+        }
+
+        /* ===== Button Styles ===== */
+        button {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        button:hover {
+            background-color: #1a252f;
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            text-align: center;
+            padding: 15px;
+            color: #6c757d;
+            font-size: 12px;
+            border-top: 1px solid #dee2e6;
+            margin-top: 20px;
+        }
+
+        /* ===== Previous MRL Section ===== */
+        #previous_mrl {
+            display: none;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: center;
+            }
+            .box2 {
+                text-align: center;
+                margin-top: 10px;
+            }
+            table {
+                font-size: 12px;
+            }
+            th, td {
+                padding: 5px 8px;
+            }
+        }
+
+        /* ===== Color Legend ===== */
+        .legend {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="box1">
+            <center>
+                <h2>Decathlon</h2>
+            </center>
+        </div>
+        <div class="box2">
+            <table class="table_head">
+                <tr>
+                    <td>Approver:</td>
+                    <td>Dulanjala Jayathilaka</td>
+                </tr>
+                <tr>
+                    <td>Mailto: </td>
+                    <td>COE Procurement</td>
+                </tr>
+                <tr>
+                    <td>Bulk YY Required</td>
+                    <td>Booking YY</td>
+                </tr>
+                <tr>
+                    <td>CC: </td>
+                    <td style="cursor: pointer;">
+                        <span class="copy-icon" id="copy-icon">&#x1F4CB; Copy Emails</span>
+                        <span style="display:none" class="email">
+                            dulanjala@inqube.com; nadeeshapal@inqube.com;
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </header>
+
+    <br>
+
+    <!-- ===== COLOR LEGEND ===== -->
+    <div class="legend">
+        <span style="font-weight: bold; margin-right: 10px;">Color Legend:</span>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #e3f2fd;"></span>
+            All Materials
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #e8f5e9;"></span>
+            Fabric & All Sewing Trims
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #fffde7;"></span>
+            Fabric & heat seals
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #f3e5f5;"></span>
+            Fabric & All Sewing Trims except labels
+        </div>
+    </div>
+
+    <p><u><center>Update after 18 Aug 2026</center></u></p>
+
+    <!-- ===== TABLE 1 ===== -->
+    <table>
+        <caption>MRL Direction E-mail: <b><em>Decathlon - MRL DIRECTION</em></b></caption>
+        <thead>
+            <tr>
+                <th>Sample Type</th>
+                <th>Materials to be Order</th>
+                <th>Waited Materials</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Group: All Materials - Light Blue -->
+            <tr class="group-all-materials">
+                <td>Bulk</td>
+                <td>All Materials</td>
+                <td>-</td>
+            </tr>
+            <tr class="group-all-materials">
+                <td>IMP-FG</td>
+                <td>All Materials</td>
+                <td>-</td>
+            </tr>
+            <tr class="group-all-materials">
+                <td>IMP-FIRM</td>
+                <td>All Materials</td>
+                <td>-</td>
+            </tr>
+            <tr class="group-all-materials">
+                <td>Implantation</td>
+                <td>All Materials</td>
+                <td>-</td>
+            </tr>
+            <tr class="group-all-materials">
+                <td>IMP-RM</td>
+                <td>All Materials</td>
+                <td>-</td>
+            </tr>
+            <tr class="group-all-materials">
+                <td>Pending</td>
+                <td>All Materials</td>
+                <td>-</td>
+            </tr>
+            <tr class="group-all-materials">
+                <td>REP-FG</td>
+                <td>All Materials</td>
+                <td>-</td>
+            </tr>
+            <tr class="group-all-materials">
+                <td>REP-FIRM</td>
+                <td>All Materials</td>
+                <td>-</td>
+            </tr>
+            <tr class="group-all-materials">
+                <td>Replenishment</td>
+                <td>All Materials</td>
+                <td>-</td>
+            </tr>
+            <tr class="group-all-materials">
+                <td>REP-MTS</td>
+                <td>All Materials</td>
+                <td>-</td>
+            </tr>
+            <tr class="group-all-materials">
+                <td>REP-RM</td>
+                <td>All Materials</td>
+                <td>-</td>
+            </tr>
+
+            <!-- Group: Fabric & All Sewing Trims - Light Green -->
+            <tr class="group-sewing-trims">
+                <td>PE Sample</td>
+                <td>Fabric & All Sewing Trims</td>
+                <td>All Packing Trims</td>
+            </tr>
+            <tr class="group-sewing-trims">
+                <td>PP Sample</td>
+                <td>Fabric & All Sewing Trims</td>
+                <td>All Packing Trims</td>
+            </tr>
+            <tr class="group-sewing-trims">
+                <td>PRINT TEST</td>
+                <td>Fabric & All Sewing Trims</td>
+                <td>All Packing Trims</td>
+            </tr>
+            <tr class="group-sewing-trims">
+                <td>Testing Sample</td>
+                <td>Fabric & All Sewing Trims</td>
+                <td>All Packing Trims</td>
+            </tr>
+            <tr class="group-sewing-trims">
+                <td>Wash Sample</td>
+                <td>Fabric & All Sewing Trims</td>
+                <td>All Packing Trims</td>
+            </tr>
+            <tr class="group-sewing-trims">
+                <td>Bulk Testing Samples</td>
+                <td>Fabric & All Sewing Trims</td>
+                <td>All Packing Trims</td>
+            </tr>
+
+            <!-- Group: Fabric & heat seals - Light Yellow -->
+            <tr class="group-heat-seals">
+                <td>Testing Sample - RM</td>
+                <td>Fabric & heat seals</td>
+                <td>All Packing Trims and other sewing items</td>
+            </tr>
+            <tr class="group-heat-seals">
+                <td>Bulk Panel Testing</td>
+                <td>Fabric & heat seals</td>
+                <td>All Packing Trims and other sewing items</td>
+            </tr>
+
+            <!-- Group: Fabric & All Sewing Trims except labels - Light Purple -->
+            <tr class="group-except-labels">
+                <td>PPZ Sample</td>
+                <td>Fabric & All Sewing Trims except labels</td>
+                <td>All Packing Trims and Labels</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+    <button id="toggleBtn">Previous MRL Direction</button>
+
+    <!-- ===== PREVIOUS MRL SECTION ===== -->
+    <div id="previous_mrl">
+
+        <p><u><center>Update after 18 Aug 2026</center></u></p>
+
+        <!-- ===== TABLE 2 ===== -->
+        <table>
+            <caption>MRL Direction E-mail: <b><em>Decathlon - MRL DIRECTION</em></b></caption>
+            <thead>
+                <tr>
+                    <th>Sample Type</th>
+                    <th>Materials to be Order</th>
+                    <th>Waited Materials</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="group-all-materials">
+                    <td>Bulk</td>
+                    <td>All Materials</td>
+                    <td>-</td>
+                </tr>
+                <tr class="group-all-materials">
+                    <td>IMP-FG</td>
+                    <td>All Materials</td>
+                    <td>-</td>
+                </tr>
+                <tr class="group-all-materials">
+                    <td>IMP-FIRM</td>
+                    <td>All Materials</td>
+                    <td>-</td>
+                </tr>
+                <tr class="group-all-materials">
+                    <td>Implantation</td>
+                    <td>All Materials</td>
+                    <td>-</td>
+                </tr>
+                <tr class="group-all-materials">
+                    <td>IMP-RM</td>
+                    <td>All Materials</td>
+                    <td>-</td>
+                </tr>
+                <tr class="group-all-materials">
+                    <td>Pending</td>
+                    <td>All Materials</td>
+                    <td>-</td>
+                </tr>
+                <tr class="group-all-materials">
+                    <td>REP-FG</td>
+                    <td>All Materials</td>
+                    <td>-</td>
+                </tr>
+                <tr class="group-all-materials">
+                    <td>REP-FIRM</td>
+                    <td>All Materials</td>
+                    <td>-</td>
+                </tr>
+                <tr class="group-all-materials">
+                    <td>Replenishment</td>
+                    <td>All Materials</td>
+                    <td>-</td>
+                </tr>
+                <tr class="group-all-materials">
+                    <td>REP-MTS</td>
+                    <td>All Materials</td>
+                    <td>-</td>
+                </tr>
+                <tr class="group-all-materials">
+                    <td>REP-RM</td>
+                    <td>All Materials</td>
+                    <td>-</td>
+                </tr>
+                <tr class="group-sewing-trims">
+                    <td>Bulk Panel Testing</td>
+                    <td>Fabric & All Sewing Trims</td>
+                    <td>All Packing Trims</td>
+                </tr>
+                <tr class="group-sewing-trims">
+                    <td>Bulk Testing Samples</td>
+                    <td>Fabric & All Sewing Trims</td>
+                    <td>All Packing Trims</td>
+                </tr>
+                <tr class="group-sewing-trims">
+                    <td>PE Sample</td>
+                    <td>Fabric & All Sewing Trims</td>
+                    <td>All Packing Trims</td>
+                </tr>
+                <tr class="group-sewing-trims">
+                    <td>PP Sample</td>
+                    <td>Fabric & All Sewing Trims</td>
+                    <td>All Packing Trims</td>
+                </tr>
+                <tr class="group-sewing-trims">
+                    <td>PPZ Sample</td>
+                    <td>Fabric & All Sewing Trims</td>
+                    <td>All Packing Trims</td>
+                </tr>
+                <tr class="group-sewing-trims">
+                    <td>PRINT TEST</td>
+                    <td>Fabric & All Sewing Trims</td>
+                    <td>All Packing Trims</td>
+                </tr>
+                <tr class="group-sewing-trims">
+                    <td>Testing Sample</td>
+                    <td>Fabric & All Sewing Trims</td>
+                    <td>All Packing Trims</td>
+                </tr>
+                <tr class="group-sewing-trims">
+                    <td>Testing Sample - RM</td>
+                    <td>Fabric & All Sewing Trims</td>
+                    <td>All Packing Trims</td>
+                </tr>
+                <tr class="group-sewing-trims">
+                    <td>Wash Sample</td>
+                    <td>Fabric & All Sewing Trims</td>
+                    <td>All Packing Trims</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br>
+
+        <p><u><center>Update before 18 Aug 2026</center></u></p>
+
+        <!-- ===== TABLE 3 ===== -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Sample Type</th>
+                    <th>Materials to be Order</th>
+                    <th>Waited Materials</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="group-all-materials">
+                    <td>Bulk</td>
+                    <td>All RMs</td>
+                    <td></td>
+                </tr>
+                <tr class="group-sewing-trims">
+                    <td>PPZ</td>
+                    <td>Fabric and Sewing trims</td>
+                    <td>Packing Trims</td>
+                </tr>
+                <tr class="group-sewing-trims">
+                    <td>Testing Sample</td>
+                    <td>Fabric and Sewing trims</td>
+                    <td>Packing Trims</td>
+                </tr>
+                <tr class="group-sewing-trims">
+                    <td>PE</td>
+                    <td>Fabric and Sewing trims</td>
+                    <td>Packing Trims</td>
+                </tr>
+                <tr class="group-sewing-trims">
+                    <td>Testing Sample - RM</td>
+                    <td>Fabric and Sewing trims</td>
+                    <td>Packing Trims</td>
+                </tr>
+                <tr class="group-heat-seals">
+                    <td>EMB</td>
+                    <td>EMB fabric</td>
+                    <td>All RM except Embellishment fabric</td>
+                </tr>
+                <tr class="group-all-materials">
+                    <td>Bulk testing sample</td>
+                    <td>All RM without packing trims</td>
+                    <td></td>
+                </tr>
+                <tr class="group-heat-seals">
+                    <td>Bulk panel testing</td>
+                    <td>Fabric + Heat-seal if available</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <footer>
+        Last updated - 14 Aug 2026
+    </footer>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // ===== Copy Emails Function =====
+        function copyEmails() {
+            const emailSpan = document.querySelector('.email');
+            if (emailSpan) {
+                const emails = emailSpan.textContent.trim();
+                navigator.clipboard.writeText(emails).then(() => {
+                    const copyIcon = document.getElementById('copy-icon');
+                    const originalText = copyIcon.textContent;
+                    copyIcon.textContent = '✅ Copied!';
+                    copyIcon.style.backgroundColor = '#28a745';
+                    setTimeout(() => {
+                        copyIcon.textContent = originalText;
+                        copyIcon.style.backgroundColor = '#007bff';
+                    }, 2000);
+                }).catch(err => {
+                    alert('Copy failed: ' + err);
+                });
+            }
+        }
+
+        // ===== Toggle Previous MRL Section =====
+        function togglePreviousMRL() {
+            const div = document.getElementById('previous_mrl');
+            const button = document.getElementById('toggleBtn');
+
+            if (div.style.display === 'none' || div.style.display === '') {
+                div.style.display = 'block';
+                button.textContent = 'Hide Previous MRL Direction';
+            } else {
+                div.style.display = 'none';
+                button.textContent = 'Previous MRL Direction';
+            }
+        }
+
+        // ===== Page Load වෙනකොට =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle button එකට event එක add කරන්න
+            document.getElementById('toggleBtn').addEventListener('click', togglePreviousMRL);
+
+            // Copy icon එකට event එක add කරන්න
+            document.getElementById('copy-icon').addEventListener('click', copyEmails);
+
+            // Initial state - previous_mrl hidden
+            document.getElementById('previous_mrl').style.display = 'none';
+        });
+    </script>
+
+</body>
+</html>
