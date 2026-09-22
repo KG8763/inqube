@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COE · General Guidelines</title>
+    <link rel="icon" href="free-30-instagram-stories-icons46_122593.ico" type="image/ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* Page-specific tweaks — no duplication of styles.css */
+        .nav-link.active { color:#059669; background:rgba(16,185,129,.12); font-weight:600; }
+
+        /* Admin toolbar */
+        .admin-bar {
+            max-width: 1400px;
+            margin: 1rem auto 0;
+            padding: 0.75rem 1.2rem;
+            background: #1e293b;
+            color: #fff;
+            border-radius: 12px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,.15);
+        }
+        .admin-bar.visible { display: flex; }
+        .admin-bar span { font-size: .9rem; display:flex; align-items:center; gap:.6rem; }
+        .admin-bar button {
+            background: #10b981; color: #fff; border: none; padding: .55rem 1rem;
+            border-radius: 8px; cursor: pointer; font-weight: 600; font-size: .85rem;
+            display: inline-flex; align-items: center; gap: .4rem; transition: .2s;
+        }
+        .admin-bar button:hover { background: #059669; transform: translateY(-1px); }
+        .admin-bar button.logout { background: #ef4444; }
+        .admin-bar button.logout:hover { background: #dc2626; }
+
+        /* Guideline buttons (reuse .customer-btn visual language) */
+        .guideline-btn {
+            display: flex; align-items: center; gap: .65rem;
+            padding: .9rem 1.2rem; min-height: 60px;
+            background: linear-gradient(135deg,#f8fafc,#e2e8f0);
+            border: 2px solid transparent; border-radius: 12px;
+            text-decoration: none; color:#334155; font-weight:600;
+            font-size:.9rem; transition: all .3s ease; width: 100%;
+        }
+        .guideline-btn:not(.disabled):hover {
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            color:#fff; transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102,126,234,.3);
+        }
+        .guideline-btn i:first-child { font-size:1.1rem; width:22px; text-align:center; color:#2a6df4; }
+        .guideline-btn:not(.disabled):hover i:first-child { color:#fff; }
+        .guideline-btn .badge {
+            background:#d4e2fc; color:#1a4b9c; font-size:.7rem; font-weight:600;
+            padding:.2rem .6rem; border-radius:20px; margin-left:auto; white-space:nowrap;
+        }
+        .guideline-btn:not(.disabled):hover .badge { background:rgba(255,255,255,.25); color:#fff; }
+        .guideline-btn.disabled {
+            background:#f1f5f9; color:#94a3b8; cursor:not-allowed; pointer-events:none;
+        }
+
+        /* Admin edit pencil on each item (only visible in admin mode) */
+        .edit-pencil {
+            display:none; position:absolute; top:6px; right:6px;
+            background:#f59e0b; color:#fff; border:none; width:28px; height:28px;
+            border-radius:50%; cursor:pointer; font-size:.75rem;
+            align-items:center; justify-content:center; z-index:5;
+            box-shadow:0 2px 8px rgba(0,0,0,.2);
+        }
+        body.admin-mode .guideline-btn { position: relative; padding-right: 2.5rem; }
+        body.admin-mode .edit-pencil { display: flex; }
+        body.admin-mode .edit-pencil:hover { background:#d97706; transform: scale(1.1); }
+
+        /* Login modal */
+        .login-overlay {
+            display:none; position:fixed; inset:0; background:rgba(0,0,0,.7);
+            backdrop-filter:blur(6px); z-index:9999;
+            align-items:center; justify-content:center;
+        }
+        .login-overlay.visible { display:flex; }
+        .login-card {
+            background:#fff; padding:2rem; border-radius:20px; width:90%; max-width:400px;
+            box-shadow:0 30px 60px rgba(0,0,0,.3);
+        }
+        .login-card h2 { margin:0 0 1.2rem; color:#1e293b; display:flex; align-items:center; gap:.6rem; }
+        .login-card input {
+            width:100%; padding:.85rem 1rem; margin-bottom:1rem;
+            border:2px solid #e2e8f0; border-radius:10px; font-size:.95rem;
+            transition:.2s;
+        }
+        .login-card input:focus { outline:none; border-color:#10b981; }
+        .login-card .actions { display:flex; gap:.6rem; }
+        .login-card button {
+            flex:1; padding:.85rem; border:none; border-radius:10px;
+            font-weight:600; cursor:pointer; transition:.2s; font-size:.95rem;
+        }
+        .login-card button.primary { background:#10b981; color:#fff; }
+        .login-card button.primary:hover { background:#059669; }
+        .login-card button.secondary { background:#e2e8f0; color:#334155; }
+        .login-card button.secondary:hover { background:#cbd5e1; }
+        .login-error { color:#ef4444; font-size:.85rem; min-height:1.2rem; margin-bottom:.5rem; }
+    </style>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="header">
+    <div class="header-content">
+        <div class="logo"><i class="fas fa-home"></i> COE-Home</div>
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link"><i class="fa-solid fa-file-lines"></i> MRL-Directions</a></li>
+                <li class="nav-item"><a href="sap.html" class="nav-link"><i class="fas fa-chart-bar"></i> SAP</a></li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle"><i class="fas fa-users"></i> Huddle</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="https://inqube.sharepoint.com/sites/COE?market=en-US" target="_blank" class="dropdown-link">Huddle - Old</a></li>
+                        <li><a href="https://inqube.sharepoint.com/:x:/r/sites/COE/_layouts/15/Doc.aspx?sourcedoc=%7B2A6A8C12-21BA-40F6-9ABA-A15A024C7C7B%7D&file=Weekly%20Issue%20Log%2025-26.xlsx&action=default&mobileredirect=true&isSPOFile=1&xsdata=MDV8MDJ8fDM5NGJmYjNkY2E0NzQ3MWYxNmRhMDhkZGU2YWMyYjVlfDhiN2JkZTQwNzk5MzQ3MjE5MmE3MWU4NjUwMDllODg4fDB8MHw2Mzg5MjAzNDkyOTI4MzE0NTV8VW5rbm93bnxWR1ZoYlhOVFpXTjFjbWwwZVZObGNuWnBZMlY4ZXlKRFFTSTZJbFJsWVcxelgwRlVVRk5sY25acFkyVmZVMUJQVEU5R0lpd2lWaUk2SWpBdU1DNHdNREF3SWl3aVVDSTZJbGRwYmpNeUlpd2lRVTRpT2lKUGRHaGxjaUlzSWxkVUlqb3hNWDA9fDF8TDJOb1lYUnpMekU1T2pjNU1EZzVaVFkzTFdWaE5EWXROR1kyTUMwNVpXRmtMV1l6TmpCbE5HVTVabUU1WTE5bVlXRXpNVGsxWmkweVltRmxMVFEyTUdVdFltUmxNQzFsT0dNM1pHSXpOemhrTldWQWRXNXhMbWRpYkM1emNHRmpaWE12YldWemMyRm5aWE12TVRjMU5qUXpPREV5TnpVeE5BPT18MDkwNjg0YzI1YmIzNDE2ZTNlZTcwOGRkZTZhYzJiNWR8NmQzNmUzM2MzNWZhNGE0NGJmYzlhMGY2ZjFjMjczODA%3D&sdata=UXdTZVdzcEZwK3IraXNiK1Q2NGcxZEVpVkp2WWZwRFkzQ2pwd1hycmFzWT0%3D&ovuser=8b7bde40-7993-4721-92a7-1e865009e888%2CNisalE%40inqube.com" target="_blank" class="dropdown-link">Huddle - New</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="" class="nav-link"><i class="fas fa-building"></i> Customers</a></li>
+                <li class="nav-item"><a href="Split_Files_Date_Validator.html" class="nav-link"><i class="fa-solid fa-explosion"></i> DCL-Split</a></li>
+                <li class="nav-item"><a href="sop.html" class="nav-link"><i class="fas fa-book"></i> SOP</a></li>
+                <li class="nav-item"><a href="coe-performance-dashboard-smf.html" class="nav-link"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                <li class="nav-item"><a href="validations.html" class="nav-link"><i class="fa-solid fa-check-double"></i> Validations</a></li>
+                <li class="nav-item"><a href="general-guidelines.html" class="nav-link active"><i class="fas fa-file-alt"></i> General Guidelines</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<!-- ================= ADMIN TOOLBAR ================= -->
+<div class="admin-bar" id="adminBar">
+    <span><i class="fas fa-user-shield"></i> Admin mode — you can add, edit or delete guidelines</span>
+    <div>
+        <button onclick="openAddModal()"><i class="fas fa-plus"></i> Add Category</button>
+        <button class="logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+</div>
+
+<!-- ================= MAIN ================= -->
+<main class="main-content">
+    <div class="dashboard-title">
+        <h1><i class="fas fa-file-alt"></i> General Guidelines</h1>
+        <p>Comprehensive collection of guidelines, procedures, and reference documents — organised by category for quick access.</p>
+    </div>
+
+    <!-- Categories render here dynamically -->
+    <div class="categories-grid" id="categoriesGrid"></div>
+</main>
+
+<!-- ================= VIEW MODAL ================= -->
+<div class="modal" id="customerModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div style="display:flex; align-items:center; gap:.8rem; flex:1;">
+                <i class="fas fa-file-alt" style="font-size:1.2rem;"></i>
+                <h3 class="modal-title" id="modalTitle" style="margin:0;">Guideline</h3>
+            </div>
+            <div style="display:flex; align-items:center; gap:.5rem;">
+                <button class="fullscreen-btn" onclick="toggleFullscreen()"><i class="fas fa-expand"></i></button>
+                <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <iframe class="modal-iframe" src="about:blank" frameborder="0"></iframe>
+        </div>
+    </div>
+</div>
+
+<!-- ================= LOGIN OVERLAY ================= -->
+<div class="login-overlay" id="loginOverlay">
+    <div class="login-card">
+        <h2><i class="fas fa-lock"></i> Admin Login</h2>
+        <div class="login-error" id="loginError"></div>
+        <input type="text" id="adminUser" placeholder="Username" autocomplete="off">
+        <input type="password" id="adminPass" placeholder="Password" autocomplete="off">
+        <div class="actions">
+            <button class="primary" onclick="doLogin()">Login</button>
+            <button class="secondary" onclick="closeLogin()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+    <div class="footer">
+        <p>COE – Home Dashboard © 2025 <span class="footer-separator">|</span> Designed for efficiency and clarity.
+        &nbsp;&nbsp;<a href="#" onclick="openLogin(); return false;" style="color:#fff; opacity:.6; font-size:.75rem; text-decoration:none;"><i class="fas fa-user-shield"></i> Admin</a></p>
+    </div>
+</footer>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+/* =========================================================
+   1. DATA LAYER — persisted in localStorage
+   ========================================================= */
+const STORAGE_KEY = 'coe_general_guidelines_v1';
+
+/* Default content (first-time seed) */
+const DEFAULT_DATA = [
+    {
+        id: 'cat-quality',
+        title: 'Quality & Compliance',
+        icon: 'fa-clipboard-check',
+        items: [
+            { id: 'i1', title: 'Inspection Guideline',      icon: 'fa-search',              badge: 'Rev. 4', url: 'guidelines/inspection.html' },
+            { id: 'i2', title: 'AQL Tables & Sampling',     icon: 'fa-table',               badge: '2025',   url: 'guidelines/aql.html' },
+            { id: 'i3', title: 'Defect Classification',     icon: 'fa-exclamation-triangle',badge: '',       url: 'guidelines/defect-classification.html' },
+            { id: 'i4', title: 'Compliance Audit',          icon: 'fa-file-signature',      badge: 'Draft',  url: '', disabled: true }
+        ]
+    },
+    {
+        id: 'cat-measurement',
+        title: 'Measurement & Testing',
+        icon: 'fa-ruler-combined',
+        items: [
+            { id: 'i5', title: 'Measurement Guide',         icon: 'fa-ruler',    badge: 'v2.1', url: 'guidelines/measurement-guide.html' },
+            { id: 'i6', title: 'Tolerance Sheets',          icon: 'fa-chart-line',badge: '',    url: 'guidelines/tolerance.html' },
+            { id: 'i7', title: 'Lab Testing Protocols',     icon: 'fa-flask',    badge: '',    url: 'guidelines/lab-testing.html' },
+            { id: 'i8', title: 'Color Fastness',            icon: 'fa-palette',  badge: '',    url: 'guidelines/color-fastness.html' },
+            { id: 'i9', title: 'Fabric Weight',             icon: 'fa-weight-scale', badge: '', url: '', disabled: true }
+        ]
+    },
+    {
+        id: 'cat-packaging',
+        title: 'Packaging & Labeling',
+        icon: 'fa-box-open',
+        items: [
+            { id: 'i10', title: 'Packaging Standard',   icon: 'fa-box',      badge: '', url: 'guidelines/packaging.html' },
+            { id: 'i11', title: 'Care Label Guidelines',icon: 'fa-tag',      badge: '', url: 'guidelines/care-label.html' },
+            { id: 'i12', title: 'Barcode & RFID Specs', icon: 'fa-barcode',  badge: '', url: 'guidelines/barcode.html' },
+            { id: 'i13', title: 'Shipping Marks',       icon: 'fa-ship',     badge: '', url: 'guidelines/shipping-marks.html' },
+            { id: 'i14', title: 'Hangtag Placement',    icon: 'fa-tags',     badge: '', url: 'guidelines/hangtag.html' }
+        ]
+    },
+    {
+        id: 'cat-sustainability',
+        title: 'Sustainability & Social',
+        icon: 'fa-leaf',
+        items: [
+            { id: 'i15', title: 'Chemical Restrictions', icon: 'fa-flask-vial', badge: '', url: 'guidelines/chemical.html' },
+            { id: 'i16', title: 'Environmental Policy',  icon: 'fa-recycle',    badge: '', url: 'guidelines/environmental.html' },
+            { id: 'i17', title: 'Social Compliance',     icon: 'fa-handshake',  badge: '', url: 'guidelines/social-compliance.html' },
+            { id: 'i18', title: 'Renewable Energy',      icon: 'fa-solar-panel',badge: 'Q3', url: '', disabled: true }
+        ]
+    },
+    {
+        id: 'cat-technical',
+        title: 'Technical & Construction',
+        icon: 'fa-drafting-compass',
+        items: [
+            { id: 'i19', title: 'Stitch Types & Seam', icon: 'fa-thread',    badge: '', url: 'guidelines/stitch-types.html' },
+            { id: 'i20', title: 'Pattern Making',      icon: 'fa-scissors',  badge: '', url: 'guidelines/pattern-making.html' },
+            { id: 'i21', title: 'Tech Pack Standards', icon: 'fa-file-pdf',  badge: '', url: 'guidelines/tech-pack.html' },
+            { id: 'i22', title: 'Grading Rules',       icon: 'fa-chart-simple', badge: '', url: 'guidelines/grading.html' }
+        ]
+    },
+    {
+        id: 'cat-customer',
+        title: 'Customer Specific',
+        icon: 'fa-user-tie',
+        items: [
+            { id: 'i23', title: 'Customer A – Manual',       icon: 'fa-crown', badge: '', url: 'guidelines/customer-a.html' },
+            { id: 'i24', title: 'Customer B – Requirements', icon: 'fa-gem',   badge: '', url: 'guidelines/customer-b.html' },
+            { id: 'i25', title: 'Customer C (restricted)',   icon: 'fa-lock',  badge: '', url: '', disabled: true }
+        ]
+    }
+];
+
+/* Storage helpers */
+function loadData() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+        try { return JSON.parse(raw); } catch(e){ /* fall through */ }
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_DATA));
+    return JSON.parse(JSON.stringify(DEFAULT_DATA));
+}
+function saveData(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+/* =========================================================
+   2. AUTH (demo — replace with real backend in production)
+   ========================================================= */
+const ADMIN_USER = 'admin';
+const ADMIN_PASS = 'admin123';
+const AUTH_KEY   = 'coe_admin_auth';
+
+function isAdmin() { return sessionStorage.getItem(AUTH_KEY) === 'true'; }
+function setAdmin(v) {
+    if (v) sessionStorage.setItem(AUTH_KEY, 'true');
+    else    sessionStorage.removeItem(AUTH_KEY);
+    document.body.classList.toggle('admin-mode', v);
+    document.getElementById('adminBar').classList.toggle('visible', v);
+}
+
+function openLogin() {
+    if (isAdmin()) { setAdmin(false); return; }        // toggle off
+    document.getElementById('loginOverlay').classList.add('visible');
+    document.getElementById('loginError').textContent = '';
+    document.getElementById('adminUser').focus();
+}
+function closeLogin() {
+    document.getElementById('loginOverlay').classList.remove('visible');
+}
+function doLogin() {
+    const u = document.getElementById('adminUser').value.trim();
+    const p = document.getElementById('adminPass').value;
+    if (u === ADMIN_USER && p === ADMIN_PASS) {
+        setAdmin(true);
+        closeLogin();
+        render();     // re-render to show edit pencils
+    } else {
+        document.getElementById('loginError').textContent = '❌ Invalid username or password.';
+    }
+}
+function logout() { setAdmin(false); render(); }
+
+/* =========================================================
+   3. RENDER — build categories & items from data
+   ========================================================= */
+let data = loadData();
+
+function render() {
+    const grid = document.getElementById('categoriesGrid');
+    grid.innerHTML = '';
+
+    data.forEach((cat, ci) => {
+        const card = document.createElement('div');
+        card.className = 'category-card';
+
+        /* Category icon colors (matches original aesthetics) */
+        const colors = [
+            'linear-gradient(135deg,#3b82f6,#1d4ed8)',
+            'linear-gradient(135deg,#10b981,#047857)',
+            'linear-gradient(135deg,#f59e0b,#d97706)',
+            'linear-gradient(135deg,#8b5cf6,#6d28d9)',
+            'linear-gradient(135deg,#ec4899,#be185d)',
+            'linear-gradient(135deg,#14b8a6,#0f766e)'
+        ];
+
+        card.innerHTML = `
+            <div class="category-title">
+                <div class="category-icon" style="background:${colors[ci % colors.length]};">
+                    <i class="fas ${cat.icon || 'fa-folder'}"></i>
+                </div>
+                <h2>${escapeHtml(cat.title)}</h2>
+                ${ isAdmin() ? `<button class="edit-pencil" style="position:static; margin-left:auto; display:flex;"
+                                    title="Edit category"
+                                    onclick="editCategory('${cat.id}')">
+                                    <i class="fas fa-pen"></i>
+                                 </button>` : '' }
+            </div>
+            <div class="customers-grid" data-cat="${cat.id}">
+                ${cat.items.map(it => renderItem(cat.id, it)).join('')}
+            </div>
+            ${ isAdmin() ? `
+                <button onclick="addItem('${cat.id}')" 
+                        style="margin-top:.8rem; width:100%; padding:.6rem;
+                               background:#e0f2fe; color:#0369a1; border:2px dashed #7dd3fc;
+                               border-radius:12px; cursor:pointer; font-weight:600; font-size:.85rem;">
+                    <i class="fas fa-plus"></i> Add guideline to "${escapeHtml(cat.title)}"
+                </button>` : '' }
+        `;
+        grid.appendChild(card);
+    });
+
+    /* Attach click handlers to guideline buttons */
+    document.querySelectorAll('.guideline-btn[data-url]').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            if (this.classList.contains('disabled')) return;
+            e.preventDefault();
+            openViewer(this.dataset.title, this.dataset.url);
+        });
+    });
+}
+
+function renderItem(catId, it) {
+    const cls = it.disabled ? 'guideline-btn disabled' : 'guideline-btn';
+    const badge = it.badge ? `<span class="badge">${escapeHtml(it.badge)}</span>` : '';
+    const adminPencil = isAdmin()
+        ? `<button class="edit-pencil" title="Edit"
+                   onclick="event.stopPropagation(); editItem('${catId}','${it.id}')">
+                   <i class="fas fa-pen"></i>
+               </button>`
+        : '';
+    return `
+        <a href="#" class="${cls}"
+           data-url="${it.disabled ? '' : it.url}"
+           data-title="${escapeHtml(it.title)}">
+            <i class="fas ${it.icon || 'fa-file'}"></i>
+            <span>${escapeHtml(it.title)}</span>
+            ${badge}
+            ${adminPencil}
+        </a>`;
+}
+
+function escapeHtml(s='') {
+    return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* =========================================================
+   4. VIEWER MODAL
+   ========================================================= */
+const modal = document.getElementById('customerModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalIframe = document.querySelector('.modal-iframe');
+
+function openViewer(title, url) {
+    modalTitle.textContent = title;
+    modalIframe.src = url || 'about:blank';
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+    setTimeout(() => modalIframe.src = 'about:blank', 250);
+}
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+});
+function toggleFullscreen() {
+    const mc = document.querySelector('.modal-content');
+    if (!document.fullscreenElement) mc.requestFullscreen?.();
+    else document.exitFullscreen?.();
+}
+
+/* =========================================================
+   5. ADMIN CRUD OPERATIONS
+   ========================================================= */
+function openAddModal() {
+    const title = prompt('Enter new category name:');
+    if (!title) return;
+    const icon = prompt('Enter a Font Awesome icon class (e.g. fa-folder):', 'fa-folder') || 'fa-folder';
+    data.push({
+        id: 'cat-' + Date.now(),
+        title: title.trim(),
+        icon: icon.trim(),
+        items: []
+    });
+    saveData(data);
+    render();
+}
+
+function editCategory(catId) {
+    const cat = data.find(c => c.id === catId);
+    if (!cat) return;
+    const newTitle = prompt('Category name:', cat.title);
+    if (newTitle === null) return;
+    const newIcon = prompt('Icon class (e.g. fa-folder):', cat.icon);
+    if (newIcon === null) return;
+
+    cat.title = newTitle.trim() || cat.title;
+    cat.icon  = newIcon.trim()  || cat.icon;
+
+    if (confirm('Delete this category and all its guidelines?')) {
+        data = data.filter(c => c.id !== catId);
+    }
+    saveData(data);
+    render();
+}
+
+function addItem(catId) {
+    const cat = data.find(c => c.id === catId);
+    if (!cat) return;
+
+    const title = prompt('Guideline title:');
+    if (!title) return;
+    const icon = prompt('Icon class (e.g. fa-file):', 'fa-file') || 'fa-file';
+    const url  = prompt('URL (leave blank to mark as disabled):', '') || '';
+    const badge= prompt('Badge text (optional):', '') || '';
+
+    cat.items.push({
+        id: 'it-' + Date.now(),
+        title: title.trim(),
+        icon: icon.trim(),
+        badge: badge.trim(),
+        url: url.trim(),
+        disabled: !url.trim()
+    });
+    saveData(data);
+    render();
+}
+
+function editItem(catId, itemId) {
+    const cat = data.find(c => c.id === catId);
+    if (!cat) return;
+    const it = cat.items.find(i => i.id === itemId);
+    if (!it) return;
+
+    const title = prompt('Title:', it.title);
+    if (title === null) return;
+    const icon = prompt('Icon class:', it.icon);
+    if (icon === null) return;
+    const url = prompt('URL (blank = disabled):', it.url);
+    if (url === null) return;
+    const badge = prompt('Badge (optional):', it.badge);
+    if (badge === null) return;
+
+    if (confirm('Delete this guideline instead?')) {
+        cat.items = cat.items.filter(i => i.id !== itemId);
+    } else {
+        it.title = title.trim() || it.title;
+        it.icon  = icon.trim()  || it.icon;
+        it.badge = badge.trim();
+        it.url   = url.trim();
+        it.disabled = !url.trim();
+    }
+    saveData(data);
+    render();
+}
+
+/* =========================================================
+   6. INIT
+   ========================================================= */
+setAdmin(isAdmin());   // apply saved admin state (session)
+render();
+
+/* Login overlay: Enter key submits */
+document.getElementById('adminPass').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+});
+</script>
+</body>
+</html>

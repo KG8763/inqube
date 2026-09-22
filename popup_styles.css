@@ -1,45 +1,65 @@
-/* General Reset and Basic Styling */
+/* =========================
+   GENERAL RESET & BASE
+   ========================= */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background-attachment: fixed;
     color: #333;
-    margin: 0;
-    padding: 0;
     font-size: 14px;
     min-height: 100vh;
     line-height: 1.6;
+    overflow-x: hidden;
 }
 
-/* Container for content */
+/* Container */
 .container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 1rem;
+    width: 100%;
 }
 
-/* Header Styling - UNFROZEN */
+/* =========================
+   HEADER
+   ========================= */
 header {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    background: #ffffff;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    /* Removed sticky positioning */
     z-index: 100;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem 2rem;
     color: #1e293b;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+@supports (backdrop-filter: blur(10px)) {
+    header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
 }
 
 header h2 {
-    font-size: 1.8rem;
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
     font-weight: 700;
     background: linear-gradient(135deg, #10b981, #059669);
     -webkit-background-clip: text;
@@ -48,9 +68,10 @@ header h2 {
     margin: 0;
 }
 
-/* Box Layout for Header (Approver and Mailto) */
+/* Header Boxes (Approver / Mailto) */
 .box1, .box2 {
-    flex: 1;
+    flex: 1 1 220px;
+    min-width: 0;
 }
 
 .box2 {
@@ -63,21 +84,43 @@ header h2 {
     margin-left: 1rem;
     font-weight: 500;
     color: #059669;
+    word-break: break-word;
 }
 
-/* Main Content Area */
+/* =========================
+   MAIN CONTENT AREA
+   ========================= */
 main {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    background: #ffffff;
     margin: 2rem auto;
     max-width: 1400px;
+    width: calc(100% - 2rem);
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     overflow: hidden;
 }
 
-/* Header Table Styling */
+@supports (backdrop-filter: blur(10px)) {
+    main {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+}
+
+/* =========================
+   TABLES
+   ========================= */
+
+/* Table wrapper for horizontal scroll on small screens */
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Header table (metadata) */
 .table_head {
     width: 100%;
     border-collapse: collapse;
@@ -94,6 +137,7 @@ main {
     font-size: 0.95rem;
     border-bottom: 1px solid rgba(16, 185, 129, 0.1);
     color: #374151;
+    word-break: break-word;
 }
 
 .table_head td:first-child {
@@ -103,7 +147,7 @@ main {
     border-right: 1px solid rgba(16, 185, 129, 0.1);
 }
 
-/* Main Table Styling - UNFROZEN HEADERS */
+/* Main table */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -120,6 +164,7 @@ table th, table td {
     text-align: left;
     font-size: 0.9rem;
     transition: background-color 0.3s ease;
+    word-break: break-word;
 }
 
 table th {
@@ -130,7 +175,6 @@ table th {
     letter-spacing: 0.5px;
     font-size: 0.85rem;
     position: relative;
-    /* Removed sticky positioning */
 }
 
 table th::after {
@@ -156,28 +200,30 @@ table tbody tr:hover {
 table tbody tr:nth-child(even) {
     background: rgba(248, 250, 252, 0.8);
 }
-/* TABLE CAPTION -> MATCH HEADER */
+
+/* Table caption */
 table caption {
-    caption-side: top; /* make sure it stays on top */
+    caption-side: top;
     background: #ffffff;
     padding: 0.75rem;
-    margin-top: 0%;
-    margin-bottom: auto;
-    text-align: left;
+    text-align: center;
     font-weight: 600;
     color: #7ecadd;
     border-bottom: 3px solid #e2e8f0;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
-    text-align: center;
-    
 }
-/* Content Wrapper */
+
+/* =========================
+   CONTENT WRAPPER
+   ========================= */
 .content-wrapper {
     padding: 2rem;
 }
 
-/* Buttons */
+/* =========================
+   BUTTONS
+   ========================= */
 button {
     display: inline-flex;
     align-items: center;
@@ -196,6 +242,8 @@ button {
     letter-spacing: 0.5px;
     position: relative;
     overflow: hidden;
+    min-height: 44px;
+    -webkit-tap-highlight-color: transparent;
 }
 
 button::before {
@@ -207,6 +255,7 @@ button::before {
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     transition: left 0.5s;
+    pointer-events: none;
 }
 
 button:hover::before {
@@ -224,7 +273,9 @@ button:active {
     box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
 }
 
-/* Popup Styles - LARGER SIZE */
+/* =========================
+   POPUP
+   ========================= */
 .popup {
     display: none;
     position: fixed;
@@ -233,12 +284,19 @@ button:active {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(5px);
     justify-content: center;
     align-items: center;
     z-index: 2000;
     opacity: 0;
     transition: opacity 0.3s ease;
+    padding: 10px;
+}
+
+@supports (backdrop-filter: blur(5px)) {
+    .popup {
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+    }
 }
 
 .popup:target {
@@ -250,16 +308,18 @@ button:active {
     background: white;
     padding: 0;
     border-radius: 20px;
-    width: 98%; /* Increased from 95% */
-    max-width: 1600px; /* Increased from 1200px */
-    height: 98%; /* Increased from 95% */
-    max-height: 1000px; /* Increased from 800px */
+    width: 100%;
+    max-width: 1600px;
+    height: 100%;
+    max-height: 1000px;
     position: relative;
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(16, 185, 129, 0.2);
     overflow: hidden;
     transform: scale(0.9);
     transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .popup:target .popup-content {
@@ -271,19 +331,21 @@ button:active {
     color: white;
     padding: 1.5rem 2rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
 }
 
 .popup-content h2 {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
     font-weight: 700;
     text-align: center;
 }
 
 .popup-body {
     padding: 2rem;
-    max-height: calc(100% - 120px);
+    flex: 1;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .popup-content table {
@@ -295,7 +357,7 @@ button:active {
 .close {
     position: absolute;
     top: 15px;
-    right: 25px;
+    right: 15px;
     font-size: 1.5rem;
     text-decoration: none;
     color: white;
@@ -308,7 +370,15 @@ button:active {
     justify-content: center;
     transition: all 0.3s ease;
     background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
+    z-index: 10;
+    -webkit-tap-highlight-color: transparent;
+}
+
+@supports (backdrop-filter: blur(10px)) {
+    .close {
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
 }
 
 .close:hover {
@@ -317,15 +387,24 @@ button:active {
     color: #ef4444;
 }
 
-/* Footer Styling */
+/* =========================
+   FOOTER
+   ========================= */
 footer {
     text-align: center;
     padding: 2rem;
     color: rgba(255, 255, 255, 0.9);
     background: rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
     margin-top: 2rem;
     font-weight: 500;
+    font-size: 0.9rem;
+}
+
+@supports (backdrop-filter: blur(10px)) {
+    footer {
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
 }
 
 footer a {
@@ -338,12 +417,14 @@ footer a:hover {
     color: white;
 }
 
-/* Previous MRL Section */
+/* =========================
+   PREVIOUS MRL SECTION
+   ========================= */
 #previous_mrl {
     display: none;
     margin-top: 2rem;
     padding: 2rem;
-    background: white(235, 223, 223, 0.05);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
     border: 1px solid rgba(16, 185, 129, 0.2);
 }
@@ -353,7 +434,9 @@ footer a:hover {
     animation: fadeInUp 0.5s ease;
 }
 
-/* Animations */
+/* =========================
+   ANIMATIONS
+   ========================= */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -365,10 +448,15 @@ footer a:hover {
     }
 }
 
-/* Card-like sections */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* =========================
+   SECTION CARDS
+   ========================= */
 .section-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    background: #ffffff;
     border-radius: 15px;
     padding: 2rem;
     margin: 1.5rem 0;
@@ -376,6 +464,14 @@ footer a:hover {
     border: 1px solid rgba(255, 255, 255, 0.2);
     position: relative;
     overflow: hidden;
+}
+
+@supports (backdrop-filter: blur(10px)) {
+    .section-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
 }
 
 .section-card::before {
@@ -388,7 +484,9 @@ footer a:hover {
     background: linear-gradient(135deg, #10b981, #059669);
 }
 
-/* Status badges */
+/* =========================
+   STATUS BADGES
+   ========================= */
 .status-badge {
     display: inline-block;
     padding: 4px 12px;
@@ -416,75 +514,50 @@ footer a:hover {
     color: #dc2626;
     border: 1px solid rgba(239, 68, 68, 0.2);
 }
-mark{
+
+/* =========================
+   MISC
+   ========================= */
+mark {
     background-color: yellow;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        gap: 1rem;
-        padding: 1rem;
-    }
-    
-    .box2 {
-        margin-left: 0;
-        margin-top: 1rem;
-    }
-    
-    .content-wrapper {
-        padding: 1rem;
-    }
-    
-    table th, table td {
-        padding: 8px 12px;
-        font-size: 0.8rem;
-    }
-    
-    .popup-content {
-        width: 99%;
-        height: 99%;
-        border-radius: 10px;
-    }
-    
-    .popup-body {
-        padding: 1rem;
-    }
-    
-    button {
-        padding: 10px 20px;
-        font-size: 0.9rem;
-    }
+/* Loading spinner */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(16, 185, 129, 0.3);
+    border-radius: 50%;
+    border-top-color: #10b981;
+    animation: spin 1s ease-in-out infinite;
 }
 
-@media (max-width: 480px) {
-    header h2 {
-        font-size: 1.4rem;
-    }
-    
-    table th, table td {
-        padding: 6px 8px;
-        font-size: 0.75rem;
-    }
-    
-    .popup-header {
-        padding: 1rem;
-    }
-    
-    .popup-content h2 {
-        font-size: 1.2rem;
-    }
+/* Interactive row */
+.interactive-row {
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-/* Smooth scrolling */
-html {
-    scroll-behavior: smooth;
+.interactive-row:hover {
+    background: rgba(16, 185, 129, 0.05) !important;
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.1);
 }
 
-/* Custom scrollbar */
+/* Focus accessibility */
+button:focus,
+.close:focus {
+    outline: 2px solid #10b981;
+    outline-offset: 2px;
+}
+
+/* =========================
+   CUSTOM SCROLLBAR
+   ========================= */
 ::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -501,53 +574,300 @@ html {
     background: linear-gradient(135deg, #059669, #047857);
 }
 
-/* Loading animation */
-.loading {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(16, 185, 129, 0.3);
-    border-radius: 50%;
-    border-top-color: #10b981;
-    animation: spin 1s ease-in-out infinite;
+/* =========================================
+   RESPONSIVE — MULTI-BREAKPOINT
+   ========================================= */
+
+/* ---------- Large tablets / small laptops (≤1024px) ---------- */
+@media (max-width: 1024px) {
+    header {
+        padding: 1rem 1.2rem;
+    }
+
+    main {
+        margin: 1.5rem auto;
+        width: calc(100% - 1.5rem);
+    }
+
+    .content-wrapper {
+        padding: 1.5rem;
+    }
+
+    table th, table td {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
+/* ---------- Tablets (≤768px) ---------- */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+
+    header {
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 1rem;
+        align-items: stretch;
+    }
+
+    header h2 {
+        text-align: center;
+    }
+
+    .box1, .box2 {
+        flex: 1 1 100%;
+    }
+
+    .box2 {
+        margin-left: 0;
+        text-align: center;
+    }
+
+    main {
+        margin: 1rem auto;
+        width: calc(100% - 1rem);
+        border-radius: 14px;
+    }
+
+    .content-wrapper {
+        padding: 1rem;
+    }
+
+    /* Tables: keep readable by shrinking padding */
+    table th, table td {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+    }
+
+    .table_head td {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+
+    /* Stack table_head on mobile for readability */
+    .table_head,
+    .table_head tbody,
+    .table_head tr,
+    .table_head td {
+        display: block;
+        width: 100%;
+    }
+
+    .table_head tr {
+        margin-bottom: 0.6rem;
+        border: 1px solid rgba(16, 185, 129, 0.15);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .table_head td {
+        border-right: none !important;
+        border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+    }
+
+    .table_head td:last-child {
+        border-bottom: none;
+    }
+
+    /* Popup */
+    .popup {
+        padding: 4px;
+    }
+
+    .popup-content {
+        border-radius: 10px;
+        max-height: 100%;
+    }
+
+    .popup-header {
+        padding: 1rem 1.2rem;
+    }
+
+    .popup-body {
+        padding: 1rem;
+    }
+
+    .close {
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        font-size: 1.2rem;
+    }
+
+    /* Buttons */
+    button {
+        padding: 10px 18px;
+        font-size: 0.85rem;
+        min-height: 42px;
+    }
+
+    footer {
+        padding: 1.2rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .section-card {
+        padding: 1.2rem;
+        border-radius: 12px;
+    }
 }
 
-/* Hover effects for interactive elements */
-.interactive-row {
-    cursor: pointer;
-    transition: all 0.3s ease;
+/* ---------- Small phones (≤480px) ---------- */
+@media (max-width: 480px) {
+    body {
+        font-size: 13px;
+    }
+
+    header h2 {
+        font-size: 1.2rem;
+    }
+
+    .box2 {
+        padding: 0.7rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    main {
+        margin: 0.6rem auto;
+        width: calc(100% - 0.6rem);
+        border-radius: 12px;
+    }
+
+    .content-wrapper {
+        padding: 0.8rem;
+    }
+
+    table th, table td {
+        padding: 6px 8px;
+        font-size: 0.75rem;
+    }
+
+    .table_head td {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+    }
+
+    .popup-header {
+        padding: 0.8rem 1rem;
+    }
+
+    .popup-content h2 {
+        font-size: 1rem;
+        padding-right: 2.5rem;
+        text-align: left;
+    }
+
+    .popup-body {
+        padding: 0.8rem;
+    }
+
+    button {
+        padding: 9px 14px;
+        font-size: 0.78rem;
+        width: 100%;
+    }
+
+    footer {
+        padding: 1rem 0.8rem;
+        font-size: 0.78rem;
+    }
+
+    .section-card {
+        padding: 1rem;
+    }
 }
 
-.interactive-row:hover {
-    background: rgba(16, 185, 129, 0.05) !important;
-    transform: translateX(5px);
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.1);
+/* ---------- Very small phones (≤360px) ---------- */
+@media (max-width: 360px) {
+    header h2 {
+        font-size: 1.05rem;
+    }
+
+    table th, table td {
+        padding: 5px 6px;
+        font-size: 0.7rem;
+    }
+
+    .popup-content h2 {
+        font-size: 0.9rem;
+    }
 }
 
-/* Focus states for accessibility */
-button:focus,
-.close:focus {
-    outline: 2px solid #10b981;
-    outline-offset: 2px;
+/* ---------- Landscape phones (short height) ---------- */
+@media (max-height: 500px) and (orientation: landscape) {
+    header {
+        padding: 0.6rem 1rem;
+    }
+
+    main {
+        margin: 0.5rem auto;
+    }
+
+    .popup-header {
+        padding: 0.6rem 1rem;
+    }
+
+    .popup-body {
+        padding: 0.8rem;
+    }
+
+    .close {
+        top: 6px;
+        right: 8px;
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
 }
 
-/* Print styles */
+/* =========================
+   PRINT STYLES
+   ========================= */
 @media print {
     body {
         background: white;
         color: black;
     }
-    
-    .popup, .close {
+
+    header,
+    footer,
+    .popup,
+    .close,
+    button {
         display: none !important;
     }
-    
+
+    main {
+        box-shadow: none;
+        border: none;
+        margin: 0;
+        width: 100%;
+        border-radius: 0;
+    }
+
     table th {
         background: #f0f0f0 !important;
         color: black !important;
+    }
+
+    table th::after {
+        display: none;
+    }
+}
+
+/* =========================
+   REDUCED MOTION
+   ========================= */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }
