@@ -1568,9 +1568,26 @@
             document.getElementById(sectionId + '-section').style.display = 'block';
         }
 
-        // Initialize to show customers section
+        // Initialize based on URL hash or default to customers
+function initSection() {
+    const hash = window.location.hash.replace('#', '');
+    if (hash === 'sap-t-codes' || hash === 'so-samples' || hash === 'customers') {
+        showSection(hash);
+    } else {
         showSection('customers');
+    }
+}
 
+// Run on page load
+initSection();
+
+// Also handle hash changes (e.g., if user clicks a link while already on the page)
+window.addEventListener('hashchange', function() {
+    const hash = window.location.hash.replace('#', '');
+    if (hash === 'sap-t-codes' || hash === 'so-samples' || hash === 'customers') {
+        showSection(hash);
+    }
+});
         function processFile() {
             const fileInput = document.getElementById('fileInput');
             const file = fileInput.files[0];
